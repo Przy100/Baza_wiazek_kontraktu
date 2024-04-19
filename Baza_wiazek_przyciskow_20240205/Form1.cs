@@ -1,12 +1,15 @@
 using Baza_wiazek_przyciskow_20240205.Source;
 using System.ComponentModel;
+using System.Diagnostics;
 
 
 namespace Baza_wiazek_przyciskow_20240205
 {
-  
+
     public partial class Form1 : Form
     {
+        // Ostateczne œcie¿ki dostêpu.
+        string[] LINK;
         public Form1()
         {
             InitializeComponent();
@@ -58,20 +61,33 @@ namespace Baza_wiazek_przyciskow_20240205
                     // Zmienia kodowanie p³yt na AAx.
                     string[] newBTE = new string[rowCount];
                     newBTE = convertData.CodePlate(NAME, BTE);
-                    
+
                     // Stwórz tablice z fragmentem œcie¿ki dostêpu.
                     string[] linkName = new string[rowCount];
-                    linkName = convertData.LinkNameWire(FOLDER, NAME, BTE);
+                    linkName = convertData.LinkNameWire(FOLDER, NAME, newBTE);
 
+                    // Koñcowa œcie¿ka dostêpu.
                     string[] finishPath = new string[rowCount];
                     finishPath = convertData.ExcelOrZuken(linkName);
-
+                    LINK = finishPath;
                     progressBar1.Value = 100;
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
                 }
 
             }
 
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (System.IO.File.Exists(LINK[1])) 
+            {
+                Process.Start(LINK[1]);
+            }
+            else 
+            {
+                MessageBox.Show("Link nie dzia³a.");
+            }
         }
     }
 }

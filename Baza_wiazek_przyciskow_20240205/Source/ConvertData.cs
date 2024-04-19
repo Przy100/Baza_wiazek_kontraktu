@@ -40,10 +40,10 @@ namespace Baza_wiazek_przyciskow_20240205.Source
             string[] FOLDER = new string[ID.Length];
             // Ścieżka do pliku zawierającym dodatkowe informacje pomocnicze.
             Configurator cFile = new Configurator();
-            string filePath = cFile.filePath_DATA;
+            string lo_filePath = cFile.filePath_DATA;
             try
             {
-                using (var workbook = new XLWorkbook(filePath))
+                using (var workbook = new XLWorkbook(lo_filePath))
                 {
                     var worksheet = workbook.Worksheet("Folder");
 
@@ -72,10 +72,10 @@ namespace Baza_wiazek_przyciskow_20240205.Source
         /// Po czym zwraca fragment ścieżki dostępu.
         /// </summary>
         /// <param name="FOLDER">Tablica z nazwami folderu.</param>
-        /// <param name="BTE">Tablica z numerami BTE wiązek.</param>
+        /// <param name="newBTE">Tablica z numerami BTE wiązek.</param>
         /// <param name="NAME">Tablica z nazwami wiązek.</param>
         /// <returns></returns>
-        public string[] LinkNameWire(string[] FOLDER, string[] NAME, string[] BTE)
+        public string[] LinkNameWire(string[] FOLDER, string[] NAME, string[] newBTE)
         {
             string[] linkName = new string[FOLDER.Length];
             // Początek ścieżki dostępu, która się nie zmienia.
@@ -85,7 +85,7 @@ namespace Baza_wiazek_przyciskow_20240205.Source
 
             for (int i = 1; i <= FOLDER.Length; i++)
             {
-                linkName[i - 1] = startPath + FOLDER[i - 1] + "\\" + NAME[i - 1] + " " + BTE[i - 1];
+                linkName[i - 1] = startPath + FOLDER[i - 1] + NAME[i - 1] + " " + newBTE[i - 1];
             }
             return linkName;
         }
@@ -127,6 +127,7 @@ namespace Baza_wiazek_przyciskow_20240205.Source
         /// Zmienia kodowania płyt na AAx w tablicy.
         /// </summary>
         /// <param name="linkNAME">Tablica z podanymi nścieżkami dostępu.</param>
+        /// <param name="BTE">Numer BTE wiążki.</param>
         /// <returns></returns>
         public string[] CodePlate(string[] NAME, string[] BTE) 
         {
