@@ -226,7 +226,6 @@ namespace Baza_wiazek_przyciskow_20240205
             }
 
             return finishPath;
-            // TEST GITHUB
         }
     }
 }
