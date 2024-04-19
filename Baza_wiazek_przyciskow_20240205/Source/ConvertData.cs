@@ -85,7 +85,7 @@ namespace Baza_wiazek_przyciskow_20240205.Source
 
             for (int i = 1; i <= FOLDER.Length; i++)
             {
-                linkName[i - 1] = startPath + FOLDER[i - 1] + NAME[i - 1] + " " + newBTE[i - 1];
+                linkName[i - 1] = startPath + FOLDER[i - 1] + "\\" +NAME[i - 1] + " " + newBTE[i - 1];
             }
             return linkName;
         }
