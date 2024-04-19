@@ -1,5 +1,10 @@
+using Baza_wiazek_przyciskow_20240205.Source;
+using System.ComponentModel;
+
+
 namespace Baza_wiazek_przyciskow_20240205
 {
+  
     public partial class Form1 : Form
     {
         public Form1()
@@ -15,7 +20,8 @@ namespace Baza_wiazek_przyciskow_20240205
             // Wybranie pliku Excel z list¹ wi¹zek
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.InitialDirectory = "E:\\A_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\";
+                Configurator cFile = new Configurator();
+                openFileDialog.InitialDirectory = cFile.InitialDirectory;
                 openFileDialog.Filter = "Excel files (*.xls;*.xlsx;*.xlsm)|*.xls;*.xlsx;*.xlsm|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;

@@ -38,7 +38,8 @@ namespace Baza_wiazek_przyciskow_20240205.Source
         {
             string[] FOLDER = new string[ID.Length];
             // Ścieżka do pliku zawierającym dodatkowe informacje pomocnicze.
-            string filePath = "E:\\A_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\!NIE_OTWIERAĆ_Baza_wiązek_kontraktu_DATA.xlsx";
+            Configurator cFile = new Configurator();
+            string filePath = cFile.filePath_DATA;
             try
             {
                 using (var workbook = new XLWorkbook(filePath))
@@ -77,7 +78,8 @@ namespace Baza_wiazek_przyciskow_20240205.Source
         {
             string[] linkName = new string[FOLDER.Length];
             // Początek ścieżki dostępu, która się nie zmienia.
-            string startPath = "E:\\A_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\";
+            Configurator cFile = new Configurator();
+            string startPath = cFile.startPath;
 
 
             for (int i = 1; i <= FOLDER.Length; i++)
@@ -95,7 +97,8 @@ namespace Baza_wiazek_przyciskow_20240205.Source
         private string WireOrPlate(string FOLDER, int rowCount)
         {
             string wireOrPlate = "";
-            string filePath = "E:\\A_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\!NIE_OTWIERAĆ_Baza_wiązek_kontraktu_DATA.xlsx";
+            Configurator cFile = new Configurator();
+            string filePath = cFile.filePath_DATA;
             try
             {
                 using (var workbook = new XLWorkbook(filePath))
