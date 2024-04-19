@@ -135,9 +135,11 @@ namespace Baza_wiazek_przyciskow_20240205.Source
             
             for(int i = 1; i <= BTE.Length; i++) 
             {
-                for(int j = 1; j <= Plate.Length; j++) 
+                codePlate[i - 1] = BTE[i - 1];
+
+                for (int j = 1; j <= Plate.Length; j++) 
                 {
-                    if (NAME[i - 1] == Plate[j]) 
+                    if (NAME[i - 1] == Plate[j - 1]) 
                     {
                         string newLetters = "AA";
                         int middleIndex = BTE[i - 1].Length - 6;
