@@ -55,6 +55,10 @@ namespace Baza_wiazek_przyciskow_20240205
                     progressBar1.Value = 75;
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
 
+                    // Zmienia kodowanie p³yt na AAx.
+                    string[] newBTE = new string[rowCount];
+                    newBTE = convertData.CodePlate(NAME, BTE);
+                    
                     // Stwórz tablice z fragmentem œcie¿ki dostêpu.
                     string[] linkName = new string[rowCount];
                     linkName = convertData.LinkNameWire(FOLDER, NAME, BTE);

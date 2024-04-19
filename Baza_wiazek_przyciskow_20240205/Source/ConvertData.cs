@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.ExtendedProperties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -122,6 +123,39 @@ namespace Baza_wiazek_przyciskow_20240205.Source
         next_WireOrPlate:
             return wireOrPlate;
         }
+        /// <summary>
+        /// Zmienia kodowania płyt na AAx w tablicy.
+        /// </summary>
+        /// <param name="linkNAME">Tablica z podanymi nścieżkami dostępu.</param>
+        /// <returns></returns>
+        public string[] CodePlate(string[] NAME, string[] BTE) 
+        {
+            string[] codePlate = new string[BTE.Length];
+            string[] Plate = ["Płyta P0", "Płyta P1", "Płyta P2", "Płyta P3", "Płyta P4", "Płyta P5", "Płyta P6", "Płyta P7", "Płyta P8", "Płyta P9"];
+            
+            for(int i = 1; i <= BTE.Length; i++) 
+            {
+                for(int j = 1; j <= Plate.Length; j++) 
+                {
+                    if (NAME[i - 1] == Plate[j]) 
+                    {
+                        string newLetters = "AA";
+                        int middleIndex = BTE[i - 1].Length - 6;
+                        string start = BTE[i - 1].Substring(0, middleIndex);
+                        string end = BTE[i - 1].Substring(middleIndex + 2);
+
+                        codePlate[i - 1] = start + newLetters + end;
+                    }
+                }
+            }
+
+            return codePlate;
+        }
+        /// <summary>
+        /// Dodaje odpowiednie rozszerzenie.
+        /// </summary>
+        /// <param name="linkName">Cała ścieżka dostępu z wyjątkiem rozszerzenia.</param>
+        /// <returns></returns>
         public string[] ExcelOrZuken(string[] linkName)
         {
             string[] finishPath = new string[linkName.Length];
