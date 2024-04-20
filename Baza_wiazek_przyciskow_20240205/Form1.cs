@@ -82,7 +82,8 @@ namespace Baza_wiazek_przyciskow_20240205
         {
             if (System.IO.File.Exists(LINK[19])) 
             {
-                Process.Start(LINK[19]);
+                // Otwiera plik pod podan¹ œcie¿k¹
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(LINK[19]) { UseShellExecute = true });
             }
             else 
             {
