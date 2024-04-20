@@ -80,9 +80,9 @@ namespace Baza_wiazek_przyciskow_20240205
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (System.IO.File.Exists(LINK[1])) 
+            if (System.IO.File.Exists(LINK[19])) 
             {
-                Process.Start(LINK[1]);
+                Process.Start(LINK[19]);
             }
             else 
             {
