@@ -65,12 +65,16 @@ namespace Baza_wiazek_przyciskow_20240205
                     // Stwórz tablice z fragmentem œcie¿ki dostêpu.
                     string[] linkName = new string[rowCount];
                     linkName = convertData.LinkNameWire(FOLDER, NAME, newBTE);
-
+                    
                     // Koñcowa œcie¿ka dostêpu.
                     string[] finishPath = new string[rowCount];
                     finishPath = convertData.ExcelOrZuken(linkName);
                     LINK = finishPath;
                     progressBar1.Value = 100;
+                    Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
+
+                    var hyperLink = new Hyperlink();
+                    hyperLink.CreateHyperlink(LINK, NAME, BTE);
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
                 }
 
@@ -80,6 +84,7 @@ namespace Baza_wiazek_przyciskow_20240205
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            
             if (System.IO.File.Exists(LINK[19])) 
             {
                 // Otwiera plik pod podan¹ œcie¿k¹
@@ -89,6 +94,12 @@ namespace Baza_wiazek_przyciskow_20240205
             {
                 MessageBox.Show("Link nie dzia³a.");
             }
+        }
+
+        public string LinkLabelText 
+        {
+            get { return linkLabel1.Text; }
+            set { linkLabel1.Text = value; }
         }
     }
 }

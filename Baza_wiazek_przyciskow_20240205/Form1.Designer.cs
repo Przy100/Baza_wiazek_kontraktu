@@ -94,10 +94,10 @@
             linkLabel1.AutoSize = true;
             linkLabel1.Location = new Point(307, 74);
             linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(71, 15);
+            linkLabel1.Size = new Size(60, 15);
             linkLabel1.TabIndex = 5;
             linkLabel1.TabStop = true;
-            linkLabel1.Text = "Hiperlacze 1";
+            linkLabel1.Text = "linkLabel1";
             linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // linkLabel2
