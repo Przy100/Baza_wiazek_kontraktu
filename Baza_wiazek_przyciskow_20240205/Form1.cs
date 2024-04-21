@@ -73,8 +73,7 @@ namespace Baza_wiazek_przyciskow_20240205
                     progressBar1.Value = 100;
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
 
-                    var hyperLink = new Hyperlink();
-                    hyperLink.CreateHyperlink(LINK, NAME, BTE);
+                    linkLabel1.Text = NAME[19] + " " + BTE[19];
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
                 }
 
@@ -87,6 +86,7 @@ namespace Baza_wiazek_przyciskow_20240205
             
             if (System.IO.File.Exists(LINK[19])) 
             {
+                
                 // Otwiera plik pod podan¹ œcie¿k¹
                 System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(LINK[19]) { UseShellExecute = true });
             }
@@ -94,12 +94,6 @@ namespace Baza_wiazek_przyciskow_20240205
             {
                 MessageBox.Show("Link nie dzia³a.");
             }
-        }
-
-        public string LinkLabelText 
-        {
-            get { return linkLabel1.Text; }
-            set { linkLabel1.Text = value; }
         }
     }
 }
