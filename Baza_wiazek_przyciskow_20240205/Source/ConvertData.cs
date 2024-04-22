@@ -49,7 +49,7 @@ namespace Baza_wiazek_przyciskow_20240205.Source
 
                     for (int i = 1; i <= ID.Length; i++)
                     {
-                        for (int j = 1; j <= ID.Length; j++)
+                        for (int j = 1; j <= 68; j++)
                         {
                             if (ID[i - 1] == worksheet.Cell(j + 1, 3).GetValue<string>())
                             {

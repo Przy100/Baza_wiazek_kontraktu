@@ -13,8 +13,11 @@ namespace Baza_wiazek_przyciskow_20240205
         string[] LINK;
         public Form1()
         {
-            InitializeComponent();
+            InitializeComponent();            
+            
             dataGridView1.CellContentClick += new DataGridViewCellEventHandler(dataGridView_CellContentClick);
+            // NIE CHCE DZIA£AÆ
+            //dataGridView1.CellFormatting += new DataGridViewCellFormattingEventHandler(dataGridView1_CellFormatting);
         }
         /// <summary>
         /// Tworzy tyle linkLabel ile jest wi¹zek, nadaje im nazwy od wi¹zek.
@@ -44,8 +47,7 @@ namespace Baza_wiazek_przyciskow_20240205
             // Kolumna hiper³¹cze
             DataGridViewLinkColumn linkColumn = new DataGridViewLinkColumn();
             linkColumn.Name = "LinkColumn";
-            linkColumn.Text = "Kliknij tutaj";
-            linkColumn.UseColumnTextForLinkValue = true;
+            linkColumn.UseColumnTextForLinkValue = false;
             dataGridView1.Columns.Add(linkColumn);
             // Nazwy kolumn
             dataGridView1.Columns[0].Name = "Lp.";
@@ -59,9 +61,26 @@ namespace Baza_wiazek_przyciskow_20240205
             dataGridView1.Columns[8].Name = "Opis / zastosowanie";
             dataGridView1.Columns[9].Name = "Uwagi";
 
-            for(int i = 1; i <= NAME.Length; i++) 
+            for(int i = 0; i < NAME.Length; i++) 
             {
-                dataGridView1.Rows.Add(i, newBTE[i - 1], NAME[i - 1], IndeksySBC[i - 1], Ilosc[i - 1], Prio[i - 1], Status[i - 1], Rewizja[i - 1], Opis[i - 1], Uwagi[i - 1], LINK[i - 1]);
+                int rowIndex = dataGridView1.Rows.Add();  // Dodaje nowy wiersz i zapisuje jego indeks
+                
+                dataGridView1.Rows[rowIndex].Cells[0].Value = i + 1; // Lp.
+                dataGridView1.Rows[rowIndex].Cells[1].Value = newBTE[i];
+                dataGridView1.Rows[rowIndex].Cells[2].Value = NAME[i];
+                dataGridView1.Rows[rowIndex].Cells[3].Value = IndeksySBC[i];
+                dataGridView1.Rows[rowIndex].Cells[4].Value = Ilosc[i];
+                dataGridView1.Rows[rowIndex].Cells[5].Value = Prio[i];
+                dataGridView1.Rows[rowIndex].Cells[6].Value = Status[i];
+                dataGridView1.Rows[rowIndex].Cells[7].Value = Rewizja[i];
+                dataGridView1.Rows[rowIndex].Cells[8].Value = Opis[i];
+                dataGridView1.Rows[rowIndex].Cells[9].Value = Uwagi[i];
+                dataGridView1.Rows[rowIndex].Cells[10].Value = LINK[i];  // Ustawianie URL jako wartoœci komórki dla hiper³¹cza
+
+                // Zmiana tekstu wyœwietlanego zamiast URL.
+                DataGridViewLinkCell linkCell = dataGridView1.Rows[rowIndex].Cells["LinkColumn"] as DataGridViewLinkCell;
+                linkCell.Value = LINK[i];  // URL, który bêdzie otwarty
+                linkCell.Tag = NAME[i];  // Tekst, który bêdzie wyœwietlany
             }
 
         }
@@ -142,6 +161,7 @@ namespace Baza_wiazek_przyciskow_20240205
                     //CreateNameHyperlink(NAME, newBTE);
                     // Tworzy tabelkê przypominaj¹c¹ t¹ z Excela.
                     InitializeDataGridView(newBTE, NAME, IndeksySBC, Ilosc, Priorytet, Status, Rewizja, Opis, Uwagi);
+                    
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
                     progressBar1.Value = 100;
                 }
@@ -174,11 +194,28 @@ namespace Baza_wiazek_przyciskow_20240205
                 string url = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                 try
                 {
-                    System.Diagnostics.Process.Start(url);  // Otwórz domyœln¹ przegl¹darkê z podanym URL
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true });
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Nie mo¿na otworzyæ linku: " + ex.Message);
+                }
+            }
+        }
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dataGridView1 == null || dataGridView1.Columns["LinkColumn"] == null)
+                return;  // Zabezpieczenie przed niew³aœciwie zainicjalizowanymi obiektami
+
+            if (e.ColumnIndex == dataGridView1.Columns["LinkColumn"].Index && e.RowIndex >= 0)
+            {
+                if (dataGridView1.Rows[e.RowIndex] == null)
+                    return;
+
+                var cell = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex] as DataGridViewLinkCell;
+                if (cell != null && cell.Tag != null)
+                {
+                    cell.Value = cell.Tag.ToString();  // U¿yj ToString() dla bezpieczeñstwa
                 }
             }
         }
