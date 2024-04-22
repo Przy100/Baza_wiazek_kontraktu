@@ -165,7 +165,7 @@ namespace Baza_wiazek_przyciskow_20240205.Source
 
             for (int i = 1; i <= linkName.Length; i++)
             {
-                finishPath[i - 1] = linkName[i - 1] + ".xlsx";
+                finishPath[i - 1] = linkName[i - 1] + ".xlsm";
                 if (File.Exists(finishPath[i - 1])) ;
                 else
                 {

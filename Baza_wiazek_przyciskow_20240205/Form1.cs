@@ -14,27 +14,16 @@ namespace Baza_wiazek_przyciskow_20240205
         {
             InitializeComponent();
         }
-        private void CreateNameHyperlink(string[] NAME, string[] BTE)
+        private void CreateNameHyperlink(string[] NAME, string[] newBTE)
         {
             for (int i = 1; i <= NAME.Length; i++)
             {
                 LinkLabel linkLabel = new LinkLabel();
                 linkLabel.Name = $"linkLabel{i}";
-                linkLabel.Text = NAME[i - 1] + " " + BTE[i - 1];
-                linkLabel.Location = new Point(10, 10 + i * 30); // Przyk³ad rozmieszczenia
-                linkLabel.Size = new Size(100, 20);
+                linkLabel.Text = NAME[i - 1] + " " + newBTE[i - 1];
+                linkLabel.Location = new Point(307, 2 + i * 20); // Przyk³ad rozmieszczenia
+                linkLabel.Size = new Size(250, 20);
                 this.Controls.Add(linkLabel);
-            }
-        }
-        private void UpdateLinkLabels()
-        {
-            foreach (Control control in this.Controls)
-            {
-                if (control is LinkLabel linkLabel)
-                {
-                    // Zmienia tekst ka¿dego LinkLabel na formularzu
-                    linkLabel.Text = linkLabel.Name;
-                }
             }
         }
         private void button1_LW_Click(object sender, EventArgs e)
@@ -97,8 +86,7 @@ namespace Baza_wiazek_przyciskow_20240205
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
 
                     // Tworzy i zmienia nazwy linkLabel na nazwy wi¹zek.
-                    CreateNameHyperlink(NAME, BTE);
-                    UpdateLinkLabels();
+                    CreateNameHyperlink(NAME, newBTE);
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
                 }
 
@@ -109,7 +97,7 @@ namespace Baza_wiazek_przyciskow_20240205
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
 
-            if (System.IO.File.Exists(LINK[19]))
+            if (System.IO.File.Exists(LINK[0]))
             {
 
                 // Otwiera plik pod podan¹ œcie¿k¹

@@ -34,9 +34,6 @@
             label1_version = new Label();
             pictureBox2 = new PictureBox();
             progressBar1 = new ProgressBar();
-            linkLabel1 = new LinkLabel();
-            linkLabel2 = new LinkLabel();
-            linkLabel3 = new LinkLabel();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
@@ -89,51 +86,12 @@
             progressBar1.Size = new Size(263, 23);
             progressBar1.TabIndex = 4;
             // 
-            // linkLabel1
-            // 
-            linkLabel1.AutoSize = true;
-            linkLabel1.Font = new Font("Segoe UI", 10F);
-            linkLabel1.Location = new Point(307, 74);
-            linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(70, 19);
-            linkLabel1.TabIndex = 5;
-            linkLabel1.TabStop = true;
-            linkLabel1.Text = "linkLabel1";
-            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
-            // 
-            // linkLabel2
-            // 
-            linkLabel2.AutoSize = true;
-            linkLabel2.Font = new Font("Segoe UI", 10F);
-            linkLabel2.Location = new Point(307, 93);
-            linkLabel2.Name = "linkLabel2";
-            linkLabel2.Size = new Size(70, 19);
-            linkLabel2.TabIndex = 6;
-            linkLabel2.TabStop = true;
-            linkLabel2.Text = "linkLabel2";
-            linkLabel2.LinkClicked += linkLabel2_LinkClicked;
-            // 
-            // linkLabel3
-            // 
-            linkLabel3.AutoSize = true;
-            linkLabel3.Font = new Font("Segoe UI", 10F);
-            linkLabel3.Location = new Point(307, 112);
-            linkLabel3.Name = "linkLabel3";
-            linkLabel3.Size = new Size(70, 19);
-            linkLabel3.TabIndex = 7;
-            linkLabel3.TabStop = true;
-            linkLabel3.Text = "linkLabel3";
-            linkLabel3.LinkClicked += linkLabel3_LinkClicked;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
-            ClientSize = new Size(962, 630);
-            Controls.Add(linkLabel3);
-            Controls.Add(linkLabel2);
-            Controls.Add(linkLabel1);
+            ClientSize = new Size(962, 691);
             Controls.Add(progressBar1);
             Controls.Add(pictureBox2);
             Controls.Add(label1_version);
@@ -157,8 +115,5 @@
         private Label label1_version;
         private PictureBox pictureBox2;
         private ProgressBar progressBar1;
-        private LinkLabel linkLabel1;
-        private LinkLabel linkLabel2;
-        private LinkLabel linkLabel3;
     }
 }
