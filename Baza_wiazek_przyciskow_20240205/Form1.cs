@@ -14,7 +14,7 @@ namespace Baza_wiazek_przyciskow_20240205
         public Form1()
         {
             InitializeComponent();
-            
+            dataGridView1.CellContentClick += new DataGridViewCellEventHandler(dataGridView_CellContentClick);
         }
         /// <summary>
         /// Tworzy tyle linkLabel ile jest wi¹zek, nadaje im nazwy od wi¹zek.
@@ -42,10 +42,11 @@ namespace Baza_wiazek_przyciskow_20240205
             dataGridView1.ColumnCount = 10;
 
             // Kolumna hiper³¹cze
-            DataGridView linkColumn = new DataGridView();
+            DataGridViewLinkColumn linkColumn = new DataGridViewLinkColumn();
             linkColumn.Name = "LinkColumn";
-            linkColumn.Text = "Kliknij mnie";
-            dataGridView1.Columns.Add(linkColumn.Name,linkColumn.Text);
+            linkColumn.Text = "Kliknij tutaj";
+            linkColumn.UseColumnTextForLinkValue = true;
+            dataGridView1.Columns.Add(linkColumn);
             // Nazwy kolumn
             dataGridView1.Columns[0].Name = "Lp.";
             dataGridView1.Columns[1].Name = "Numer wi¹zki BTE";
@@ -60,7 +61,7 @@ namespace Baza_wiazek_przyciskow_20240205
 
             for(int i = 1; i <= NAME.Length; i++) 
             {
-                dataGridView1.Rows.Add(i, newBTE[i - 1], NAME[i - 1], IndeksySBC[i - 1], Ilosc[i - 1], Prio[i - 1], Status[i - 1], Rewizja[i - 1], Opis[i - 1], Uwagi[i - 1]);
+                dataGridView1.Rows.Add(i, newBTE[i - 1], NAME[i - 1], IndeksySBC[i - 1], Ilosc[i - 1], Prio[i - 1], Status[i - 1], Rewizja[i - 1], Opis[i - 1], Uwagi[i - 1], LINK[i - 1]);
             }
 
         }
@@ -136,6 +137,7 @@ namespace Baza_wiazek_przyciskow_20240205
                     string[] Opis = excelReader.FillArray(filePath, rowCount, 9);
                     string[] Uwagi = excelReader.FillArray(filePath, rowCount, 10);
                     progressBar1.Value = 90;
+
                     // Tworzy i zmienia nazwy linkLabel na nazwy wi¹zek.
                     //CreateNameHyperlink(NAME, newBTE);
                     // Tworzy tabelkê przypominaj¹c¹ t¹ z Excela.
@@ -162,6 +164,22 @@ namespace Baza_wiazek_przyciskow_20240205
             else
             {
                 MessageBox.Show("Plik nie istnieje lub jest b³êdnie nazwany.");
+            }
+        }
+        private void dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Sprawdzenie, czy klikniêto kolumnê hiper³¹cza
+            if (e.ColumnIndex == dataGridView1.Columns["LinkColumn"].Index && e.RowIndex >= 0)
+            {
+                string url = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                try
+                {
+                    System.Diagnostics.Process.Start(url);  // Otwórz domyœln¹ przegl¹darkê z podanym URL
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Nie mo¿na otworzyæ linku: " + ex.Message);
+                }
             }
         }
     }
