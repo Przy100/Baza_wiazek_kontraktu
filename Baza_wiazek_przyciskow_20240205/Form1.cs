@@ -8,6 +8,11 @@ namespace Baza_wiazek_przyciskow_20240205
 
     public partial class Form1 : Form
     {
+        public string MyProperty 
+        {
+            get { return linkLabel1.Text; }
+            set {  linkLabel1.Text = value; } 
+        }
         // Ostateczne œcie¿ki dostêpu.
         string[] LINK;
         public Form1()
@@ -65,7 +70,7 @@ namespace Baza_wiazek_przyciskow_20240205
                     // Stwórz tablice z fragmentem œcie¿ki dostêpu.
                     string[] linkName = new string[rowCount];
                     linkName = convertData.LinkNameWire(FOLDER, NAME, newBTE);
-                    
+
                     // Koñcowa œcie¿ka dostêpu.
                     string[] finishPath = new string[rowCount];
                     finishPath = convertData.ExcelOrZuken(linkName);
@@ -83,17 +88,18 @@ namespace Baza_wiazek_przyciskow_20240205
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            
-            if (System.IO.File.Exists(LINK[19])) 
+
+            if (System.IO.File.Exists(LINK[19]))
             {
-                
+
                 // Otwiera plik pod podan¹ œcie¿k¹
                 System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(LINK[19]) { UseShellExecute = true });
             }
-            else 
+            else
             {
                 MessageBox.Show("Link nie dzia³a.");
             }
         }
+
     }
 }
