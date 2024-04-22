@@ -8,16 +8,34 @@ namespace Baza_wiazek_przyciskow_20240205
 
     public partial class Form1 : Form
     {
-        public string MyProperty 
-        {
-            get { return linkLabel1.Text; }
-            set {  linkLabel1.Text = value; } 
-        }
         // Ostateczne œcie¿ki dostêpu.
         string[] LINK;
         public Form1()
         {
             InitializeComponent();
+        }
+        private void CreateNameHyperlink(string[] NAME, string[] BTE)
+        {
+            for (int i = 1; i <= NAME.Length; i++)
+            {
+                LinkLabel linkLabel = new LinkLabel();
+                linkLabel.Name = $"linkLabel{i}";
+                linkLabel.Text = NAME[i - 1] + " " + BTE[i - 1];
+                linkLabel.Location = new Point(10, 10 + i * 30); // Przyk³ad rozmieszczenia
+                linkLabel.Size = new Size(100, 20);
+                this.Controls.Add(linkLabel);
+            }
+        }
+        private void UpdateLinkLabels()
+        {
+            foreach (Control control in this.Controls)
+            {
+                if (control is LinkLabel linkLabel)
+                {
+                    // Zmienia tekst ka¿dego LinkLabel na formularzu
+                    linkLabel.Text = linkLabel.Name;
+                }
+            }
         }
         private void button1_LW_Click(object sender, EventArgs e)
         {
@@ -78,7 +96,9 @@ namespace Baza_wiazek_przyciskow_20240205
                     progressBar1.Value = 100;
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
 
-                    linkLabel1.Text = NAME[19] + " " + BTE[19];
+                    // Tworzy i zmienia nazwy linkLabel na nazwy wi¹zek.
+                    CreateNameHyperlink(NAME, BTE);
+                    UpdateLinkLabels();
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
                 }
 
@@ -101,5 +121,32 @@ namespace Baza_wiazek_przyciskow_20240205
             }
         }
 
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (System.IO.File.Exists(LINK[1]))
+            {
+
+                // Otwiera plik pod podan¹ œcie¿k¹
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(LINK[19]) { UseShellExecute = true });
+            }
+            else
+            {
+                MessageBox.Show("Link nie dzia³a.");
+            }
+        }
+
+        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (System.IO.File.Exists(LINK[2]))
+            {
+
+                // Otwiera plik pod podan¹ œcie¿k¹
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(LINK[19]) { UseShellExecute = true });
+            }
+            else
+            {
+                MessageBox.Show("Link nie dzia³a.");
+            }
+        }
     }
 }

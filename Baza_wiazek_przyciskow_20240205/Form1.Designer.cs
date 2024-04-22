@@ -92,9 +92,10 @@
             // linkLabel1
             // 
             linkLabel1.AutoSize = true;
+            linkLabel1.Font = new Font("Segoe UI", 10F);
             linkLabel1.Location = new Point(307, 74);
             linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(60, 15);
+            linkLabel1.Size = new Size(70, 19);
             linkLabel1.TabIndex = 5;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "linkLabel1";
@@ -103,22 +104,26 @@
             // linkLabel2
             // 
             linkLabel2.AutoSize = true;
+            linkLabel2.Font = new Font("Segoe UI", 10F);
             linkLabel2.Location = new Point(307, 93);
             linkLabel2.Name = "linkLabel2";
-            linkLabel2.Size = new Size(60, 15);
+            linkLabel2.Size = new Size(70, 19);
             linkLabel2.TabIndex = 6;
             linkLabel2.TabStop = true;
             linkLabel2.Text = "linkLabel2";
+            linkLabel2.LinkClicked += linkLabel2_LinkClicked;
             // 
             // linkLabel3
             // 
             linkLabel3.AutoSize = true;
-            linkLabel3.Location = new Point(307, 116);
+            linkLabel3.Font = new Font("Segoe UI", 10F);
+            linkLabel3.Location = new Point(307, 112);
             linkLabel3.Name = "linkLabel3";
-            linkLabel3.Size = new Size(60, 15);
+            linkLabel3.Size = new Size(70, 19);
             linkLabel3.TabIndex = 7;
             linkLabel3.TabStop = true;
             linkLabel3.Text = "linkLabel3";
+            linkLabel3.LinkClicked += linkLabel3_LinkClicked;
             // 
             // Form1
             // 
