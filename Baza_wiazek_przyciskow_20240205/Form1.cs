@@ -41,6 +41,11 @@ namespace Baza_wiazek_przyciskow_20240205
             dataGridView1.AllowUserToDeleteRows = true;
             dataGridView1.ColumnCount = 10;
 
+            // Kolumna hiper³¹cze
+            DataGridView linkColumn = new DataGridView();
+            linkColumn.Name = "LinkColumn";
+            linkColumn.Text = "Kliknij mnie";
+            dataGridView1.Columns.Add(linkColumn.Name,linkColumn.Text);
             // Nazwy kolumn
             dataGridView1.Columns[0].Name = "Lp.";
             dataGridView1.Columns[1].Name = "Numer wi¹zki BTE";
