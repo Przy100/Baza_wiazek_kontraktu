@@ -28,14 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             button1_LW = new Button();
             pictureBox1 = new PictureBox();
             label1_version = new Label();
             pictureBox2 = new PictureBox();
             progressBar1 = new ProgressBar();
+            dataGridView1 = new DataGridView();
+            hyperlinkBindingSource = new BindingSource(components);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)hyperlinkBindingSource).BeginInit();
             SuspendLayout();
             // 
             // button1_LW
@@ -86,12 +91,28 @@
             progressBar1.Size = new Size(263, 23);
             progressBar1.TabIndex = 4;
             // 
+            // dataGridView1
+            // 
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.AllowUserToOrderColumns = true;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(307, 74);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.Size = new Size(1132, 479);
+            dataGridView1.TabIndex = 5;
+            // 
+            // hyperlinkBindingSource
+            // 
+            hyperlinkBindingSource.DataSource = typeof(Source.Hyperlink);
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
-            ClientSize = new Size(962, 691);
+            ClientSize = new Size(1451, 691);
+            Controls.Add(dataGridView1);
             Controls.Add(progressBar1);
             Controls.Add(pictureBox2);
             Controls.Add(label1_version);
@@ -104,6 +125,8 @@
             Text = "Baza wiązek kontraktu";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)hyperlinkBindingSource).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -115,5 +138,7 @@
         private Label label1_version;
         private PictureBox pictureBox2;
         private ProgressBar progressBar1;
+        private DataGridView dataGridView1;
+        private BindingSource hyperlinkBindingSource;
     }
 }

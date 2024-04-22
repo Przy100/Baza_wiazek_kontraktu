@@ -1,6 +1,7 @@
 using Baza_wiazek_przyciskow_20240205.Source;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 
 namespace Baza_wiazek_przyciskow_20240205
@@ -13,7 +14,13 @@ namespace Baza_wiazek_przyciskow_20240205
         public Form1()
         {
             InitializeComponent();
+            
         }
+        /// <summary>
+        /// Tworzy tyle linkLabel ile jest wi¹zek, nadaje im nazwy od wi¹zek.
+        /// </summary>
+        /// <param name="NAME">Nazwa wi¹zki.</param>
+        /// <param name="newBTE">Numer BTE wi¹zki.</param>
         private void CreateNameHyperlink(string[] NAME, string[] newBTE)
         {
             for (int i = 1; i <= NAME.Length; i++)
@@ -27,7 +34,31 @@ namespace Baza_wiazek_przyciskow_20240205
                 this.Controls.Add(linkLabel);
             }
         }
+        private void InitializeDataGridView(string[] newBTE, string[] NAME)
+        {
+            // Podstawowa konfiguracja
+            dataGridView1.AllowUserToAddRows = true;
+            dataGridView1.AllowUserToDeleteRows = true;
+            dataGridView1.ColumnCount = 10;
 
+            // Nazwy kolumn
+            dataGridView1.Columns[0].Name = "Lp.";
+            dataGridView1.Columns[1].Name = "Numer wi¹zki BTE";
+            dataGridView1.Columns[2].Name = "Nazwa";
+            dataGridView1.Columns[3].Name = "Indeks SBC";
+            dataGridView1.Columns[4].Name = "Iloœæ";
+            dataGridView1.Columns[5].Name = "Priorytet";
+            dataGridView1.Columns[6].Name = "Status";
+            dataGridView1.Columns[7].Name = "Rewizja";
+            dataGridView1.Columns[8].Name = "Opis / zastosowanie";
+            dataGridView1.Columns[9].Name = "Uwagi";
+
+            for(int i = 1; i <= NAME.Length; i++) 
+            {
+                dataGridView1.Rows.Add(i, newBTE[i - 1], NAME[i - 1]);
+            }
+
+        }
         private void button1_LW_Click(object sender, EventArgs e)
         {
             // Progres bar.
@@ -88,7 +119,9 @@ namespace Baza_wiazek_przyciskow_20240205
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
 
                     // Tworzy i zmienia nazwy linkLabel na nazwy wi¹zek.
-                    CreateNameHyperlink(NAME, newBTE);
+                    //CreateNameHyperlink(NAME, newBTE);
+                    // Tworzy tabelkê przypominaj¹c¹ t¹ z Excela.
+                    InitializeDataGridView(newBTE, NAME);
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
                 }
 
@@ -96,24 +129,10 @@ namespace Baza_wiazek_przyciskow_20240205
 
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-
-            if (System.IO.File.Exists(LINK[0]))
-            {
-
-                // Otwiera plik pod podan¹ œcie¿k¹
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(LINK[19]) { UseShellExecute = true });
-            }
-            else
-            {
-                MessageBox.Show("Link nie dzia³a.");
-            }
-        }
         private void LinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             LinkLabel linkLabel = sender as LinkLabel;
-            MessageBox.Show($"Klikniêto link: {linkLabel.Text}");
+            
             int Path = int.Parse(linkLabel.Name.Substring(linkLabel.Name.Length - 1));
 
             if (System.IO.File.Exists(LINK[Path])) 
@@ -123,7 +142,7 @@ namespace Baza_wiazek_przyciskow_20240205
             }
             else
             {
-                MessageBox.Show("Link nie dzia³a.");
+                MessageBox.Show("Plik nie istnieje lub jest b³êdnie nazwany.");
             }
         }
     }
