@@ -34,7 +34,7 @@ namespace Baza_wiazek_przyciskow_20240205
                 this.Controls.Add(linkLabel);
             }
         }
-        private void InitializeDataGridView(string[] newBTE, string[] NAME)
+        private void InitializeDataGridView(string[] newBTE, string[] NAME, string[] IndeksySBC, string[] Ilosc, string[] Prio, string[] Status, string[] Rewizja, string[] Opis, string[] Uwagi)
         {
             // Podstawowa konfiguracja
             dataGridView1.AllowUserToAddRows = true;
@@ -55,7 +55,7 @@ namespace Baza_wiazek_przyciskow_20240205
 
             for(int i = 1; i <= NAME.Length; i++) 
             {
-                dataGridView1.Rows.Add(i, newBTE[i - 1], NAME[i - 1]);
+                dataGridView1.Rows.Add(i, newBTE[i - 1], NAME[i - 1], IndeksySBC[i - 1], Ilosc[i - 1], Prio[i - 1], Status[i - 1], Rewizja[i - 1], Opis[i - 1], Uwagi[i - 1]);
             }
 
         }
@@ -73,7 +73,7 @@ namespace Baza_wiazek_przyciskow_20240205
                 openFileDialog.Filter = "Excel files (*.xls;*.xlsx;*.xlsm)|*.xls;*.xlsx;*.xlsm|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
-                progressBar1.Value = 25;
+                progressBar1.Value = 10;
                 Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -88,7 +88,7 @@ namespace Baza_wiazek_przyciskow_20240205
                     BTE = excelReader.FillArray(filePath, rowCount, 2);
                     NAME = excelReader.FillArray(filePath, rowCount, 3);
 
-                    progressBar1.Value = 50;
+                    progressBar1.Value = 20;
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
 
                     // Stwórz tablice string z ID wi¹zek na podstawie tablicy NAME.
@@ -100,7 +100,7 @@ namespace Baza_wiazek_przyciskow_20240205
                     string[] FOLDER = new string[rowCount];
                     FOLDER = convertData.FolderSelection(ID);
 
-                    progressBar1.Value = 75;
+                    progressBar1.Value = 30;
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
 
                     // Zmienia kodowanie p³yt na AAx.
@@ -115,14 +115,28 @@ namespace Baza_wiazek_przyciskow_20240205
                     string[] finishPath = new string[rowCount];
                     finishPath = convertData.ExcelOrZuken(linkName);
                     LINK = finishPath;
-                    progressBar1.Value = 100;
+                    progressBar1.Value = 40;
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
 
+                    // Pobiera kolumny z LW.
+                    string[] IndeksySBC = excelReader.FillArray(filePath, rowCount, 4);
+                    progressBar1.Value = 50;
+                    string[] Ilosc = excelReader.FillArray(filePath, rowCount, 5);
+                    progressBar1.Value = 60;
+                    string[] Priorytet = excelReader.FillArray(filePath, rowCount, 6);
+                    progressBar1.Value = 70;
+                    string[] Status = excelReader.FillArray(filePath, rowCount, 7);
+                    progressBar1.Value = 80;
+                    string[] Rewizja = excelReader.FillArray(filePath, rowCount, 8);
+                    string[] Opis = excelReader.FillArray(filePath, rowCount, 9);
+                    string[] Uwagi = excelReader.FillArray(filePath, rowCount, 10);
+                    progressBar1.Value = 90;
                     // Tworzy i zmienia nazwy linkLabel na nazwy wi¹zek.
                     //CreateNameHyperlink(NAME, newBTE);
                     // Tworzy tabelkê przypominaj¹c¹ t¹ z Excela.
-                    InitializeDataGridView(newBTE, NAME);
+                    InitializeDataGridView(newBTE, NAME, IndeksySBC, Ilosc, Priorytet, Status, Rewizja, Opis, Uwagi);
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
+                    progressBar1.Value = 100;
                 }
 
             }

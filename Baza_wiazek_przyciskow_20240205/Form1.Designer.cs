@@ -46,7 +46,7 @@
             // button1_LW
             // 
             button1_LW.Font = new Font("Segoe UI", 12F);
-            button1_LW.Location = new Point(24, 93);
+            button1_LW.Location = new Point(24, 22);
             button1_LW.Name = "button1_LW";
             button1_LW.Size = new Size(263, 58);
             button1_LW.TabIndex = 0;
@@ -57,9 +57,9 @@
             // pictureBox1
             // 
             pictureBox1.BackColor = Color.FromArgb(192, 255, 192);
-            pictureBox1.Location = new Point(10, 74);
+            pictureBox1.Location = new Point(10, 12);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(291, 479);
+            pictureBox1.Size = new Size(1429, 78);
             pictureBox1.TabIndex = 1;
             pictureBox1.TabStop = false;
             // 
@@ -67,7 +67,7 @@
             // 
             label1_version.AutoSize = true;
             label1_version.Font = new Font("Segoe UI", 12F);
-            label1_version.Location = new Point(24, 514);
+            label1_version.Location = new Point(1341, 68);
             label1_version.Name = "label1_version";
             label1_version.Size = new Size(98, 21);
             label1_version.TabIndex = 2;
@@ -77,18 +77,18 @@
             // 
             pictureBox2.BackColor = Color.FromArgb(192, 255, 192);
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(102, 157);
+            pictureBox2.Location = new Point(293, 15);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(100, 100);
-            pictureBox2.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox2.Size = new Size(100, 75);
+            pictureBox2.SizeMode = PictureBoxSizeMode.CenterImage;
             pictureBox2.TabIndex = 3;
             pictureBox2.TabStop = false;
             // 
             // progressBar1
             // 
-            progressBar1.Location = new Point(24, 263);
+            progressBar1.Location = new Point(399, 68);
             progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(263, 23);
+            progressBar1.Size = new Size(936, 12);
             progressBar1.TabIndex = 4;
             // 
             // dataGridView1
@@ -96,10 +96,12 @@
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.AllowUserToOrderColumns = true;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(307, 74);
+            dataGridView1.Location = new Point(10, 92);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(1132, 479);
+            dataGridView1.Size = new Size(1429, 519);
             dataGridView1.TabIndex = 5;
             // 
             // hyperlinkBindingSource
@@ -110,8 +112,9 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
-            ClientSize = new Size(1451, 691);
+            ClientSize = new Size(1451, 623);
             Controls.Add(dataGridView1);
             Controls.Add(progressBar1);
             Controls.Add(pictureBox2);
