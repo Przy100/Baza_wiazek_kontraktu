@@ -23,9 +23,11 @@ namespace Baza_wiazek_przyciskow_20240205
                 linkLabel.Text = NAME[i - 1] + " " + newBTE[i - 1];
                 linkLabel.Location = new Point(307, 2 + i * 20); // Przyk³ad rozmieszczenia
                 linkLabel.Size = new Size(250, 20);
+                linkLabel.LinkClicked += LinkLabel_LinkClicked; // Dodanie obs³ugi zdarzenia klikniêcia
                 this.Controls.Add(linkLabel);
             }
         }
+
         private void button1_LW_Click(object sender, EventArgs e)
         {
             // Progres bar.
@@ -108,28 +110,16 @@ namespace Baza_wiazek_przyciskow_20240205
                 MessageBox.Show("Link nie dzia³a.");
             }
         }
-
-        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (System.IO.File.Exists(LINK[1]))
-            {
+            LinkLabel linkLabel = sender as LinkLabel;
+            MessageBox.Show($"Klikniêto link: {linkLabel.Text}");
+            int Path = int.Parse(linkLabel.Name.Substring(linkLabel.Name.Length - 1));
 
+            if (System.IO.File.Exists(LINK[Path])) 
+            {
                 // Otwiera plik pod podan¹ œcie¿k¹
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(LINK[19]) { UseShellExecute = true });
-            }
-            else
-            {
-                MessageBox.Show("Link nie dzia³a.");
-            }
-        }
-
-        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (System.IO.File.Exists(LINK[2]))
-            {
-
-                // Otwiera plik pod podan¹ œcie¿k¹
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(LINK[19]) { UseShellExecute = true });
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(LINK[Path]) { UseShellExecute = true });
             }
             else
             {
