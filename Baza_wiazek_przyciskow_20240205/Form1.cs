@@ -124,6 +124,9 @@ namespace Baza_wiazek_przyciskow_20240205
                     progressBar1.Value = 30;
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
 
+                    // Jeœli BTE ma dwa lub wiêcej numerów BTE.
+                    BTE = convertData.MoreThenOneBTENumber(BTE);
+
                     // Zmienia kodowanie p³yt na AAx.
                     string[] newBTE = new string[rowCount];
                     newBTE = convertData.CodePlate(NAME, BTE);
