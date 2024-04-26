@@ -37,6 +37,7 @@
             progressBar1 = new ProgressBar();
             dataGridView1 = new DataGridView();
             hyperlinkBindingSource = new BindingSource(components);
+            File_Name_LW = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -111,10 +112,23 @@
             dataGridView1.RowHeadersWidth = 82;
             dataGridView1.Size = new Size(2695, 1107);
             dataGridView1.TabIndex = 5;
+            dataGridView1.Tag = "";
             // 
             // hyperlinkBindingSource
             // 
             hyperlinkBindingSource.DataSource = typeof(Source.Hyperlink);
+            // 
+            // File_Name_LW
+            // 
+            File_Name_LW.AutoSize = true;
+            File_Name_LW.BackColor = Color.FromArgb(192, 255, 192);
+            File_Name_LW.Font = new Font("Segoe UI", 13F);
+            File_Name_LW.Location = new Point(765, 47);
+            File_Name_LW.Name = "File_Name_LW";
+            File_Name_LW.Size = new Size(401, 47);
+            File_Name_LW.TabIndex = 6;
+            File_Name_LW.Text = "Nazwa otwartego pliku...\r\n";
+            File_Name_LW.Visible = false;
             // 
             // Form1
             // 
@@ -124,6 +138,7 @@
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(2695, 1329);
+            Controls.Add(File_Name_LW);
             Controls.Add(dataGridView1);
             Controls.Add(progressBar1);
             Controls.Add(pictureBox2);
@@ -153,5 +168,6 @@
         private ProgressBar progressBar1;
         private DataGridView dataGridView1;
         private BindingSource hyperlinkBindingSource;
+        private Label File_Name_LW;
     }
 }

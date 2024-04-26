@@ -13,29 +13,12 @@ namespace Baza_wiazek_przyciskow_20240205
         string[] LINK;
         public Form1()
         {
-            InitializeComponent();            
-            
+            InitializeComponent();
+
+           // dataGridView1.CellFormatting += new DataGridViewCellFormattingEventHandler(dataGridView1_CellFormatting);
             dataGridView1.CellContentClick += new DataGridViewCellEventHandler(dataGridView_CellContentClick);
             // NIE CHCE DZIA£AÆ
-            //dataGridView1.CellFormatting += new DataGridViewCellFormattingEventHandler(dataGridView1_CellFormatting);
-        }
-        /// <summary>
-        /// Tworzy tyle linkLabel ile jest wi¹zek, nadaje im nazwy od wi¹zek.
-        /// </summary>
-        /// <param name="NAME">Nazwa wi¹zki.</param>
-        /// <param name="newBTE">Numer BTE wi¹zki.</param>
-        private void CreateNameHyperlink(string[] NAME, string[] newBTE)
-        {
-            for (int i = 1; i <= NAME.Length; i++)
-            {
-                LinkLabel linkLabel = new LinkLabel();
-                linkLabel.Name = $"linkLabel{i}";
-                linkLabel.Text = NAME[i - 1] + " " + newBTE[i - 1];
-                linkLabel.Location = new Point(307, 2 + i * 20); // Przyk³ad rozmieszczenia
-                linkLabel.Size = new Size(250, 20);
-                linkLabel.LinkClicked += LinkLabel_LinkClicked; // Dodanie obs³ugi zdarzenia klikniêcia
-                this.Controls.Add(linkLabel);
-            }
+            
         }
         private void InitializeDataGridView(string[] newBTE, string[] NAME, string[] IndeksySBC, string[] Ilosc, string[] Prio, string[] Status, string[] Rewizja, string[] Opis, string[] Uwagi)
         {
@@ -66,6 +49,7 @@ namespace Baza_wiazek_przyciskow_20240205
             dataGridView1.Columns[8].Name = "Opis / zastosowanie";
             dataGridView1.Columns[9].Name = "Uwagi";
 
+
             for(int i = 0; i < NAME.Length; i++) 
             {
                 int rowIndex = dataGridView1.Rows.Add();  // Dodaje nowy wiersz i zapisuje jego indeks
@@ -81,11 +65,14 @@ namespace Baza_wiazek_przyciskow_20240205
                 dataGridView1.Rows[rowIndex].Cells[8].Value = Opis[i];
                 dataGridView1.Rows[rowIndex].Cells[9].Value = Uwagi[i];
                 dataGridView1.Rows[rowIndex].Cells[10].Value = LINK[i];  // Ustawianie URL jako wartoœci komórki dla hiper³¹cza
+                //dataGridView1.Rows[rowIndex].Cells["LinkColumn"].Tag = NAME[i];
 
-                // Zmiana tekstu wyœwietlanego zamiast URL.
-                DataGridViewLinkCell linkCell = dataGridView1.Rows[rowIndex].Cells["LinkColumn"] as DataGridViewLinkCell;
-                linkCell.Value = LINK[i];  // URL, który bêdzie otwarty
-                linkCell.Tag = NAME[i];  // Tekst, który bêdzie wyœwietlany
+               
+               // Zmiana tekstu wyœwietlanego zamiast URL.
+               // DataGridViewLinkCell linkCell = dataGridView1.Rows[rowIndex].Cells["LinkColumn"] as DataGridViewLinkCell;
+               //linkCell.Value = LINK[i];  // URL, który bêdzie otwarty
+               // linkCell.Tag = NAME[i];  // Tekst, który bêdzie wyœwietlany
+               //dataGridView1.CellFormatting += dataGridView1_CellFormatting;
             }
 
         }
@@ -107,6 +94,10 @@ namespace Baza_wiazek_przyciskow_20240205
                 Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
+                    string LW_Name = openFileDialog.FileName;
+                    this.File_Name_LW.Text = Path.GetFileName(LW_Name);
+                    File_Name_LW.Visible = true;
+
                     // Pobierz œcie¿kê do wybranego pliku
                     string filePath = openFileDialog.FileName;
                     // Podaj ile jest wierszy w tym pliku
@@ -174,23 +165,6 @@ namespace Baza_wiazek_przyciskow_20240205
             }
 
         }
-
-        private void LinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            LinkLabel linkLabel = sender as LinkLabel;
-            
-            int Path = int.Parse(linkLabel.Name.Substring(linkLabel.Name.Length - 1));
-
-            if (System.IO.File.Exists(LINK[Path])) 
-            {
-                // Otwiera plik pod podan¹ œcie¿k¹
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(LINK[Path]) { UseShellExecute = true });
-            }
-            else
-            {
-                MessageBox.Show("Plik nie istnieje lub jest b³êdnie nazwany.");
-            }
-        }
         private void dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             // Sprawdzenie, czy klikniêto kolumnê hiper³¹cza
@@ -217,7 +191,7 @@ namespace Baza_wiazek_przyciskow_20240205
                 if (dataGridView1.Rows[e.RowIndex] == null)
                     return;
 
-                var cell = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex] as DataGridViewLinkCell;
+                DataGridViewLinkCell cell = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex] as DataGridViewLinkCell;
                 if (cell != null && cell.Tag != null)
                 {
                     cell.Value = cell.Tag.ToString();  // U¿yj ToString() dla bezpieczeñstwa
