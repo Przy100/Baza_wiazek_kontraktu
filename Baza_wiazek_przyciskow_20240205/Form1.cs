@@ -51,13 +51,18 @@ namespace Baza_wiazek_przyciskow_20240205
             dataGridView1.Columns.Add(linkColumn);
             // Nazwy kolumn
             dataGridView1.Columns[0].Name = "Lp.";
+            dataGridView1.Columns[0].Width = 75;
             dataGridView1.Columns[1].Name = "Numer wi¹zki BTE";
             dataGridView1.Columns[2].Name = "Nazwa";
             dataGridView1.Columns[3].Name = "Indeks SBC";
             dataGridView1.Columns[4].Name = "Iloœæ";
+            dataGridView1.Columns[4].Width = 75;
             dataGridView1.Columns[5].Name = "Priorytet";
+            dataGridView1.Columns[5].Width = 130;
             dataGridView1.Columns[6].Name = "Status";
+            dataGridView1.Columns[6].Width = 130;
             dataGridView1.Columns[7].Name = "Rewizja";
+            dataGridView1.Columns[7].Width = 130;
             dataGridView1.Columns[8].Name = "Opis / zastosowanie";
             dataGridView1.Columns[9].Name = "Uwagi";
 
