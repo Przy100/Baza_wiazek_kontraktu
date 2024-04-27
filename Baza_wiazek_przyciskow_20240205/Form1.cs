@@ -11,14 +11,11 @@ namespace Baza_wiazek_przyciskow_20240205
     {
         // Ostateczne œcie¿ki dostêpu.
         string[] LINK;
+        int URL;
         public Form1()
         {
             InitializeComponent();
-
-           // dataGridView1.CellFormatting += new DataGridViewCellFormattingEventHandler(dataGridView1_CellFormatting);
             dataGridView1.CellContentClick += new DataGridViewCellEventHandler(dataGridView_CellContentClick);
-            // NIE CHCE DZIA£AÆ
-            
         }
         private void InitializeDataGridView(string[] newBTE, string[] NAME, string[] IndeksySBC, string[] Ilosc, string[] Prio, string[] Status, string[] Rewizja, string[] Opis, string[] Uwagi)
         {
@@ -65,14 +62,8 @@ namespace Baza_wiazek_przyciskow_20240205
                 dataGridView1.Rows[rowIndex].Cells[8].Value = Opis[i];
                 dataGridView1.Rows[rowIndex].Cells[9].Value = Uwagi[i];
                 dataGridView1.Rows[rowIndex].Cells[10].Value = LINK[i];  // Ustawianie URL jako wartoœci komórki dla hiper³¹cza
-                //dataGridView1.Rows[rowIndex].Cells["LinkColumn"].Tag = NAME[i];
+                dataGridView1.Rows[rowIndex].Cells["LinkColumn"].Value = NAME[i];
 
-               
-               // Zmiana tekstu wyœwietlanego zamiast URL.
-               // DataGridViewLinkCell linkCell = dataGridView1.Rows[rowIndex].Cells["LinkColumn"] as DataGridViewLinkCell;
-               //linkCell.Value = LINK[i];  // URL, który bêdzie otwarty
-               // linkCell.Tag = NAME[i];  // Tekst, który bêdzie wyœwietlany
-               //dataGridView1.CellFormatting += dataGridView1_CellFormatting;
             }
 
         }
@@ -156,8 +147,6 @@ namespace Baza_wiazek_przyciskow_20240205
                     string[] Uwagi = excelReader.FillArray(filePath, rowCount, 10);
                     progressBar1.Value = 90;
 
-                    // Tworzy i zmienia nazwy linkLabel na nazwy wi¹zek.
-                    //CreateNameHyperlink(NAME, newBTE);
                     // Tworzy tabelkê przypominaj¹c¹ t¹ z Excela.
                     InitializeDataGridView(newBTE, NAME, IndeksySBC, Ilosc, Priorytet, Status, Rewizja, Opis, Uwagi);
                     
@@ -173,10 +162,11 @@ namespace Baza_wiazek_przyciskow_20240205
             // Sprawdzenie, czy klikniêto kolumnê hiper³¹cza
             if (e.ColumnIndex == dataGridView1.Columns["LinkColumn"].Index && e.RowIndex >= 0)
             {
-                string url = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                // Zwraca numer wiersza, który chcemy otworzyæ.
+                URL = e.RowIndex;
                 try
                 {
-                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true });
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(LINK[URL]) { UseShellExecute = true });
                 }
                 catch (Exception ex)
                 {
