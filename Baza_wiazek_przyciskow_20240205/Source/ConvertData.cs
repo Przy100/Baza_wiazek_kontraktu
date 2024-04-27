@@ -85,7 +85,7 @@ namespace Baza_wiazek_przyciskow_20240205.Source
 
             for (int i = 1; i <= FOLDER.Length; i++)
             {
-                linkName[i - 1] = startPath + FOLDER[i - 1] + "\\" +NAME[i - 1] + " " + newBTE[i - 1];
+                linkName[i - 1] = startPath + FOLDER[i - 1] + "\\" + NAME[i - 1] + " " + newBTE[i - 1];
             }
             return linkName;
         }
@@ -129,18 +129,18 @@ namespace Baza_wiazek_przyciskow_20240205.Source
         /// <param name="linkNAME">Tablica z podanymi nścieżkami dostępu.</param>
         /// <param name="BTE">Numer BTE wiążki.</param>
         /// <returns></returns>
-        public string[] CodePlate(string[] NAME, string[] BTE) 
+        public string[] CodePlate(string[] NAME, string[] BTE)
         {
             string[] codePlate = new string[BTE.Length];
             string[] Plate = ["Płyta P0", "Płyta P1", "Płyta P2", "Płyta P3", "Płyta P4", "Płyta P5", "Płyta P6", "Płyta P7", "Płyta P8", "Płyta P9"];
-            
-            for(int i = 1; i <= BTE.Length; i++) 
+
+            for (int i = 1; i <= BTE.Length; i++)
             {
                 codePlate[i - 1] = BTE[i - 1];
 
-                for (int j = 1; j <= Plate.Length; j++) 
+                for (int j = 1; j <= Plate.Length; j++)
                 {
-                    if (NAME[i - 1] == Plate[j - 1]) 
+                    if (NAME[i - 1] == Plate[j - 1])
                     {
                         string newLetters = "AA";
                         int middleIndex = BTE[i - 1].Length - 6;
@@ -170,10 +170,41 @@ namespace Baza_wiazek_przyciskow_20240205.Source
                 else
                 {
                     finishPath[i - 1] = linkName[i - 1] + ".e3s";
+
+                    if (File.Exists(finishPath[i - 1]))
+                    {
+                        // Dodaj "-" jeśli samo .e3s nie zadziała.
+                        // Np. Wiązka RB U499-123-087-AA.e3s --> Wiązka RB-U499-123-087-AA.e3s
+                        string newLetters = "-";
+                        int middleIndex = finishPath[i - 1].Length - 20;
+                        string start = finishPath[i - 1].Substring(0, middleIndex);
+                        string end = finishPath[i - 1].Substring(middleIndex + 1);
+                        finishPath[i - 1] = start + newLetters + end;
+                    }
                 }
             }
 
             return finishPath;
+        }
+        public string[] MoreThenOneBTENumber(string[] BTE) 
+        {
+            string[] newBTE = new string[BTE.Length];
+            
+            for(int i = 1; i <= BTE.Length; i++) 
+            {
+                // Jeśli BTE[i - 1].Length >= 16 --> są dwa numery BTE w jednej komórce.
+                if (BTE[i - 1].Length >= 16) 
+                {
+                    int middleIndex = BTE[i - 1].Length - 15;
+                    newBTE[i - 1] = BTE[i - 1].Substring(middleIndex);
+                }
+                else 
+                {
+                    newBTE[i - 1] = BTE[i - 1];
+                }
+            }
+
+            return newBTE;
         }
     }
 }

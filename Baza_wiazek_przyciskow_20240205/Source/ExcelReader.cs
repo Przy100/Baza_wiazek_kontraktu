@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OfficeOpenXml;
+using System.IO;
 
 namespace Baza_wiazek_przyciskow_20240205.Source
 {
@@ -61,7 +63,8 @@ namespace Baza_wiazek_przyciskow_20240205.Source
                     for (int i = 1; i <= worksheet.LastRowUsed().RowNumber(); i++)
                     {
                         var value = worksheet.Cell(i + 4, 6).GetValue<string>();
-                        if (value.Contains("F0") || value.Contains("F1") || value.Contains("F2"))
+                        var cellStrike = worksheet.Cell(i + 4, 6);
+                        if ((value.Contains("F0") || value.Contains("F1") || value.Contains("F2")) && (cellStrike.Style.Font.Strikethrough == false))
                         {
                             // Pobierz wartość komórki i przypisz do tablicy
                             var cellValue = worksheet.Cell(i + 4, column).Value.ToString();

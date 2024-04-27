@@ -37,6 +37,7 @@
             progressBar1 = new ProgressBar();
             dataGridView1 = new DataGridView();
             hyperlinkBindingSource = new BindingSource(components);
+            File_Name_LW = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -46,9 +47,10 @@
             // button1_LW
             // 
             button1_LW.Font = new Font("Segoe UI", 12F);
-            button1_LW.Location = new Point(24, 22);
+            button1_LW.Location = new Point(45, 47);
+            button1_LW.Margin = new Padding(6);
             button1_LW.Name = "button1_LW";
-            button1_LW.Size = new Size(263, 58);
+            button1_LW.Size = new Size(488, 124);
             button1_LW.TabIndex = 0;
             button1_LW.Text = "Wskaż listę wiązek kontraktu";
             button1_LW.UseVisualStyleBackColor = true;
@@ -57,9 +59,10 @@
             // pictureBox1
             // 
             pictureBox1.BackColor = Color.FromArgb(192, 255, 192);
-            pictureBox1.Location = new Point(10, 12);
+            pictureBox1.Location = new Point(19, 26);
+            pictureBox1.Margin = new Padding(6);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(1429, 78);
+            pictureBox1.Size = new Size(2654, 166);
             pictureBox1.TabIndex = 1;
             pictureBox1.TabStop = false;
             // 
@@ -67,9 +70,10 @@
             // 
             label1_version.AutoSize = true;
             label1_version.Font = new Font("Segoe UI", 12F);
-            label1_version.Location = new Point(1341, 68);
+            label1_version.Location = new Point(2476, 145);
+            label1_version.Margin = new Padding(6, 0, 6, 0);
             label1_version.Name = "label1_version";
-            label1_version.Size = new Size(98, 21);
+            label1_version.Size = new Size(197, 45);
             label1_version.TabIndex = 2;
             label1_version.Text = "Version: 2.0v";
             // 
@@ -77,18 +81,20 @@
             // 
             pictureBox2.BackColor = Color.FromArgb(192, 255, 192);
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(293, 15);
+            pictureBox2.Location = new Point(544, 32);
+            pictureBox2.Margin = new Padding(6);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(100, 75);
+            pictureBox2.Size = new Size(186, 160);
             pictureBox2.SizeMode = PictureBoxSizeMode.CenterImage;
             pictureBox2.TabIndex = 3;
             pictureBox2.TabStop = false;
             // 
             // progressBar1
             // 
-            progressBar1.Location = new Point(399, 68);
+            progressBar1.Location = new Point(741, 145);
+            progressBar1.Margin = new Padding(6);
             progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(936, 12);
+            progressBar1.Size = new Size(1723, 26);
             progressBar1.TabIndex = 4;
             // 
             // dataGridView1
@@ -96,25 +102,43 @@
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.AllowUserToOrderColumns = true;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+            dataGridView1.BorderStyle = BorderStyle.Fixed3D;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(10, 92);
+            dataGridView1.Location = new Point(0, 222);
+            dataGridView1.Margin = new Padding(6);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(1429, 519);
+            dataGridView1.RowHeadersWidth = 82;
+            dataGridView1.Size = new Size(2695, 1107);
             dataGridView1.TabIndex = 5;
+            dataGridView1.Tag = "";
             // 
             // hyperlinkBindingSource
             // 
             hyperlinkBindingSource.DataSource = typeof(Source.Hyperlink);
             // 
+            // File_Name_LW
+            // 
+            File_Name_LW.AutoSize = true;
+            File_Name_LW.BackColor = Color.FromArgb(192, 255, 192);
+            File_Name_LW.Font = new Font("Segoe UI", 13F);
+            File_Name_LW.Location = new Point(765, 47);
+            File_Name_LW.Name = "File_Name_LW";
+            File_Name_LW.Size = new Size(401, 47);
+            File_Name_LW.TabIndex = 6;
+            File_Name_LW.Text = "Nazwa otwartego pliku...\r\n";
+            File_Name_LW.Visible = false;
+            // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
-            ClientSize = new Size(1451, 623);
+            ClientSize = new Size(2695, 1329);
+            Controls.Add(File_Name_LW);
             Controls.Add(dataGridView1);
             Controls.Add(progressBar1);
             Controls.Add(pictureBox2);
@@ -124,6 +148,7 @@
             ForeColor = SystemColors.ControlText;
             Icon = (Icon)resources.GetObject("$this.Icon");
             ImeMode = ImeMode.Hiragana;
+            Margin = new Padding(6);
             Name = "Form1";
             Text = "Baza wiązek kontraktu";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -143,5 +168,6 @@
         private ProgressBar progressBar1;
         private DataGridView dataGridView1;
         private BindingSource hyperlinkBindingSource;
+        private Label File_Name_LW;
     }
 }
