@@ -2,6 +2,8 @@ using Baza_wiazek_przyciskow_20240205.Source;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Collections.Specialized;
+using System;
 
 
 namespace Baza_wiazek_przyciskow_20240205
@@ -15,6 +17,7 @@ namespace Baza_wiazek_przyciskow_20240205
         {
             InitializeComponent();
             dataGridView1.CellContentClick += new DataGridViewCellEventHandler(dataGridView_CellContentClick);
+            InitializeRecentFilesMenu();
         }
         private void InitializeDataGridView(string[] newBTE, string[] NAME, string[] IndeksySBC, string[] Ilosc, string[] Prio, string[] Status, string[] Rewizja, string[] Opis, string[] Uwagi)
         {
@@ -22,11 +25,11 @@ namespace Baza_wiazek_przyciskow_20240205
             dataGridView1.AllowUserToAddRows = true;
             dataGridView1.AllowUserToDeleteRows = true;
             dataGridView1.ColumnCount = 9;
-           
+
             // Ustawienie zawijania tekstu
             dataGridView1.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            
+
             // Ustawienia wygl¹du nag³ówków kolumn
             dataGridView1.EnableHeadersVisualStyles = false;  // Wy³¹czenie stylów wizualnych, aby umo¿liwiæ niestandardowe stylizowanie
             dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.Yellow;
@@ -64,11 +67,11 @@ namespace Baza_wiazek_przyciskow_20240205
             dataGridView1.Columns[4].DefaultCellStyle.BackColor = Color.LightGray;
             dataGridView1.Columns["Nazwa"].DefaultCellStyle.BackColor = Color.LightGray;
             linkColumn.LinkColor = Color.Black;
-            
-            for (int i = 0; i < NAME.Length; i++) 
+
+            for (int i = 0; i < NAME.Length; i++)
             {
                 int rowIndex = dataGridView1.Rows.Add();  // Dodaje nowy wiersz i zapisuje jego indeks
-                
+
                 dataGridView1.Rows[rowIndex].Cells[0].Value = i + 1; // Lp.
                 dataGridView1.Rows[rowIndex].Cells[1].Value = newBTE[i];
                 dataGridView1.Rows[rowIndex].Cells["Nazwa"].Value = NAME[i];
@@ -165,7 +168,7 @@ namespace Baza_wiazek_przyciskow_20240205
 
                     // Tworzy tabelkê przypominaj¹c¹ t¹ z Excela.
                     InitializeDataGridView(newBTE, NAME, IndeksySBC, Ilosc, Priorytet, Status, Rewizja, Opis, Uwagi);
-                    
+
                     Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
                     progressBar1.Value = 100;
                 }
@@ -206,5 +209,72 @@ namespace Baza_wiazek_przyciskow_20240205
                 }
             }
         }
+        private void InitializeRecentFilesMenu()
+        {
+            // Dodanie przyk³adowych wpisów
+            for (int i = 0; i < 5; i++)
+            {
+                ToolStripMenuItem item = new ToolStripMenuItem($"File {i + 1}");
+                item.Click += RecentFile_Click;
+                recentFilesToolStripMenuItem.DropDownItems.Add(item);
+            }
+        }
+        private void RecentFile_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
+            MessageBox.Show($"You clicked: {clickedItem.Text}");
+        }
+        public void OpenFile(string filePath)
+        {
+            // Tutaj kod do otwierania pliku...
+
+            // Aktualizacja listy ostatnio otwieranych plików
+            UpdateRecentFiles(filePath);
+        }
+        private void UpdateRecentFiles(string filePath)
+        {
+            StringCollection recentFiles = Properties.Settings.Default.RecentFiles;
+            if (recentFiles == null)
+            {
+                recentFiles = new StringCollection();
+            }
+
+            // Usuñ œcie¿kê, jeœli ju¿ istnieje, aby unikn¹æ duplikatów
+            if (recentFiles.Contains(filePath))
+            {
+                recentFiles.Remove(filePath);
+            }
+
+            // Dodaj œcie¿kê na pocz¹tku listy
+            recentFiles.Insert(0, filePath);
+
+            // Ogranicz listê do np. 5 wpisów
+            while (recentFiles.Count > 5)
+            {
+                recentFiles.RemoveAt(recentFiles.Count - 1);
+            }
+
+            Properties.Settings.Default.RecentFiles = recentFiles;
+            Properties.Settings.Default.Save();
+
+            // Opcjonalnie, aktualizuj interfejs u¿ytkownika
+            UpdateRecentFilesMenu();
+        }
+        private void UpdateRecentFilesMenu()
+        {
+            // Przyk³ad: aktualizacja menu w formularzu
+            recentFilesToolStripMenuItem.DropDownItems.Clear();
+            foreach (string file in Properties.Settings.Default.RecentFiles)
+            {
+                ToolStripMenuItem item = new ToolStripMenuItem(file);
+                item.Click += (sender, e) => OpenFile(file);
+                recentFilesToolStripMenuItem.DropDownItems.Add(item);
+            }
+        }
+        private void Form_Load(object sender, EventArgs e)
+        {
+            UpdateRecentFilesMenu();
+        }
+
     }
 }
