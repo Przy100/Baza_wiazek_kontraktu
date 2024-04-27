@@ -62,7 +62,9 @@ namespace Baza_wiazek_przyciskow_20240205
             dataGridView1.Columns[1].DefaultCellStyle.Font = new Font("Verdena", 10, FontStyle.Bold);
             dataGridView1.Columns[4].DefaultCellStyle.Font = new Font("Verdena", 10, FontStyle.Bold);
             dataGridView1.Columns[4].DefaultCellStyle.BackColor = Color.LightGray;
-
+            dataGridView1.Columns["Nazwa"].DefaultCellStyle.BackColor = Color.LightGray;
+            linkColumn.LinkColor = Color.Black;
+            
             for (int i = 0; i < NAME.Length; i++) 
             {
                 int rowIndex = dataGridView1.Rows.Add();  // Dodaje nowy wiersz i zapisuje jego indeks
