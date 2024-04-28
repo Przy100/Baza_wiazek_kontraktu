@@ -16,8 +16,12 @@ namespace Baza_wiazek_przyciskow_20240205
         public Form1()
         {
             InitializeComponent();
+            // Obs³uga zdarzenia klikniêcia w dataGridView1.
             dataGridView1.CellContentClick += new DataGridViewCellEventHandler(dataGridView_CellContentClick);
+            // Inicjalizacja RecentFiles.
             InitializeRecentFilesMenu();
+            // Obs³uga zdarzenia za³adowania RecentFiles do zak³adki "Ostatnio otw...".
+            this.Load += new EventHandler(Form_Load);
         }
         private void InitializeDataGridView(string[] newBTE, string[] NAME, string[] IndeksySBC, string[] Ilosc, string[] Prio, string[] Status, string[] Rewizja, string[] Opis, string[] Uwagi)
         {
@@ -110,6 +114,8 @@ namespace Baza_wiazek_przyciskow_20240205
 
                     // Pobierz œcie¿kê do wybranego pliku
                     string filePath = openFileDialog.FileName;
+                    // Dodaj plik do RecentFile.
+                    OpenFile(filePath);
                     // Podaj ile jest wierszy w tym pliku
                     var excelReader = new ExcelReader();
                     int rowCount = excelReader.GetRowCount(filePath, 5, 6);
@@ -210,13 +216,13 @@ namespace Baza_wiazek_przyciskow_20240205
             }
         }
         private void InitializeRecentFilesMenu()
-        {
+        {   
             // Dodanie przyk³adowych wpisów
             for (int i = 0; i < 5; i++)
             {
                 ToolStripMenuItem item = new ToolStripMenuItem($"File {i + 1}");
                 item.Click += RecentFile_Click;
-                recentFilesToolStripMenuItem.DropDownItems.Add(item);
+                RecentFiles.DropDownItems.Add(item);
             }
         }
         private void RecentFile_Click(object sender, EventArgs e)
@@ -263,12 +269,12 @@ namespace Baza_wiazek_przyciskow_20240205
         private void UpdateRecentFilesMenu()
         {
             // Przyk³ad: aktualizacja menu w formularzu
-            recentFilesToolStripMenuItem.DropDownItems.Clear();
+            RecentFiles.DropDownItems.Clear();
             foreach (string file in Properties.Settings.Default.RecentFiles)
             {
                 ToolStripMenuItem item = new ToolStripMenuItem(file);
                 item.Click += (sender, e) => OpenFile(file);
-                recentFilesToolStripMenuItem.DropDownItems.Add(item);
+                RecentFiles.DropDownItems.Add(item);
             }
         }
         private void Form_Load(object sender, EventArgs e)
