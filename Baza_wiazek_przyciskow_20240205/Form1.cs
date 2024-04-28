@@ -13,6 +13,7 @@ namespace Baza_wiazek_przyciskow_20240205
     {
         // Ostateczne œcie¿ki dostêpu.
         string[] LINK;
+        string LinkFromRecentFiles;
         public Form1()
         {
             InitializeComponent();
@@ -22,6 +23,7 @@ namespace Baza_wiazek_przyciskow_20240205
             InitializeRecentFilesMenu();
             // Obs³uga zdarzenia za³adowania RecentFiles do zak³adki "Ostatnio otw...".
             this.Load += new EventHandler(Form_Load);
+            
         }
         private void InitializeDataGridView(string[] newBTE, string[] NAME, string[] IndeksySBC, string[] Ilosc, string[] Prio, string[] Status, string[] Rewizja, string[] Opis, string[] Uwagi)
         {
@@ -90,6 +92,71 @@ namespace Baza_wiazek_przyciskow_20240205
             }
 
         }
+        private void MainProgram()
+        {
+            string filePath = LinkFromRecentFiles;
+            // Podaj ile jest wierszy w tym pliku
+            var excelReader = new ExcelReader();
+            int rowCount = excelReader.GetRowCount(filePath, 5, 6);
+            // Stwórz dwie tablice string o takiej wielkoœci
+            string[] BTE = new string[rowCount];
+            string[] NAME = new string[rowCount];
+            BTE = excelReader.FillArray(filePath, rowCount, 2);
+            NAME = excelReader.FillArray(filePath, rowCount, 3);
+
+            progressBar1.Value = 20;
+            Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
+
+            // Stwórz tablice string z ID wi¹zek na podstawie tablicy NAME.
+            var convertData = new ConvertData();
+            string[] ID = new string[rowCount];
+            ID = convertData.GetLastTwoLetters(NAME);
+
+            // Stwórz tablice string z nazwami folderów wi¹zek na podstawie tablicy ID.
+            string[] FOLDER = new string[rowCount];
+            FOLDER = convertData.FolderSelection(ID);
+
+            progressBar1.Value = 30;
+            Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
+
+            // Jeœli BTE ma dwa lub wiêcej numerów BTE.
+            BTE = convertData.MoreThenOneBTENumber(BTE);
+
+            // Zmienia kodowanie p³yt na AAx.
+            string[] newBTE = new string[rowCount];
+            newBTE = convertData.CodePlate(NAME, BTE);
+
+            // Stwórz tablice z fragmentem œcie¿ki dostêpu.
+            string[] linkName = new string[rowCount];
+            linkName = convertData.LinkNameWire(FOLDER, NAME, newBTE);
+
+            // Koñcowa œcie¿ka dostêpu.
+            string[] finishPath = new string[rowCount];
+            finishPath = convertData.ExcelOrZuken(linkName);
+            LINK = finishPath;
+            progressBar1.Value = 40;
+            Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
+
+            // Pobiera kolumny z LW.
+            string[] IndeksySBC = excelReader.FillArray(filePath, rowCount, 4);
+            progressBar1.Value = 50;
+            string[] Ilosc = excelReader.FillArray(filePath, rowCount, 5);
+            progressBar1.Value = 60;
+            string[] Priorytet = excelReader.FillArray(filePath, rowCount, 6);
+            progressBar1.Value = 70;
+            string[] Status = excelReader.FillArray(filePath, rowCount, 7);
+            progressBar1.Value = 80;
+            string[] Rewizja = excelReader.FillArray(filePath, rowCount, 8);
+            string[] Opis = excelReader.FillArray(filePath, rowCount, 9);
+            string[] Uwagi = excelReader.FillArray(filePath, rowCount, 10);
+            progressBar1.Value = 90;
+
+            // Tworzy tabelkê przypominaj¹c¹ t¹ z Excela.
+            InitializeDataGridView(newBTE, NAME, IndeksySBC, Ilosc, Priorytet, Status, Rewizja, Opis, Uwagi);
+
+            Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
+            progressBar1.Value = 100;
+        }
         private void button1_LW_Click(object sender, EventArgs e)
         {
             // Progres bar.
@@ -106,6 +173,7 @@ namespace Baza_wiazek_przyciskow_20240205
                 openFileDialog.RestoreDirectory = true;
                 progressBar1.Value = 10;
                 Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
+
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string LW_Name = openFileDialog.FileName;
@@ -116,67 +184,10 @@ namespace Baza_wiazek_przyciskow_20240205
                     string filePath = openFileDialog.FileName;
                     // Dodaj plik do RecentFile.
                     OpenFile(filePath);
-                    // Podaj ile jest wierszy w tym pliku
-                    var excelReader = new ExcelReader();
-                    int rowCount = excelReader.GetRowCount(filePath, 5, 6);
-                    // Stwórz dwie tablice string o takiej wielkoœci
-                    string[] BTE = new string[rowCount];
-                    string[] NAME = new string[rowCount];
-                    BTE = excelReader.FillArray(filePath, rowCount, 2);
-                    NAME = excelReader.FillArray(filePath, rowCount, 3);
-
-                    progressBar1.Value = 20;
-                    Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
-
-                    // Stwórz tablice string z ID wi¹zek na podstawie tablicy NAME.
-                    var convertData = new ConvertData();
-                    string[] ID = new string[rowCount];
-                    ID = convertData.GetLastTwoLetters(NAME);
-
-                    // Stwórz tablice string z nazwami folderów wi¹zek na podstawie tablicy ID.
-                    string[] FOLDER = new string[rowCount];
-                    FOLDER = convertData.FolderSelection(ID);
-
-                    progressBar1.Value = 30;
-                    Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
-
-                    // Jeœli BTE ma dwa lub wiêcej numerów BTE.
-                    BTE = convertData.MoreThenOneBTENumber(BTE);
-
-                    // Zmienia kodowanie p³yt na AAx.
-                    string[] newBTE = new string[rowCount];
-                    newBTE = convertData.CodePlate(NAME, BTE);
-
-                    // Stwórz tablice z fragmentem œcie¿ki dostêpu.
-                    string[] linkName = new string[rowCount];
-                    linkName = convertData.LinkNameWire(FOLDER, NAME, newBTE);
-
-                    // Koñcowa œcie¿ka dostêpu.
-                    string[] finishPath = new string[rowCount];
-                    finishPath = convertData.ExcelOrZuken(linkName);
-                    LINK = finishPath;
-                    progressBar1.Value = 40;
-                    Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
-
-                    // Pobiera kolumny z LW.
-                    string[] IndeksySBC = excelReader.FillArray(filePath, rowCount, 4);
-                    progressBar1.Value = 50;
-                    string[] Ilosc = excelReader.FillArray(filePath, rowCount, 5);
-                    progressBar1.Value = 60;
-                    string[] Priorytet = excelReader.FillArray(filePath, rowCount, 6);
-                    progressBar1.Value = 70;
-                    string[] Status = excelReader.FillArray(filePath, rowCount, 7);
-                    progressBar1.Value = 80;
-                    string[] Rewizja = excelReader.FillArray(filePath, rowCount, 8);
-                    string[] Opis = excelReader.FillArray(filePath, rowCount, 9);
-                    string[] Uwagi = excelReader.FillArray(filePath, rowCount, 10);
-                    progressBar1.Value = 90;
-
-                    // Tworzy tabelkê przypominaj¹c¹ t¹ z Excela.
-                    InitializeDataGridView(newBTE, NAME, IndeksySBC, Ilosc, Priorytet, Status, Rewizja, Opis, Uwagi);
-
-                    Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
-                    progressBar1.Value = 100;
+                    // Dodaj link do zmiennej globalnej.
+                    LinkFromRecentFiles = filePath;
+                    // PrzejdŸ do funkcji g³ównej.
+                    MainProgram();
                 }
 
             }
@@ -233,7 +244,9 @@ namespace Baza_wiazek_przyciskow_20240205
         public void OpenFile(string filePath)
         {
             // Tutaj kod do otwierania pliku...
-
+            LinkFromRecentFiles = filePath;
+            // PrzejdŸ do funkcji g³ównej.
+            MainProgram();
             // Aktualizacja listy ostatnio otwieranych plików
             UpdateRecentFiles(filePath);
         }
@@ -276,6 +289,7 @@ namespace Baza_wiazek_przyciskow_20240205
                 item.Click += (sender, e) => OpenFile(file);
                 RecentFiles.DropDownItems.Add(item);
             }
+            
         }
         private void Form_Load(object sender, EventArgs e)
         {
