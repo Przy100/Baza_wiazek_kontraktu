@@ -51,40 +51,45 @@
             // 
             // button1_LW
             // 
-            button1_LW.Font = new Font("Segoe UI", 12F);
+            button1_LW.BackColor = Color.FromArgb(76, 75, 105);
+            button1_LW.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point, 238);
+            button1_LW.ForeColor = SystemColors.InactiveCaption;
             button1_LW.Location = new Point(41, 65);
             button1_LW.Margin = new Padding(6);
             button1_LW.Name = "button1_LW";
             button1_LW.Size = new Size(488, 124);
             button1_LW.TabIndex = 0;
             button1_LW.Text = "Wskaż listę wiązek kontraktu";
-            button1_LW.UseVisualStyleBackColor = true;
+            button1_LW.UseVisualStyleBackColor = false;
             button1_LW.Click += button1_LW_Click;
             // 
             // pictureBox1
             // 
-            pictureBox1.BackColor = Color.FromArgb(192, 255, 192);
-            pictureBox1.Location = new Point(15, 44);
+            pictureBox1.BackColor = Color.FromArgb(76, 75, 105);
+            pictureBox1.Dock = DockStyle.Top;
+            pictureBox1.Location = new Point(0, 36);
             pictureBox1.Margin = new Padding(6);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(2654, 166);
+            pictureBox1.Size = new Size(2695, 166);
             pictureBox1.TabIndex = 1;
             pictureBox1.TabStop = false;
             // 
             // label1_version
             // 
             label1_version.AutoSize = true;
-            label1_version.Font = new Font("Segoe UI", 12F);
+            label1_version.BackColor = Color.FromArgb(76, 75, 105);
+            label1_version.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 238);
+            label1_version.ForeColor = SystemColors.Control;
             label1_version.Location = new Point(2472, 163);
             label1_version.Margin = new Padding(6, 0, 6, 0);
             label1_version.Name = "label1_version";
-            label1_version.Size = new Size(197, 45);
+            label1_version.Size = new Size(213, 39);
             label1_version.TabIndex = 2;
             label1_version.Text = "Version: 2.0v";
             // 
             // pictureBox2
             // 
-            pictureBox2.BackColor = Color.FromArgb(192, 255, 192);
+            pictureBox2.BackColor = Color.FromArgb(76, 75, 105);
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
             pictureBox2.Location = new Point(540, 50);
             pictureBox2.Margin = new Padding(6);
@@ -109,9 +114,11 @@
             dataGridView1.AllowUserToOrderColumns = true;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+            dataGridView1.BackgroundColor = Color.FromArgb(44, 43, 60);
             dataGridView1.BorderStyle = BorderStyle.Fixed3D;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(0, 222);
+            dataGridView1.Dock = DockStyle.Top;
+            dataGridView1.Location = new Point(0, 202);
             dataGridView1.Margin = new Padding(6);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 82;
@@ -122,11 +129,12 @@
             // File_Name_LW
             // 
             File_Name_LW.AutoSize = true;
-            File_Name_LW.BackColor = Color.FromArgb(192, 255, 192);
-            File_Name_LW.Font = new Font("Segoe UI", 13F);
+            File_Name_LW.BackColor = Color.FromArgb(76, 75, 105);
+            File_Name_LW.Font = new Font("Century Gothic", 13.125F, FontStyle.Bold, GraphicsUnit.Point, 238);
+            File_Name_LW.ForeColor = SystemColors.InactiveCaption;
             File_Name_LW.Location = new Point(761, 65);
             File_Name_LW.Name = "File_Name_LW";
-            File_Name_LW.Size = new Size(401, 47);
+            File_Name_LW.Size = new Size(435, 41);
             File_Name_LW.TabIndex = 6;
             File_Name_LW.Text = "Nazwa otwartego pliku...\r\n";
             File_Name_LW.Visible = false;
@@ -134,27 +142,32 @@
             // Author
             // 
             Author.AutoSize = true;
-            Author.BackColor = Color.FromArgb(192, 255, 192);
-            Author.Location = new Point(2272, 50);
+            Author.BackColor = Color.FromArgb(76, 75, 105);
+            Author.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 238);
+            Author.ForeColor = SystemColors.Control;
+            Author.Location = new Point(2265, 50);
             Author.Name = "Author";
-            Author.Size = new Size(383, 32);
+            Author.Size = new Size(429, 30);
             Author.TabIndex = 7;
             Author.Text = "Created by Szymon Wojciechowski\r\n";
             // 
             // recentFilesToolStripMenuItem
             // 
+            recentFilesToolStripMenuItem.BackColor = Color.FromArgb(76, 75, 105);
             recentFilesToolStripMenuItem.ImageScalingSize = new Size(32, 32);
             recentFilesToolStripMenuItem.Items.AddRange(new ToolStripItem[] { RecentFiles });
             recentFilesToolStripMenuItem.Location = new Point(0, 0);
             recentFilesToolStripMenuItem.Name = "recentFilesToolStripMenuItem";
-            recentFilesToolStripMenuItem.Size = new Size(2695, 42);
+            recentFilesToolStripMenuItem.Size = new Size(2695, 36);
             recentFilesToolStripMenuItem.TabIndex = 8;
             recentFilesToolStripMenuItem.Text = "menuStrip1";
             // 
             // RecentFiles
             // 
+            RecentFiles.Font = new Font("Century Gothic", 9F, FontStyle.Bold, GraphicsUnit.Point, 238);
+            RecentFiles.ForeColor = SystemColors.InactiveCaption;
             RecentFiles.Name = "RecentFiles";
-            RecentFiles.Size = new Size(287, 38);
+            RecentFiles.Size = new Size(305, 32);
             RecentFiles.Text = "Ostatnio otwierane pliki";
             // 
             // Form1
