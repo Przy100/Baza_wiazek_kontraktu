@@ -185,9 +185,9 @@ namespace Baza_wiazek_przyciskow_20240205
                     // Dodaj plik do RecentFile.
                     OpenFile(filePath);
                     // Dodaj link do zmiennej globalnej.
-                    LinkFromRecentFiles = filePath;
+                    //LinkFromRecentFiles = filePath;
                     // Przejdü do funkcji g≥Ûwnej.
-                    MainProgram();
+                    //MainProgram();
                 }
 
             }
@@ -242,7 +242,8 @@ namespace Baza_wiazek_przyciskow_20240205
             MessageBox.Show($"You clicked: {clickedItem.Text}");
         }
         public void OpenFile(string filePath)
-        {
+        { 
+            progressBar1.Value = 10;
             // Tutaj kod do otwierania pliku...
             LinkFromRecentFiles = filePath;
             // Przejdü do funkcji g≥Ûwnej.

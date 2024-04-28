@@ -52,6 +52,8 @@
             // button1_LW
             // 
             button1_LW.BackColor = Color.FromArgb(76, 75, 105);
+            button1_LW.FlatAppearance.BorderColor = Color.FromArgb(192, 192, 255);
+            button1_LW.FlatStyle = FlatStyle.Flat;
             button1_LW.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point, 238);
             button1_LW.ForeColor = SystemColors.InactiveCaption;
             button1_LW.Location = new Point(41, 65);
@@ -176,6 +178,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BackColor = SystemColors.ControlLight;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(2695, 1357);
             Controls.Add(Author);
