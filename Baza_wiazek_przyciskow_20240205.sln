@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baza_wiazek_przyciskow_20240205", "Baza_wiazek_przyciskow_20240205\Baza_wiazek_przyciskow_20240205.csproj", "{DE82B196-3343-48C5-ADA0-746DB6086436}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Baza_wiazek_przyciskow_20240205", "Baza_wiazek_przyciskow_20240205\Baza_wiazek_przyciskow_20240205.csproj", "{DE82B196-3343-48C5-ADA0-746DB6086436}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementy rozwiązania", "Elementy rozwiązania", "{2CC407F1-D777-44F1-85C1-798E6201A0A4}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\..\..\AA_SZYMON_BACKUP\a_Instalatory\Visual_Studio_C#\Baza_wiazek_kontraktu\icons8-connector-25.ico = ..\..\..\..\..\..\AA_SZYMON_BACKUP\a_Instalatory\Visual_Studio_C#\Baza_wiazek_kontraktu\icons8-connector-25.ico
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
