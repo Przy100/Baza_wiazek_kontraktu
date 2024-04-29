@@ -27,6 +27,7 @@ namespace Baza_wiazek_przyciskow_20240205
         }
         private void InitializeDataGridView(string[] newBTE, string[] NAME, string[] IndeksySBC, string[] Ilosc, string[] Prio, string[] Status, string[] Rewizja, string[] Opis, string[] Uwagi)
         {
+            
             // Podstawowa konfiguracja
             dataGridView1.AllowUserToAddRows = true;
             dataGridView1.AllowUserToDeleteRows = true;
@@ -159,6 +160,9 @@ namespace Baza_wiazek_przyciskow_20240205
         }
         private void button1_LW_Click(object sender, EventArgs e)
         {
+            // Wyczyœæ DataGridView przed utworzeniem.
+            dataGridView1.Columns.Clear();
+            dataGridView1.Rows.Clear();
             // Progres bar.
             progressBar1.Maximum = 100;
             progressBar1.Step = 1;
@@ -243,6 +247,9 @@ namespace Baza_wiazek_przyciskow_20240205
         }
         public void OpenFile(string filePath)
         {
+            // Wyczyœæ DataGridView przed utworzeniem.
+            dataGridView1.Columns.Clear();
+            dataGridView1.Rows.Clear();
             progressBar1.Value = 10;
             // Tutaj kod do otwierania pliku...
             LinkFromRecentFiles = filePath;
@@ -297,9 +304,5 @@ namespace Baza_wiazek_przyciskow_20240205
             UpdateRecentFilesMenu();
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
