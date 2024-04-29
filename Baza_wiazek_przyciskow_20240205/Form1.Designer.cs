@@ -32,7 +32,6 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             button1_LW = new Button();
-            pictureBox1 = new PictureBox();
             label1_version = new Label();
             pictureBox2 = new PictureBox();
             progressBar1 = new ProgressBar();
@@ -42,11 +41,12 @@
             Author = new Label();
             recentFilesToolStripMenuItem = new MenuStrip();
             RecentFiles = new ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            pictureBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)hyperlinkBindingSource).BeginInit();
             recentFilesToolStripMenuItem.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // button1_LW
@@ -64,17 +64,6 @@
             button1_LW.Text = "Wskaż listę wiązek kontraktu";
             button1_LW.UseVisualStyleBackColor = false;
             button1_LW.Click += button1_LW_Click;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.BackColor = Color.FromArgb(76, 75, 105);
-            pictureBox1.Dock = DockStyle.Top;
-            pictureBox1.Location = new Point(0, 36);
-            pictureBox1.Margin = new Padding(6);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(2695, 166);
-            pictureBox1.TabIndex = 1;
-            pictureBox1.TabStop = false;
             // 
             // label1_version
             // 
@@ -96,8 +85,8 @@
             pictureBox2.Location = new Point(540, 50);
             pictureBox2.Margin = new Padding(6);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(186, 160);
-            pictureBox2.SizeMode = PictureBoxSizeMode.CenterImage;
+            pictureBox2.Size = new Size(185, 152);
+            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox2.TabIndex = 3;
             pictureBox2.TabStop = false;
             // 
@@ -119,12 +108,12 @@
             dataGridView1.BackgroundColor = Color.FromArgb(44, 43, 60);
             dataGridView1.BorderStyle = BorderStyle.Fixed3D;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Dock = DockStyle.Top;
-            dataGridView1.Location = new Point(0, 202);
+            dataGridView1.Dock = DockStyle.Fill;
+            dataGridView1.Location = new Point(0, 213);
             dataGridView1.Margin = new Padding(6);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 82;
-            dataGridView1.Size = new Size(2695, 1107);
+            dataGridView1.Size = new Size(2695, 1144);
             dataGridView1.TabIndex = 5;
             dataGridView1.Tag = "";
             // 
@@ -156,11 +145,13 @@
             // recentFilesToolStripMenuItem
             // 
             recentFilesToolStripMenuItem.BackColor = Color.FromArgb(76, 75, 105);
+            recentFilesToolStripMenuItem.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            recentFilesToolStripMenuItem.GripStyle = ToolStripGripStyle.Visible;
             recentFilesToolStripMenuItem.ImageScalingSize = new Size(32, 32);
             recentFilesToolStripMenuItem.Items.AddRange(new ToolStripItem[] { RecentFiles });
             recentFilesToolStripMenuItem.Location = new Point(0, 0);
             recentFilesToolStripMenuItem.Name = "recentFilesToolStripMenuItem";
-            recentFilesToolStripMenuItem.Size = new Size(2695, 36);
+            recentFilesToolStripMenuItem.Size = new Size(2695, 40);
             recentFilesToolStripMenuItem.TabIndex = 8;
             recentFilesToolStripMenuItem.Text = "menuStrip1";
             // 
@@ -168,15 +159,28 @@
             // 
             RecentFiles.Font = new Font("Century Gothic", 9F, FontStyle.Bold, GraphicsUnit.Point, 238);
             RecentFiles.ForeColor = SystemColors.InactiveCaption;
+            RecentFiles.Image = (Image)resources.GetObject("RecentFiles.Image");
             RecentFiles.Name = "RecentFiles";
-            RecentFiles.Size = new Size(305, 32);
+            RecentFiles.Size = new Size(337, 36);
             RecentFiles.Text = "Ostatnio otwierane pliki";
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackColor = Color.FromArgb(76, 75, 105);
+            pictureBox1.BorderStyle = BorderStyle.Fixed3D;
+            pictureBox1.Dock = DockStyle.Top;
+            pictureBox1.Location = new Point(0, 40);
+            pictureBox1.Margin = new Padding(6);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(2695, 173);
+            pictureBox1.TabIndex = 1;
+            pictureBox1.TabStop = false;
+            pictureBox1.Click += pictureBox1_Click;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(13F, 32F);
-            AutoScaleMode = AutoScaleMode.Font;
-            AutoSize = true;
+            AutoScaleDimensions = new SizeF(192F, 192F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = SystemColors.ControlLight;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
@@ -197,12 +201,12 @@
             Margin = new Padding(6);
             Name = "Form1";
             Text = "Baza wiązek kontraktu";
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)hyperlinkBindingSource).EndInit();
             recentFilesToolStripMenuItem.ResumeLayout(false);
             recentFilesToolStripMenuItem.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -210,7 +214,6 @@
         #endregion
 
         private Button button1_LW;
-        private PictureBox pictureBox1;
         private Label label1_version;
         private PictureBox pictureBox2;
         private ProgressBar progressBar1;
@@ -220,5 +223,6 @@
         private Label Author;
         private MenuStrip recentFilesToolStripMenuItem;
         private ToolStripMenuItem RecentFiles;
+        private PictureBox pictureBox1;
     }
 }

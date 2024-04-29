@@ -23,7 +23,7 @@ namespace Baza_wiazek_przyciskow_20240205
             InitializeRecentFilesMenu();
             // Obs³uga zdarzenia za³adowania RecentFiles do zak³adki "Ostatnio otw...".
             this.Load += new EventHandler(Form_Load);
-            
+
         }
         private void InitializeDataGridView(string[] newBTE, string[] NAME, string[] IndeksySBC, string[] Ilosc, string[] Prio, string[] Status, string[] Rewizja, string[] Opis, string[] Uwagi)
         {
@@ -227,7 +227,7 @@ namespace Baza_wiazek_przyciskow_20240205
             }
         }
         private void InitializeRecentFilesMenu()
-        {   
+        {
             // Dodanie przyk³adowych wpisów
             for (int i = 0; i < 5; i++)
             {
@@ -242,7 +242,7 @@ namespace Baza_wiazek_przyciskow_20240205
             MessageBox.Show($"You clicked: {clickedItem.Text}");
         }
         public void OpenFile(string filePath)
-        { 
+        {
             progressBar1.Value = 10;
             // Tutaj kod do otwierania pliku...
             LinkFromRecentFiles = filePath;
@@ -290,12 +290,16 @@ namespace Baza_wiazek_przyciskow_20240205
                 item.Click += (sender, e) => OpenFile(file);
                 RecentFiles.DropDownItems.Add(item);
             }
-            
+
         }
         private void Form_Load(object sender, EventArgs e)
         {
             UpdateRecentFilesMenu();
         }
 
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
