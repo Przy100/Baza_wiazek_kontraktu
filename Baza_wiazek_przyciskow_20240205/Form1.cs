@@ -163,7 +163,7 @@ namespace Baza_wiazek_przyciskow_20240205
         {
             // TEST MongoDB - 20240429
             MongoDBData mongoDBData = new MongoDBData();
-            mongoDBData.ConnectMongoDB();
+            mongoDBData.CheckVersionMongoDB();
             // Koniec TEST MongoDB
 
             // Wyczyœæ DataGridView przed utworzeniem.

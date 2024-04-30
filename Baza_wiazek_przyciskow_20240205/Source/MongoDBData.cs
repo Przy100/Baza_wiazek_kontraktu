@@ -46,7 +46,17 @@ namespace Baza_wiazek_przyciskow_20240205.Source
             var database = client.GetDatabase(cServer.database);
             var collection = database.GetCollection<Update>(cServer.collection);
 
+            // Wersja docelowa, poniżej której szukamy użytkowników
+            var targetVersion = new Version("2.0");
 
+            // Wyszukiwanie użytkowników z niższą wersją programu
+            var users = collection.Find(FilterDefinition<Update>.Empty).ToList();
+            var usersWithOlderVersions = users.Where(user => new Version(user.Version) < targetVersion).ToList();
+
+            foreach (var user in usersWithOlderVersions)
+            {
+                MessageBox.Show($"Name: {user.Author}, Program Version: {user.Version}");
+            }
         }
     }
 }
