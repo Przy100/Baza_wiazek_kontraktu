@@ -18,6 +18,7 @@ namespace Baza_wiazek_przyciskow_20240205.Source
         public string client {  get; set; }
         public string database { get; set; }
         public string collection {  get; set; }
+        public string Version { get; set; }
 
         public Configurator() 
         {
@@ -36,7 +37,10 @@ namespace Baza_wiazek_przyciskow_20240205.Source
             // Serwer
             client = "mongodb://localhost:27017";
             database = "baza_wiazek_kontraktu";
-            collection = "update";
+            collection = "users";
+
+            // Wersja
+            Version = "2.2";
         }
     }
 }
