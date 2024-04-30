@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Collections.Specialized;
 using System;
+using MongoDB.Driver;
 
 
 namespace Baza_wiazek_przyciskow_20240205
@@ -160,6 +161,11 @@ namespace Baza_wiazek_przyciskow_20240205
         }
         private void button1_LW_Click(object sender, EventArgs e)
         {
+            // TEST MongoDB - 20240429
+            MongoDBData mongoDBData = new MongoDBData();
+            mongoDBData.ConnectMongoDB();
+            // Koniec TEST MongoDB
+
             // Wyczyœæ DataGridView przed utworzeniem.
             dataGridView1.Columns.Clear();
             dataGridView1.Rows.Clear();

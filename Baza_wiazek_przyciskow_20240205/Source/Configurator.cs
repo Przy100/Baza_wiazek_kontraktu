@@ -9,9 +9,15 @@ namespace Baza_wiazek_przyciskow_20240205.Source
 {
     public class Configurator
     {
+        // Konfiguracja linków.
         public string InitialDirectory {  get; set; }
         public string filePath_DATA {  get; set; }
         public string startPath {  get; set; }
+
+        // Konfiguracja serwera.
+        public string client {  get; set; }
+        public string database { get; set; }
+        public string collection {  get; set; }
 
         public Configurator() 
         {
@@ -26,6 +32,11 @@ namespace Baza_wiazek_przyciskow_20240205.Source
              InitialDirectory = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu";
              filePath_DATA = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\!NIE_OTWIERAĆ_Baza_wiązek_kontraktu_DATA.xlsx";
              startPath = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\";
+
+            // Serwer
+            client = "mongodb://localhost:27017";
+            database = "baza_wiazek_kontraktu";
+            collection = "update";
         }
     }
 }
