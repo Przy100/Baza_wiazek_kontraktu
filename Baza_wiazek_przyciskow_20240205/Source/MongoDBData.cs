@@ -58,7 +58,7 @@ namespace Baza_wiazek_przyciskow_20240205.Source
                 MessageBox.Show($"Name: {user.Author}, Program Version: {user.Version}");
             }
         }
-        public void SendDataToMongoDB(Guid userName, string userVersion) 
+        public void SendDataToMongoDB(Guid userName, string userVersion, string ip) 
         {
             Configurator cServer = new Configurator();
 
@@ -72,6 +72,7 @@ namespace Baza_wiazek_przyciskow_20240205.Source
             {
                 User = userName,
                 Version = userVersion,
+                IP = ip,
             };
 
             try 

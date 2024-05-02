@@ -156,7 +156,7 @@ namespace Baza_wiazek_przyciskow_20240205
 
             // Tworzy tabelkê przypominaj¹c¹ t¹ z Excela.
             InitializeDataGridView(newBTE, NAME, IndeksySBC, Ilosc, Priorytet, Status, Rewizja, Opis, Uwagi);
-
+            
             Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
             progressBar1.Value = 100;
         }
@@ -164,6 +164,8 @@ namespace Baza_wiazek_przyciskow_20240205
         {
             // TEST MongoDB - 20240429
             new NewUsers();
+            NewUsers newUsers = new NewUsers();
+            newUsers.GetIPAddress();
             // Koniec TEST MongoDB
 
             // Wyczyœæ DataGridView przed utworzeniem.
@@ -297,13 +299,16 @@ namespace Baza_wiazek_przyciskow_20240205
         {
             // Przyk³ad: aktualizacja menu w formularzu
             RecentFiles.DropDownItems.Clear();
-            foreach (string file in Properties.Settings.Default.RecentFiles)
+            try
             {
-                ToolStripMenuItem item = new ToolStripMenuItem(file);
-                item.Click += (sender, e) => OpenFile(file);
-                RecentFiles.DropDownItems.Add(item);
+                foreach (string file in Properties.Settings.Default.RecentFiles)
+                {
+                    ToolStripMenuItem item = new ToolStripMenuItem(file);
+                    item.Click += (sender, e) => OpenFile(file);
+                    RecentFiles.DropDownItems.Add(item);
+                }
             }
-
+            catch { };
         }
         private void Form_Load(object sender, EventArgs e)
         {
