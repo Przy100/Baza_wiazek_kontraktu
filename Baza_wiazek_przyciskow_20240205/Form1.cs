@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Collections.Specialized;
 using System;
+using MongoDB.Driver;
+using Baza_wiazek_przyciskow_20240205.Server;
 
 
 namespace Baza_wiazek_przyciskow_20240205
@@ -154,12 +156,17 @@ namespace Baza_wiazek_przyciskow_20240205
 
             // Tworzy tabelkê przypominaj¹c¹ t¹ z Excela.
             InitializeDataGridView(newBTE, NAME, IndeksySBC, Ilosc, Priorytet, Status, Rewizja, Opis, Uwagi);
-
+            
             Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
             progressBar1.Value = 100;
         }
         private void button1_LW_Click(object sender, EventArgs e)
         {
+            // TEST MongoDB - 20240429
+            new NewUsers();
+           
+            // Koniec TEST MongoDB
+
             // Wyczyœæ DataGridView przed utworzeniem.
             dataGridView1.Columns.Clear();
             dataGridView1.Rows.Clear();
@@ -291,18 +298,21 @@ namespace Baza_wiazek_przyciskow_20240205
         {
             // Przyk³ad: aktualizacja menu w formularzu
             RecentFiles.DropDownItems.Clear();
-            foreach (string file in Properties.Settings.Default.RecentFiles)
+            try
             {
-                ToolStripMenuItem item = new ToolStripMenuItem(file);
-                item.Click += (sender, e) => OpenFile(file);
-                RecentFiles.DropDownItems.Add(item);
+                foreach (string file in Properties.Settings.Default.RecentFiles)
+                {
+                    ToolStripMenuItem item = new ToolStripMenuItem(file);
+                    item.Click += (sender, e) => OpenFile(file);
+                    RecentFiles.DropDownItems.Add(item);
+                }
             }
-
+            catch { };
         }
         private void Form_Load(object sender, EventArgs e)
         {
             UpdateRecentFilesMenu();
         }
-
+ 
     }
 }
