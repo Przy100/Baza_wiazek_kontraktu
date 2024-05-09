@@ -164,8 +164,7 @@ namespace Baza_wiazek_przyciskow_20240205
         {
             // TEST MongoDB - 20240429
             new NewUsers();
-            NewUsers newUsers = new NewUsers();
-            newUsers.GetIPAddress();
+           
             // Koniec TEST MongoDB
 
             // Wyczyœæ DataGridView przed utworzeniem.

@@ -7,6 +7,8 @@ using Baza_wiazek_przyciskow_20240205.Server;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.VisualBasic.ApplicationServices;
 using MongoDB.Driver;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Baza_wiazek_przyciskow_20240205.Source
 {
@@ -58,7 +60,7 @@ namespace Baza_wiazek_przyciskow_20240205.Source
                 MessageBox.Show($"Name: {user.Author}, Program Version: {user.Version}");
             }
         }
-        public void SendDataToMongoDB(Guid userName, string userVersion, string ip) 
+        public void SendDataToMongoDB(string userVersion, string ip) 
         {
             Configurator cServer = new Configurator();
 
@@ -70,7 +72,7 @@ namespace Baza_wiazek_przyciskow_20240205.Source
 
             var newUser = new UsersDB()
             {
-                User = userName,
+                //User = userName,
                 Version = userVersion,
                 IP = ip,
             };
@@ -83,6 +85,23 @@ namespace Baza_wiazek_przyciskow_20240205.Source
             {
                 Console.WriteLine("Error inserting user: " + ex.Message);
             }
+        }
+        public bool CheckIPExist(string ip)
+        {
+            Configurator cServer = new Configurator();
+
+            // Ustawienie połączenia z bazą danych
+            var client = new MongoClient(cServer.client);
+            var database = client.GetDatabase(cServer.database);
+            var collection = database.GetCollection<UsersDB>(cServer.collection);
+
+            // Pobierz podane ip z bazy
+            var ipFromServer = Builders<UsersDB>.Filter.Eq("ip", ip);
+
+            // Podaj liczbę znalezionych pozycji
+            var count = collection.CountDocuments(ipFromServer);
+
+            return count > 0;
         }
     }
 }

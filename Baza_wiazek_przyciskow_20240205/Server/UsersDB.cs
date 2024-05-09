@@ -13,9 +13,6 @@ namespace Baza_wiazek_przyciskow_20240205.Server
         [BsonId]
         public ObjectId Id { get; set; }
 
-        [BsonElement("user")]
-        public Guid User { get; set; }
-
         [BsonElement("version")]
         public string Version { get; set; }
        

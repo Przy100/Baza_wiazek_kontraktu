@@ -23,7 +23,12 @@ namespace Baza_wiazek_przyciskow_20240205.Server
             Version = configurator.Version;
 
             MongoDBData mongoDBData = new MongoDBData();
-            mongoDBData.SendDataToMongoDB(UserId, Version, GetIPAddress());
+            
+            if(mongoDBData.CheckIPExist(GetIPAddress()) == false) 
+            {
+                mongoDBData.SendDataToMongoDB(Version, GetIPAddress());
+            }
+            
         }
         public string GetIPAddress()
         {
@@ -54,5 +59,6 @@ namespace Baza_wiazek_przyciskow_20240205.Server
             }
             return "";  
         }
+        
     }
 }
