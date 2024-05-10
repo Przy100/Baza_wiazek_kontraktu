@@ -32,7 +32,7 @@ namespace Baza_wiazek_przyciskow_20240205.Source
 
              InitialDirectory = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu";
              filePath_DATA = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\!NIE_OTWIERAĆ_Baza_wiązek_kontraktu_DATA.xlsx";
-            //startPath = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\";
+             startPath = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\";
             Form2 form2 = new Form2();
             // Serwer
             client = "mongodb://localhost:27017";

@@ -300,14 +300,17 @@ namespace Baza_wiazek_przyciskow_20240205
             RecentFiles.DropDownItems.Clear();
             try
             {
-                foreach (string file in Properties.Settings.Default.RecentFiles)
-                {
-                    ToolStripMenuItem item = new ToolStripMenuItem(file);
-                    item.Click += (sender, e) => OpenFile(file);
-                    RecentFiles.DropDownItems.Add(item);
+                if(Properties.Settings.Default.RecentFiles != null)
+                {   
+                    foreach (string file in Properties.Settings.Default.RecentFiles)
+                    { 
+                        ToolStripMenuItem item = new ToolStripMenuItem(file);
+                        item.Click += (sender, e) => OpenFile(file);
+                        RecentFiles.DropDownItems.Add(item);
+                    }
                 }
             }
-            catch { };
+            catch (Exception ex) { };
         }
         private void Form_Load(object sender, EventArgs e)
         {
