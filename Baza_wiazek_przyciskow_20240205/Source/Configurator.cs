@@ -35,14 +35,14 @@ namespace Baza_wiazek_przyciskow_20240205.Source
             InitialDirectory = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu";
              filePath_DATA = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\!NIE_OTWIERAĆ_Baza_wiązek_kontraktu_DATA.xlsx";
              startPath = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\";
-            Form2 form2 = new Form2();
+            //Form2 form2 = new Form2();
             // Serwer
             client = "mongodb://localhost:27017";
             database = "baza_wiazek_kontraktu";
             collection = "users";
 
             // Wersja
-            Version = "1.7";
+            Version = "2.0.0";
         }
     }
 }

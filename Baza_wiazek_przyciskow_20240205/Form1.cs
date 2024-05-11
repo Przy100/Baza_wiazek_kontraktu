@@ -163,7 +163,7 @@ namespace Baza_wiazek_przyciskow_20240205
         private void button1_LW_Click(object sender, EventArgs e)
         {
             // TEST MongoDB - 20240429
-            new NewUsers();
+            // new NewUsers();
 
             // Koniec TEST MongoDB
 
@@ -320,8 +320,8 @@ namespace Baza_wiazek_przyciskow_20240205
         private void opcjeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Otwórz okno opcji
-            Form2 opctionForm2 = new Form2();
-            opctionForm2.Show();
+            //Form2 opctionForm2 = new Form2();
+            //opctionForm2.Show();
         }
     }
 }
