@@ -68,6 +68,7 @@
             // 
             // label1_version
             // 
+            label1_version.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label1_version.AutoSize = true;
             label1_version.BackColor = Color.FromArgb(76, 75, 105);
             label1_version.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 238);
@@ -83,16 +84,17 @@
             // 
             pictureBox2.BackColor = Color.FromArgb(76, 75, 105);
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(540, 50);
+            pictureBox2.Location = new Point(590, 78);
             pictureBox2.Margin = new Padding(6);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(185, 152);
-            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox2.Size = new Size(96, 96);
+            pictureBox2.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBox2.TabIndex = 3;
             pictureBox2.TabStop = false;
             // 
             // progressBar1
             // 
+            progressBar1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             progressBar1.Location = new Point(737, 163);
             progressBar1.Margin = new Padding(6);
             progressBar1.Name = "progressBar1";
@@ -133,6 +135,7 @@
             // 
             // Author
             // 
+            Author.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             Author.AutoSize = true;
             Author.BackColor = Color.FromArgb(76, 75, 105);
             Author.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 238);
