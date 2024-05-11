@@ -41,6 +41,7 @@
             Author = new Label();
             recentFilesToolStripMenuItem = new MenuStrip();
             RecentFiles = new ToolStripMenuItem();
+            opcjeToolStripMenuItem = new ToolStripMenuItem();
             pictureBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -148,7 +149,7 @@
             recentFilesToolStripMenuItem.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             recentFilesToolStripMenuItem.GripStyle = ToolStripGripStyle.Visible;
             recentFilesToolStripMenuItem.ImageScalingSize = new Size(32, 32);
-            recentFilesToolStripMenuItem.Items.AddRange(new ToolStripItem[] { RecentFiles });
+            recentFilesToolStripMenuItem.Items.AddRange(new ToolStripItem[] { RecentFiles, opcjeToolStripMenuItem });
             recentFilesToolStripMenuItem.Location = new Point(0, 0);
             recentFilesToolStripMenuItem.Name = "recentFilesToolStripMenuItem";
             recentFilesToolStripMenuItem.Size = new Size(2695, 40);
@@ -164,6 +165,15 @@
             RecentFiles.Size = new Size(337, 36);
             RecentFiles.Text = "Ostatnio otwierane pliki";
             // 
+            // opcjeToolStripMenuItem
+            // 
+            opcjeToolStripMenuItem.Font = new Font("Century Gothic", 9F, FontStyle.Bold);
+            opcjeToolStripMenuItem.ForeColor = SystemColors.InactiveCaption;
+            opcjeToolStripMenuItem.Name = "opcjeToolStripMenuItem";
+            opcjeToolStripMenuItem.Size = new Size(104, 36);
+            opcjeToolStripMenuItem.Text = "Opcje";
+            opcjeToolStripMenuItem.Click += opcjeToolStripMenuItem_Click;
+            // 
             // pictureBox1
             // 
             pictureBox1.BackColor = Color.FromArgb(76, 75, 105);
@@ -178,8 +188,7 @@
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(192F, 192F);
-            AutoScaleMode = AutoScaleMode.Dpi;
+            AutoScaleMode = AutoScaleMode.None;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = SystemColors.ControlLight;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
@@ -223,5 +232,6 @@
         private MenuStrip recentFilesToolStripMenuItem;
         private ToolStripMenuItem RecentFiles;
         private PictureBox pictureBox1;
+        private ToolStripMenuItem opcjeToolStripMenuItem;
     }
 }

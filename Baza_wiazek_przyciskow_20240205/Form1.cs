@@ -29,7 +29,7 @@ namespace Baza_wiazek_przyciskow_20240205
         }
         private void InitializeDataGridView(string[] newBTE, string[] NAME, string[] IndeksySBC, string[] Ilosc, string[] Prio, string[] Status, string[] Rewizja, string[] Opis, string[] Uwagi)
         {
-            
+
             // Podstawowa konfiguracja
             dataGridView1.AllowUserToAddRows = true;
             dataGridView1.AllowUserToDeleteRows = true;
@@ -156,15 +156,15 @@ namespace Baza_wiazek_przyciskow_20240205
 
             // Tworzy tabelkê przypominaj¹c¹ t¹ z Excela.
             InitializeDataGridView(newBTE, NAME, IndeksySBC, Ilosc, Priorytet, Status, Rewizja, Opis, Uwagi);
-            
+
             Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
             progressBar1.Value = 100;
         }
         private void button1_LW_Click(object sender, EventArgs e)
         {
             // TEST MongoDB - 20240429
-            new NewUsers();
-           
+            // new NewUsers();
+
             // Koniec TEST MongoDB
 
             // Wyczyœæ DataGridView przed utworzeniem.
@@ -300,19 +300,28 @@ namespace Baza_wiazek_przyciskow_20240205
             RecentFiles.DropDownItems.Clear();
             try
             {
-                foreach (string file in Properties.Settings.Default.RecentFiles)
-                {
-                    ToolStripMenuItem item = new ToolStripMenuItem(file);
-                    item.Click += (sender, e) => OpenFile(file);
-                    RecentFiles.DropDownItems.Add(item);
+                if(Properties.Settings.Default.RecentFiles != null)
+                {   
+                    foreach (string file in Properties.Settings.Default.RecentFiles)
+                    { 
+                        ToolStripMenuItem item = new ToolStripMenuItem(file);
+                        item.Click += (sender, e) => OpenFile(file);
+                        RecentFiles.DropDownItems.Add(item);
+                    }
                 }
             }
-            catch { };
+            catch (Exception ex) { };
         }
         private void Form_Load(object sender, EventArgs e)
         {
             UpdateRecentFilesMenu();
         }
- 
+
+        private void opcjeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Otwórz okno opcji
+            //Form2 opctionForm2 = new Form2();
+            //opctionForm2.Show();
+        }
     }
 }
