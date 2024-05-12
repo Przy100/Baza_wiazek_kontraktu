@@ -168,7 +168,7 @@ namespace Baza_wiazek_przyciskow_20240205
 
             // Sprawdzanie ostatniej werji w GitHub
             // Za³ó¿my, ¿e u¿ywasz repozytorium GitHub
-            string repoUrl = "https://api.github.com/Przy100/Baza_wiazek_kontraktu";
+            string repoUrl = "https://api.github.com/repos/Przy100/Baza_wiazek_kontraktu";
             string token = "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";
             UpdateChecker updater = new UpdateChecker(repoUrl, token);
 
