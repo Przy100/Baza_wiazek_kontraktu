@@ -13,17 +13,16 @@ namespace Baza_wiazek_przyciskow_20240205.Source
         private readonly string repositoryUrl;
         private readonly string token;  // Token dostępu - prywatne repo
 
-        public UpdateChecker(string repositoryUrl, string token)
+        public UpdateChecker(string repositoryUrl)
         {
             this.repositoryUrl = repositoryUrl;
-            this.token = token;
+            //this.token = token;
         }
 
         public async Task CheckForUpdatesAsync()
         {
             using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("Authorization", $"token {this.token}");
                 client.DefaultRequestHeaders.Add("User-Agent", "request"); // Niezbędne dla GitHub API
 
                 try
