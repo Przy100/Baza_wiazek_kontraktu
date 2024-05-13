@@ -86,6 +86,11 @@ namespace Baza_wiazek_przyciskow_20240205.Source
                 Console.WriteLine("Error inserting user: " + ex.Message);
             }
         }
+        /// <summary>
+        /// Sprawdza czy podane IP już istnieje w bazie danych.
+        /// </summary>
+        /// <param name="ip">IP, które chcemy sprawdzić. Najczęściej podajemy IP naszego komputera.</param>
+        /// <returns>Jeśli istnieje zwraca TRUE.</returns>
         public bool CheckIPExist(string ip)
         {
             Configurator cServer = new Configurator();
