@@ -12,11 +12,13 @@ namespace Baza_wiazek_przyciskow_20240205.Source
     public class UpdateChecker
     {
         private readonly string repositoryUrl;
+        private readonly string myVersion;
         //private readonly string token;  // Token dostępu - prywatne repo
 
-        public UpdateChecker(string repositoryUrl)
+        public UpdateChecker(string repositoryUrl, string myVersion)
         {
             this.repositoryUrl = repositoryUrl;
+            this.myVersion = myVersion;
             //this.token = token;
         }
         /// <summary>
@@ -40,16 +42,18 @@ namespace Baza_wiazek_przyciskow_20240205.Source
                     var json = JObject.Parse(jsonString);
                     string latestVersion = json["tag_name"].ToString(); // Przyjmujemy, że tag_name przechowuje wersję
 
-                    //MessageBox.Show($"Najnowsza wersja to: {latestVersion}");
+                    MessageBox.Show($"Najnowsza wersja to: {latestVersion}");
+                    MessageBox.Show($"Moja wersja to : {myVersion}");
 
                     // Pobranie ZIP najnowszego repozytorium.
+
                     string downloadUrl = json["zipball_url"].ToString(); // URL do pobrania pliku ZIP
                     
                     await DownloadAndUpdateAsync(downloadUrl, latestVersion);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Nie udało się sprawdzić aktualizacji: {ex.Message}");
+                    MessageBox.Show($"Nie udało się sprawdzić aktualizacji: {ex.Message}");
                 }
             }
         }
@@ -60,9 +64,11 @@ namespace Baza_wiazek_przyciskow_20240205.Source
 
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("User-Agent", "request"); // Niezbędne dla GitHub API
+
                 try
                 {
-                    Console.WriteLine("Pobieranie aktualizacji...");
+                    MessageBox.Show("Pobieranie aktualizacji...");
 
                     HttpResponseMessage response = await client.GetAsync(downloadUrl);
                     response.EnsureSuccessStatusCode();
@@ -72,17 +78,17 @@ namespace Baza_wiazek_przyciskow_20240205.Source
                         await response.Content.CopyToAsync(fs);
                     }
 
-                    Console.WriteLine("Rozpakowywanie aktualizacji...");
+                    MessageBox.Show("Rozpakowywanie aktualizacji...");
                     ZipFile.ExtractToDirectory(tempFilePath, extractPath);
 
-                    Console.WriteLine("Aktualizowanie programu...");
+                    MessageBox.Show("Aktualizowanie programu...");
                     UpdateApplication(extractPath);
 
-                    Console.WriteLine("Aktualizacja zakończona pomyślnie.");
+                    MessageBox.Show("Aktualizacja zakończona pomyślnie.");
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"Wystąpił błąd podczas pobierania lub aktualizacji: {e.Message}");
+                    MessageBox.Show($"Wystąpił błąd podczas pobierania lub aktualizacji: {e.Message}");
                 }
             }
         }
@@ -97,7 +103,7 @@ namespace Baza_wiazek_przyciskow_20240205.Source
 
                 if (File.Exists(destinationFile))
                 {
-                    File.Delete(destinationFile);
+                    //File.Delete(destinationFile);
                 }
 
                 File.Move(file, destinationFile);
