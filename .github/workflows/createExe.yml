@@ -1,0 +1,32 @@
+name: Build and Publish
+
+on:
+  push:
+    branches:
+      - master  # Uruchomienie workflow na każdy push do gałęzi "main"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build and publish
+      run: dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained false
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Baza wiązek kontraktu
+        path: |
+          .\bin\Release\net8.0-windows\win-x64\publish\*
