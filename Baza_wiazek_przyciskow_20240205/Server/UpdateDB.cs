@@ -21,10 +21,7 @@ namespace Baza_wiazek_przyciskow_20240205.Server
         public int Date { get; set; }
 
         [BsonElement("author")]
-        public string Author { get; set; }
-        
-        [BsonElement("guid")]
-        public Guid Guid { get; set; }
+        public int Author { get; set; }
 
     }
 }

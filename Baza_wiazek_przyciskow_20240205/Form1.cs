@@ -25,7 +25,7 @@ namespace Baza_wiazek_przyciskow_20240205
             InitializeRecentFilesMenu();
             // Obs³uga zdarzenia za³adowania RecentFiles do zak³adki "Ostatnio otw...".
             this.Load += new EventHandler(Form_Load);
-
+            
         }
         private void InitializeDataGridView(string[] newBTE, string[] NAME, string[] IndeksySBC, string[] Ilosc, string[] Prio, string[] Status, string[] Rewizja, string[] Opis, string[] Uwagi)
         {
@@ -160,12 +160,22 @@ namespace Baza_wiazek_przyciskow_20240205
             Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
             progressBar1.Value = 100;
         }
-        private void button1_LW_Click(object sender, EventArgs e)
+        private async void button1_LW_Click(object sender, EventArgs e)
         {
-            // TEST MongoDB - 20240429
+            // Dodawanie u¿ytkowników do bazy.
             // new NewUsers();
+            // Koniec - Dodawanie u¿ytkowników do bazy.
 
-            // Koniec TEST MongoDB
+            // Sprawdzanie ostatniej werji w GitHub
+            // Za³ó¿my, ¿e u¿ywasz repozytorium GitHub
+            string repoUrl = "https://api.github.com/repos/Przy100/Baza_wiazek_kontraktu";
+            //string token = "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";
+
+            Configurator configurator = new Configurator();
+            //UpdateChecker updater = new UpdateChecker(repoUrl, configurator.Version);
+
+            //await updater.CheckForUpdatesAsync(); // Asynchroniczne wywo³anie metody
+            // Koniec - Sprawdzanie ostatniej werji w GitHub
 
             // Wyczyœæ DataGridView przed utworzeniem.
             dataGridView1.Columns.Clear();
@@ -323,5 +333,6 @@ namespace Baza_wiazek_przyciskow_20240205
             //Form2 opctionForm2 = new Form2();
             //opctionForm2.Show();
         }
+
     }
 }
