@@ -29,4 +29,4 @@ jobs:
       with:
         name: Baza wiązek kontraktu
         path: |
-          .\bin\Release\net8.0-windows\win-x64\publish\*
+          C:\Users\wojsz\source\repos\Przy100\Baza_wiazek_przyciskow_20240205\Baza_wiazek_przyciskow_20240205\bin\Release\net8.0-windows\win-x64\publish\*
