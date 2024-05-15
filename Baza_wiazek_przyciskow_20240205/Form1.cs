@@ -172,9 +172,9 @@ namespace Baza_wiazek_przyciskow_20240205
             //string token = "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";
 
             Configurator configurator = new Configurator();
-            UpdateChecker updater = new UpdateChecker(repoUrl, configurator.Version);
+            //UpdateChecker updater = new UpdateChecker(repoUrl, configurator.Version);
 
-            await updater.CheckForUpdatesAsync(); // Asynchroniczne wywo³anie metody
+            //await updater.CheckForUpdatesAsync(); // Asynchroniczne wywo³anie metody
             // Koniec - Sprawdzanie ostatniej werji w GitHub
 
             // Wyczyœæ DataGridView przed utworzeniem.
