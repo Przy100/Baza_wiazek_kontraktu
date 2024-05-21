@@ -171,7 +171,8 @@ namespace Baza_wiazek_przyciskow_20240205.Source
                 {
                     finishPath[i - 1] = linkName[i - 1] + ".e3s";
 
-                    if (File.Exists(finishPath[i - 1]))
+                    if (File.Exists(finishPath[i - 1])) ;
+                    else
                     {
                         // Dodaj "-" jeśli samo .e3s nie zadziała.
                         // Np. Wiązka RB U499-123-087-AA.e3s --> Wiązka RB-U499-123-087-AA.e3s
