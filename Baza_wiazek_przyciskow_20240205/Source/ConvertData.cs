@@ -25,8 +25,17 @@ namespace Baza_wiazek_przyciskow_20240205.Source
                 {
                     Console.WriteLine("Pusta komórka tablicy NAME[" + (i - 1) + "]");
                 }
-                // Zapisz dwa ostatnie znaki z tablicy NAME do tablicy ID.
-                ID[i - 1] = NAME[i - 1].Substring(NAME[i - 1].Length - 2);
+                try
+                {
+                    
+                    // Zapisz dwa ostatnie znaki z tablicy NAME do tablicy ID.
+                    ID[i - 1] = NAME[i - 1].Substring(NAME[i - 1].Length - 2);
+                    
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Wystąpił błąd: " + ex.Message);
+                }
             }
             return ID;
         }
@@ -171,7 +180,8 @@ namespace Baza_wiazek_przyciskow_20240205.Source
                 {
                     finishPath[i - 1] = linkName[i - 1] + ".e3s";
 
-                    if (File.Exists(finishPath[i - 1]))
+                    if (File.Exists(finishPath[i - 1])) ;
+                    else
                     {
                         // Dodaj "-" jeśli samo .e3s nie zadziała.
                         // Np. Wiązka RB U499-123-087-AA.e3s --> Wiązka RB-U499-123-087-AA.e3s
@@ -193,14 +203,21 @@ namespace Baza_wiazek_przyciskow_20240205.Source
             for(int i = 1; i <= BTE.Length; i++) 
             {
                 // Jeśli BTE[i - 1].Length >= 16 --> są dwa numery BTE w jednej komórce.
-                if (BTE[i - 1].Length >= 16) 
+                try
                 {
-                    int middleIndex = BTE[i - 1].Length - 15;
-                    newBTE[i - 1] = BTE[i - 1].Substring(middleIndex);
+                    if (BTE[i - 1].Length >= 16)
+                    {
+                        int middleIndex = BTE[i - 1].Length - 15;
+                        newBTE[i - 1] = BTE[i - 1].Substring(middleIndex);
+                    }
+                    else
+                    {
+                        newBTE[i - 1] = BTE[i - 1];
+                    }
                 }
-                else 
+                catch (Exception ex)
                 {
-                    newBTE[i - 1] = BTE[i - 1];
+                    Console.WriteLine("Wystąpił błąd: " + ex.Message);
                 }
             }
 
