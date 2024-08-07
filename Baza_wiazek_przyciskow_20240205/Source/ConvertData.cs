@@ -25,8 +25,17 @@ namespace Baza_wiazek_przyciskow_20240205.Source
                 {
                     Console.WriteLine("Pusta komórka tablicy NAME[" + (i - 1) + "]");
                 }
-                // Zapisz dwa ostatnie znaki z tablicy NAME do tablicy ID.
-                ID[i - 1] = NAME[i - 1].Substring(NAME[i - 1].Length - 2);
+                try
+                {
+                    
+                    // Zapisz dwa ostatnie znaki z tablicy NAME do tablicy ID.
+                    ID[i - 1] = NAME[i - 1].Substring(NAME[i - 1].Length - 2);
+                    
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Wystąpił błąd: " + ex.Message);
+                }
             }
             return ID;
         }

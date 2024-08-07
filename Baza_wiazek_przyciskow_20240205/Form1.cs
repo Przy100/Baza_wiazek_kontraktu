@@ -25,7 +25,7 @@ namespace Baza_wiazek_przyciskow_20240205
             InitializeRecentFilesMenu();
             // Obs³uga zdarzenia za³adowania RecentFiles do zak³adki "Ostatnio otw...".
             this.Load += new EventHandler(Form_Load);
-            
+
         }
         private void InitializeDataGridView(string[] newBTE, string[] NAME, string[] IndeksySBC, string[] Ilosc, string[] Prio, string[] Status, string[] Rewizja, string[] Opis, string[] Uwagi)
         {
@@ -98,9 +98,14 @@ namespace Baza_wiazek_przyciskow_20240205
         private void MainProgram()
         {
             string filePath = LinkFromRecentFiles;
+
+            this.File_Name_LW.Text = Path.GetFileName(filePath);
+            File_Name_LW.Visible = true;
+
             // Podaj ile jest wierszy w tym pliku
             var excelReader = new ExcelReader();
-            int rowCount = excelReader.GetRowCount(filePath, 5, 6);
+            var rowCount = excelReader.GetRowCount(filePath, 5, 6);
+            rowCount = rowCount - 2;
             // Stwórz dwie tablice string o takiej wielkoœci
             string[] BTE = new string[rowCount];
             string[] NAME = new string[rowCount];
@@ -310,10 +315,10 @@ namespace Baza_wiazek_przyciskow_20240205
             RecentFiles.DropDownItems.Clear();
             try
             {
-                if(Properties.Settings.Default.RecentFiles != null)
-                {   
+                if (Properties.Settings.Default.RecentFiles != null)
+                {
                     foreach (string file in Properties.Settings.Default.RecentFiles)
-                    { 
+                    {
                         ToolStripMenuItem item = new ToolStripMenuItem(file);
                         item.Click += (sender, e) => OpenFile(file);
                         RecentFiles.DropDownItems.Add(item);
@@ -324,6 +329,7 @@ namespace Baza_wiazek_przyciskow_20240205
         }
         private void Form_Load(object sender, EventArgs e)
         {
+            
             UpdateRecentFilesMenu();
         }
 
@@ -334,5 +340,9 @@ namespace Baza_wiazek_przyciskow_20240205
             //opctionForm2.Show();
         }
 
+        private void label1_version_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
