@@ -203,14 +203,21 @@ namespace Baza_wiazek_przyciskow_20240205.Source
             for(int i = 1; i <= BTE.Length; i++) 
             {
                 // Jeśli BTE[i - 1].Length >= 16 --> są dwa numery BTE w jednej komórce.
-                if (BTE[i - 1].Length >= 16) 
+                try
                 {
-                    int middleIndex = BTE[i - 1].Length - 15;
-                    newBTE[i - 1] = BTE[i - 1].Substring(middleIndex);
+                    if (BTE[i - 1].Length >= 16)
+                    {
+                        int middleIndex = BTE[i - 1].Length - 15;
+                        newBTE[i - 1] = BTE[i - 1].Substring(middleIndex);
+                    }
+                    else
+                    {
+                        newBTE[i - 1] = BTE[i - 1];
+                    }
                 }
-                else 
+                catch (Exception ex)
                 {
-                    newBTE[i - 1] = BTE[i - 1];
+                    Console.WriteLine("Wystąpił błąd: " + ex.Message);
                 }
             }
 

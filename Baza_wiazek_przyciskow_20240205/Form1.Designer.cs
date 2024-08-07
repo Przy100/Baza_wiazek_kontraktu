@@ -76,9 +76,9 @@
             label1_version.Location = new Point(1565, 113);
             label1_version.Margin = new Padding(6, 0, 6, 0);
             label1_version.Name = "label1_version";
-            label1_version.Size = new Size(66, 23);
+            label1_version.Size = new Size(55, 21);
             label1_version.TabIndex = 2;
-            label1_version.Text = "v2.0.2";
+            label1_version.Text = "v2.0.3";
             label1_version.Click += label1_version_Click;
             // 
             // pictureBox2
@@ -129,7 +129,7 @@
             File_Name_LW.ForeColor = SystemColors.InactiveCaption;
             File_Name_LW.Location = new Point(535, 65);
             File_Name_LW.Name = "File_Name_LW";
-            File_Name_LW.Size = new Size(278, 26);
+            File_Name_LW.Size = new Size(225, 22);
             File_Name_LW.TabIndex = 6;
             File_Name_LW.Text = "Nazwa otwartego pliku...\r\n";
             File_Name_LW.Visible = false;
@@ -143,7 +143,7 @@
             Author.ForeColor = SystemColors.Control;
             Author.Location = new Point(1369, 46);
             Author.Name = "Author";
-            Author.Size = new Size(265, 20);
+            Author.Size = new Size(215, 17);
             Author.TabIndex = 7;
             Author.Text = "Created by Szymon Wojciechowski\r\n";
             // 
@@ -166,7 +166,7 @@
             RecentFiles.ForeColor = SystemColors.InactiveCaption;
             RecentFiles.Image = (Image)resources.GetObject("RecentFiles.Image");
             RecentFiles.Name = "RecentFiles";
-            RecentFiles.Size = new Size(227, 36);
+            RecentFiles.Size = new Size(187, 36);
             RecentFiles.Text = "Ostatnio otwierane pliki";
             // 
             // opcjeToolStripMenuItem
@@ -174,7 +174,7 @@
             opcjeToolStripMenuItem.Font = new Font("Century Gothic", 9F, FontStyle.Bold);
             opcjeToolStripMenuItem.ForeColor = SystemColors.InactiveCaption;
             opcjeToolStripMenuItem.Name = "opcjeToolStripMenuItem";
-            opcjeToolStripMenuItem.Size = new Size(69, 36);
+            opcjeToolStripMenuItem.Size = new Size(56, 36);
             opcjeToolStripMenuItem.Text = "Opcje";
             opcjeToolStripMenuItem.Click += opcjeToolStripMenuItem_Click;
             // 

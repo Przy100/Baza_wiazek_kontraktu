@@ -42,7 +42,7 @@ namespace Baza_wiazek_przyciskow_20240205.Source
             collection = "users";
 
             // Wersja
-            Version = "v2.0.2";
+            Version = "v2.0.3";
         }
     }
 }
