@@ -78,7 +78,7 @@
             label1_version.Name = "label1_version";
             label1_version.Size = new Size(66, 23);
             label1_version.TabIndex = 2;
-            label1_version.Text = "v2.0.1";
+            label1_version.Text = "v2.0.2";
             label1_version.Click += label1_version_Click;
             // 
             // pictureBox2
