@@ -104,8 +104,7 @@ namespace Baza_wiazek_przyciskow_20240205
 
             // Podaj ile jest wierszy w tym pliku
             var excelReader = new ExcelReader();
-            var rowCount = excelReader.GetRowCount(filePath, 5, 6);
-            rowCount = rowCount - 2;
+            var rowCount = excelReader.GetRowCount(filePath, 5, 3);  // Prev - 6
             // Stwórz dwie tablice string o takiej wielkoœci
             string[] BTE = new string[rowCount];
             string[] NAME = new string[rowCount];

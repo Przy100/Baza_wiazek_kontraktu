@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using OfficeOpenXml;
 using System.IO;
+using Microsoft.Office.Interop.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Baza_wiazek_przyciskow_20240205.Source
 {
@@ -29,9 +31,19 @@ namespace Baza_wiazek_przyciskow_20240205.Source
                     for (int row = startRow; row <= worksheet.LastRowUsed().RowNumber(); row++)
                     {
                         var cellValue = worksheet.Cell(row, columnIndex).GetValue<string>();
-                        if (cellValue.Contains("F0") || cellValue.Contains("F1") || cellValue.Contains("F2"))
+                        
+                        // Sprawdzenie czy cellValue != null
+                        if (!string.IsNullOrEmpty(cellValue))
                         {
-                            count++;
+                            /*if (cellValue.Contains("F0") || cellValue.Contains("F1") || cellValue.Contains("F2"))
+                            {
+                                count++;
+                            }*/
+                            // Dla Listy Wiązek Napędowych
+                            if (cellValue.StartsWith("Wiązka") || cellValue.StartsWith("Płyta") || cellValue.StartsWith("Rozdzielnica"))
+                            {
+                                count++;
+                            }
                         }
                     }
                 }
@@ -62,17 +74,20 @@ namespace Baza_wiazek_przyciskow_20240205.Source
                     var worksheet = workbook.Worksheet("Lista wiązek");
                     for (int i = 1; i <= worksheet.LastRowUsed().RowNumber(); i++)
                     {
-                        var value = worksheet.Cell(i + 4, 6).GetValue<string>();
-                        var cellStrike = worksheet.Cell(i + 4, 6);
-                        if ((value.Contains("F0") || value.Contains("F1") || value.Contains("F2")) && (cellStrike.Style.Font.Strikethrough == false))
+                        var value = worksheet.Cell(i + 4, 3).GetValue<string>();
+                        var cellStrike = worksheet.Cell(i + 4, 3);
+                        if(!string.IsNullOrEmpty(value))
                         {
-                            // Pobierz wartość komórki i przypisz do tablicy
-                            var cellValue = worksheet.Cell(i + 4, column).Value.ToString();
-                            DATA[i - 1 - j] = cellValue;
-                        }
-                        else
-                        {
-                            j++;
+                            if ((value.StartsWith("Wiązka") || value.StartsWith("Płyta") || value.StartsWith("Rozdzielnica")) && (cellStrike.Style.Font.Strikethrough == false))
+                            {
+                                // Pobierz wartość komórki i przypisz do tablicy
+                                var cellValue = worksheet.Cell(i + 4, column).Value.ToString();
+                                DATA[i - 1 - j] = cellValue;
+                            }
+                            else
+                            {
+                                j++;
+                            }
                         }
                     }
                 }
