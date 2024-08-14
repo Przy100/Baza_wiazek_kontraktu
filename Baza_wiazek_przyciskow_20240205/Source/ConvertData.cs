@@ -164,6 +164,42 @@ namespace Baza_wiazek_przyciskow_20240205.Source
             return codePlate;
         }
         /// <summary>
+        /// Zmienia kodowania płyt i wiązek w tablicy, ze względu na różne kodowania.
+        /// </summary>
+        /// <param name="NAME"></param>
+        /// <param name="BTE"></param>
+        /// <param name="ID"> PZ, LZ, KF itp.</param>
+        /// <returns></returns>
+        public string[] CodePlate2(string[] NAME, string[] BTE, string[] ID) 
+        {
+            // Dostęp do pliku zawierającego dodatkowe informacje pomocnicze o kodowaniu.
+            Configurator cFile = new Configurator();
+            string lo_filePath = cFile.filePath_DATA;
+
+            string[] codePlate = new string[BTE.Length];
+            string IDfromFile = "";
+
+            for (int i = 1; i <= BTE.Length; i++)
+            {
+                codePlate[i - 1] = BTE[i - 1];
+
+                for (int j = 1; j <= Plate.Length; j++)
+                {
+                    if (NAME[i - 1] == Plate[j - 1])
+                    {
+                        string newLetters = "AA";
+                        int middleIndex = BTE[i - 1].Length - 6;
+                        string start = BTE[i - 1].Substring(0, middleIndex);
+                        string end = BTE[i - 1].Substring(middleIndex + 2);
+
+                        codePlate[i - 1] = start + newLetters + end;
+                    }
+                }
+            }
+
+            return codePlate;
+        }
+        /// <summary>
         /// Dodaje odpowiednie rozszerzenie.
         /// </summary>
         /// <param name="linkName">Cała ścieżka dostępu z wyjątkiem rozszerzenia.</param>
