@@ -6,6 +6,10 @@ using System.Collections.Specialized;
 using System;
 using MongoDB.Driver;
 using Baza_wiazek_przyciskow_20240205.Server;
+using System.Data;
+using ExcelDataReader;
+using System.IO;
+using SharpCompress.Common;
 
 
 namespace Baza_wiazek_przyciskow_20240205
@@ -329,7 +333,7 @@ namespace Baza_wiazek_przyciskow_20240205
         }
         private void Form_Load(object sender, EventArgs e)
         {
-            
+
             UpdateRecentFilesMenu();
         }
 
@@ -343,6 +347,26 @@ namespace Baza_wiazek_przyciskow_20240205
         private void label1_version_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void ¹cyPlikToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string filePath = LinkFromRecentFiles;
+
+            try
+            {
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = filePath,
+                    UseShellExecute = true
+                };
+
+                Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("B³¹d podczas otwierania pliku: " + ex.Message);
+            }
         }
     }
 }

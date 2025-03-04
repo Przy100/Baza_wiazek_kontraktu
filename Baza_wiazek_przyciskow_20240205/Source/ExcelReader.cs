@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using OfficeOpenXml;
 using System.IO;
+using ExcelDataReader;
+using System.Data;
 
 namespace Baza_wiazek_przyciskow_20240205.Source
 {
@@ -84,6 +86,6 @@ namespace Baza_wiazek_przyciskow_20240205.Source
 
             return DATA;
         }
-
+       
     }
 }
