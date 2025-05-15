@@ -42,8 +42,8 @@
             recentFilesToolStripMenuItem = new MenuStrip();
             RecentFiles = new ToolStripMenuItem();
             opcjeToolStripMenuItem = new ToolStripMenuItem();
-            pictureBox1 = new PictureBox();
             ącyPlikToolStripMenuItem = new ToolStripMenuItem();
+            pictureBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)hyperlinkBindingSource).BeginInit();
@@ -74,12 +74,12 @@
             label1_version.BackColor = Color.FromArgb(76, 75, 105);
             label1_version.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 238);
             label1_version.ForeColor = SystemColors.Control;
-            label1_version.Location = new Point(1565, 113);
+            label1_version.Location = new Point(1552, 102);
             label1_version.Margin = new Padding(6, 0, 6, 0);
             label1_version.Name = "label1_version";
-            label1_version.Size = new Size(34, 34);
+            label1_version.Size = new Size(94, 34);
             label1_version.TabIndex = 2;
-            label1_version.Text = "d";
+            label1_version.Text = "v2.1.0";
             label1_version.Click += label1_version_Click;
             // 
             // pictureBox2
@@ -180,6 +180,13 @@
             opcjeToolStripMenuItem.Text = "Opcje";
             opcjeToolStripMenuItem.Click += opcjeToolStripMenuItem_Click;
             // 
+            // ącyPlikToolStripMenuItem
+            // 
+            ącyPlikToolStripMenuItem.Name = "ącyPlikToolStripMenuItem";
+            ącyPlikToolStripMenuItem.Size = new Size(234, 40);
+            ącyPlikToolStripMenuItem.Text = "Otwórz LW";
+            ącyPlikToolStripMenuItem.Click += ącyPlikToolStripMenuItem_Click;
+            // 
             // pictureBox1
             // 
             pictureBox1.BackColor = Color.FromArgb(76, 75, 105);
@@ -191,13 +198,6 @@
             pictureBox1.Size = new Size(1646, 107);
             pictureBox1.TabIndex = 1;
             pictureBox1.TabStop = false;
-            // 
-            // ącyPlikToolStripMenuItem
-            // 
-            ącyPlikToolStripMenuItem.Name = "ącyPlikToolStripMenuItem";
-            ącyPlikToolStripMenuItem.Size = new Size(315, 40);
-            ącyPlikToolStripMenuItem.Text = "Otwórz LW";
-            ącyPlikToolStripMenuItem.Click += ącyPlikToolStripMenuItem_Click;
             // 
             // Form1
             // 
