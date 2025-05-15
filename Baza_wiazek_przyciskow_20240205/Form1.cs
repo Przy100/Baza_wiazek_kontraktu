@@ -212,8 +212,13 @@ namespace Baza_wiazek_przyciskow_20240205
 
                     // Pobierz œcie¿kê do wybranego pliku
                     string filePath = openFileDialog.FileName;
+                    // Œcie¿ka lokalna to tymczasowej kopii
+                    string filePathTemporary = Path.Combine(Path.GetTempPath(), Path.GetFileName(filePath));
+                    // Utworz kopie
+                    File.Copy(filePath, filePathTemporary, true);
+
                     // Dodaj plik do RecentFile.
-                    OpenFile(filePath);
+                    OpenFile(filePathTemporary);
                     // Dodaj link do zmiennej globalnej.
                     //LinkFromRecentFiles = filePath;
                     // PrzejdŸ do funkcji g³ównej.
@@ -349,6 +354,11 @@ namespace Baza_wiazek_przyciskow_20240205
 
         }
 
+        /// <summary>
+        /// Otwiera orginalny plik aktualnie przegl¹danego pliku Excel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ¹cyPlikToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string filePath = LinkFromRecentFiles;
