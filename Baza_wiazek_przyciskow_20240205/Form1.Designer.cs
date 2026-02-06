@@ -77,9 +77,9 @@
             label1_version.Location = new Point(1552, 102);
             label1_version.Margin = new Padding(6, 0, 6, 0);
             label1_version.Name = "label1_version";
-            label1_version.Size = new Size(94, 34);
+            label1_version.Size = new Size(133, 49);
             label1_version.TabIndex = 2;
-            label1_version.Text = "v2.1.0";
+            label1_version.Text = "v2.1.1";
             label1_version.Click += label1_version_Click;
             // 
             // pictureBox2
@@ -114,11 +114,11 @@
             dataGridView1.BorderStyle = BorderStyle.Fixed3D;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.Location = new Point(0, 147);
+            dataGridView1.Location = new Point(0, 152);
             dataGridView1.Margin = new Padding(6);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 82;
-            dataGridView1.Size = new Size(1646, 591);
+            dataGridView1.Size = new Size(1646, 586);
             dataGridView1.TabIndex = 5;
             dataGridView1.Tag = "";
             // 
@@ -130,7 +130,7 @@
             File_Name_LW.ForeColor = SystemColors.InactiveCaption;
             File_Name_LW.Location = new Point(535, 65);
             File_Name_LW.Name = "File_Name_LW";
-            File_Name_LW.Size = new Size(388, 37);
+            File_Name_LW.Size = new Size(548, 51);
             File_Name_LW.TabIndex = 6;
             File_Name_LW.Text = "Nazwa otwartego pliku...\r\n";
             File_Name_LW.Visible = false;
@@ -144,7 +144,7 @@
             Author.ForeColor = SystemColors.Control;
             Author.Location = new Point(1369, 46);
             Author.Name = "Author";
-            Author.Size = new Size(365, 24);
+            Author.Size = new Size(526, 37);
             Author.TabIndex = 7;
             Author.Text = "Created by Szymon Wojciechowski\r\n";
             // 
@@ -157,7 +157,7 @@
             recentFilesToolStripMenuItem.Items.AddRange(new ToolStripItem[] { RecentFiles, opcjeToolStripMenuItem });
             recentFilesToolStripMenuItem.Location = new Point(0, 0);
             recentFilesToolStripMenuItem.Name = "recentFilesToolStripMenuItem";
-            recentFilesToolStripMenuItem.Size = new Size(1646, 40);
+            recentFilesToolStripMenuItem.Size = new Size(1646, 45);
             recentFilesToolStripMenuItem.TabIndex = 8;
             recentFilesToolStripMenuItem.Text = "menuStrip1";
             // 
@@ -167,7 +167,7 @@
             RecentFiles.ForeColor = SystemColors.InactiveCaption;
             RecentFiles.Image = (Image)resources.GetObject("RecentFiles.Image");
             RecentFiles.Name = "RecentFiles";
-            RecentFiles.Size = new Size(300, 36);
+            RecentFiles.Size = new Size(412, 41);
             RecentFiles.Text = "Ostatnio otwierane pliki";
             // 
             // opcjeToolStripMenuItem
@@ -176,14 +176,14 @@
             opcjeToolStripMenuItem.Font = new Font("Century Gothic", 9F, FontStyle.Bold);
             opcjeToolStripMenuItem.ForeColor = SystemColors.InactiveCaption;
             opcjeToolStripMenuItem.Name = "opcjeToolStripMenuItem";
-            opcjeToolStripMenuItem.Size = new Size(93, 36);
+            opcjeToolStripMenuItem.Size = new Size(132, 41);
             opcjeToolStripMenuItem.Text = "Opcje";
             opcjeToolStripMenuItem.Click += opcjeToolStripMenuItem_Click;
             // 
             // ącyPlikToolStripMenuItem
             // 
             ącyPlikToolStripMenuItem.Name = "ącyPlikToolStripMenuItem";
-            ącyPlikToolStripMenuItem.Size = new Size(234, 40);
+            ącyPlikToolStripMenuItem.Size = new Size(331, 54);
             ącyPlikToolStripMenuItem.Text = "Otwórz LW";
             ącyPlikToolStripMenuItem.Click += ącyPlikToolStripMenuItem_Click;
             // 
@@ -192,7 +192,7 @@
             pictureBox1.BackColor = Color.FromArgb(76, 75, 105);
             pictureBox1.BorderStyle = BorderStyle.Fixed3D;
             pictureBox1.Dock = DockStyle.Top;
-            pictureBox1.Location = new Point(0, 40);
+            pictureBox1.Location = new Point(0, 45);
             pictureBox1.Margin = new Padding(6);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(1646, 107);
