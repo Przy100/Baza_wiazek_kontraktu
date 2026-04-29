@@ -1,4 +1,4 @@
-using Baza_wiazek_przyciskow_20240205.Source;
+ï»¿using Baza_wiazek_przyciskow_20240205.Source;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -7,9 +7,11 @@ using System;
 using MongoDB.Driver;
 using Baza_wiazek_przyciskow_20240205.Server;
 using System.Data;
+using System.Drawing.Drawing2D;
 using ExcelDataReader;
 using System.IO;
 using SharpCompress.Common;
+using SiticoneNetFrameworkUI;
 
 
 namespace Baza_wiazek_przyciskow_20240205
@@ -17,19 +19,64 @@ namespace Baza_wiazek_przyciskow_20240205
 
     public partial class Form1 : Form
     {
-        // Ostateczne œcie¿ki dostêpu.
+        // Ostateczne Å›cieÅ¼ki dostÄ™pu.
         string[] LINK;
         string LinkFromRecentFiles;
         public Form1()
         {
             InitializeComponent();
-            // Obs³uga zdarzenia klikniêcia w dataGridView1.
+            ApplyVisualTheme();
+            // ObsÅ‚uga zdarzenia klikniÄ™cia w dataGridView1.
             dataGridView1.CellContentClick += new DataGridViewCellEventHandler(dataGridView_CellContentClick);
+            dataGridView1.CellPainting += new DataGridViewCellPaintingEventHandler(dataGridView1_CellPainting);
             // Inicjalizacja RecentFiles.
             InitializeRecentFilesMenu();
-            // Obs³uga zdarzenia za³adowania RecentFiles do zak³adki "Ostatnio otw...".
+            // ObsÅ‚uga zdarzenia zaÅ‚adowania RecentFiles do zakÅ‚adki "Ostatnio otw...".
             this.Load += new EventHandler(Form_Load);
 
+        }
+        private void ApplyVisualTheme()
+        {
+            BackColor = Color.FromArgb(16, 18, 27);
+            ForeColor = Color.White;
+
+            dataGridView1.BackgroundColor = Color.FromArgb(14, 16, 24);
+            dataGridView1.BorderStyle = BorderStyle.None;
+            dataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dataGridView1.GridColor = Color.FromArgb(12, 14, 20);
+            dataGridView1.ColumnHeadersVisible = true;
+            dataGridView1.EnableHeadersVisualStyles = false;
+            dataGridView1.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dataGridView1.ColumnHeadersHeight = 54;
+            dataGridView1.RowHeadersVisible = false;
+            dataGridView1.RowTemplate.Height = 54;
+            dataGridView1.RowTemplate.DividerHeight = 6;
+            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(25, 28, 40);
+            dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(245, 247, 255);
+            dataGridView1.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(25, 28, 40);
+            dataGridView1.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
+            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 238);
+            dataGridView1.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridView1.ColumnHeadersDefaultCellStyle.Padding = new Padding(12, 0, 12, 0);
+            dataGridView1.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+            dataGridView1.RowsDefaultCellStyle.BackColor = Color.FromArgb(23, 26, 38);
+            dataGridView1.RowsDefaultCellStyle.ForeColor = Color.FromArgb(230, 235, 245);
+            dataGridView1.RowsDefaultCellStyle.SelectionBackColor = Color.FromArgb(78, 92, 216);
+            dataGridView1.RowsDefaultCellStyle.SelectionForeColor = Color.White;
+
+            dataGridView1.DefaultCellStyle.BackColor = Color.FromArgb(23, 26, 38);
+            dataGridView1.DefaultCellStyle.ForeColor = Color.FromArgb(230, 235, 245);
+            dataGridView1.DefaultCellStyle.SelectionBackColor = Color.FromArgb(78, 92, 216);
+            dataGridView1.DefaultCellStyle.SelectionForeColor = Color.White;
+            dataGridView1.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point, 238);
+            dataGridView1.DefaultCellStyle.Padding = new Padding(12, 9, 12, 9);
+
+            dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(31, 35, 49);
+            dataGridView1.AlternatingRowsDefaultCellStyle.ForeColor = Color.FromArgb(230, 235, 245);
+            dataGridView1.AlternatingRowsDefaultCellStyle.SelectionBackColor = Color.FromArgb(78, 92, 216);
+            dataGridView1.AlternatingRowsDefaultCellStyle.SelectionForeColor = Color.White;
         }
         private void InitializeDataGridView(string[] newBTE, string[] NAME, string[] IndeksySBC, string[] Ilosc, string[] Prio, string[] Status, string[] Rewizja, string[] Opis, string[] Uwagi)
         {
@@ -43,43 +90,61 @@ namespace Baza_wiazek_przyciskow_20240205
             dataGridView1.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
-            // Ustawienia wygl¹du nag³ówków kolumn
-            dataGridView1.EnableHeadersVisualStyles = false;  // Wy³¹czenie stylów wizualnych, aby umo¿liwiæ niestandardowe stylizowanie
-            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.Yellow;
-            dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
-            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font(dataGridView1.Font, FontStyle.Bold);
-
-            // Kolumna hiper³¹cze
-            DataGridViewLinkColumn linkColumn = new DataGridViewLinkColumn();
+            // Kolumna hiperÅ‚Ä…cze
+            DataGridViewButtonColumn linkColumn = new DataGridViewButtonColumn();
             linkColumn.Name = "Nazwa";
-            linkColumn.UseColumnTextForLinkValue = false;
+            linkColumn.UseColumnTextForButtonValue = false;
+            linkColumn.FlatStyle = FlatStyle.Flat;
+            linkColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            linkColumn.DefaultCellStyle.Padding = new Padding(10, 6, 10, 6);
             dataGridView1.Columns.Add(linkColumn);
 
             // Nazwy kolumn
             dataGridView1.Columns[0].Name = "Lp.";
+            dataGridView1.Columns[0].HeaderText = "Lp.";
+            dataGridView1.Columns[0].ToolTipText = "Numer porzÄ…dkowy pozycji";
             dataGridView1.Columns[0].Width = 75;
-            dataGridView1.Columns[1].Name = "Numer wi¹zki BTE";
+            dataGridView1.Columns[1].Name = "Numer wiÄ…zki BTE";
+            dataGridView1.Columns[1].HeaderText = "Numer wiÄ…zki BTE";
+            dataGridView1.Columns[1].ToolTipText = "Numer identyfikacyjny wiÄ…zki lub pÅ‚yty";
             dataGridView1.Columns["Nazwa"].DisplayIndex = 2;
+            dataGridView1.Columns["Nazwa"].HeaderText = "Typ dokumentu";
+            dataGridView1.Columns["Nazwa"].ToolTipText = "Rodzaj dokumentacji do otwarcia, np. wiÄ…zka lub pÅ‚yta";
+            dataGridView1.Columns["Nazwa"].MinimumWidth = 160;
             dataGridView1.Columns[2].Name = "Indeks SBC";
-            dataGridView1.Columns[3].Name = "Iloœæ";
+            dataGridView1.Columns[2].HeaderText = "Indeks SBC";
+            dataGridView1.Columns[2].ToolTipText = "Numer indeksu materiaÅ‚owego SBC";
+            dataGridView1.Columns[3].Name = "IloÅ›Ä‡";
+            dataGridView1.Columns[3].HeaderText = "IloÅ›Ä‡";
+            dataGridView1.Columns[3].ToolTipText = "Liczba sztuk w danej pozycji";
             dataGridView1.Columns[3].Width = 75;
             dataGridView1.Columns[4].Name = "Priorytet";
-            dataGridView1.Columns[4].Width = 130;
+            dataGridView1.Columns[4].HeaderText = "Priorytet";
+            dataGridView1.Columns[4].ToolTipText = "Priorytet realizacji pozycji";
+            dataGridView1.Columns[4].Width = 110;
             dataGridView1.Columns[5].Name = "Status";
+            dataGridView1.Columns[5].HeaderText = "Status";
+            dataGridView1.Columns[5].ToolTipText = "Aktualny status pozycji";
             dataGridView1.Columns[5].Width = 130;
             dataGridView1.Columns[6].Name = "Rewizja";
-            dataGridView1.Columns[6].Width = 130;
+            dataGridView1.Columns[6].HeaderText = "Rewizja";
+            dataGridView1.Columns[6].ToolTipText = "Wersja lub rewizja dokumentacji";
+            dataGridView1.Columns[6].Width = 110;
             dataGridView1.Columns[7].Name = "Opis / zastosowanie";
+            dataGridView1.Columns[7].HeaderText = "Opis / zastosowanie";
+            dataGridView1.Columns[7].ToolTipText = "Opis pozycji i jej zastosowanie";
             dataGridView1.Columns[7].Width = 700;
             dataGridView1.Columns[8].Name = "Uwagi";
+            dataGridView1.Columns[8].HeaderText = "Uwagi";
+            dataGridView1.Columns[8].ToolTipText = "Dodatkowe informacje i komentarze";
 
             // Zmiana stylu kolumny.
-            dataGridView1.Columns["Nazwa"].DefaultCellStyle.Font = new Font("Verdana", 10, FontStyle.Italic);
-            dataGridView1.Columns[1].DefaultCellStyle.Font = new Font("Verdena", 10, FontStyle.Bold);
-            dataGridView1.Columns[4].DefaultCellStyle.Font = new Font("Verdena", 10, FontStyle.Bold);
-            dataGridView1.Columns[4].DefaultCellStyle.BackColor = Color.LightGray;
-            dataGridView1.Columns["Nazwa"].DefaultCellStyle.BackColor = Color.LightGray;
-            linkColumn.LinkColor = Color.Black;
+            dataGridView1.Columns[1].DefaultCellStyle.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            dataGridView1.Columns[4].DefaultCellStyle.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            dataGridView1.Columns[4].DefaultCellStyle.ForeColor = Color.FromArgb(255, 214, 133);
+            dataGridView1.Columns[4].DefaultCellStyle.BackColor = Color.FromArgb(34, 37, 52);
+            dataGridView1.Columns[5].DefaultCellStyle.BackColor = Color.FromArgb(28, 31, 45);
+            dataGridView1.Columns[6].DefaultCellStyle.BackColor = Color.FromArgb(28, 31, 45);
 
             for (int i = 0; i < NAME.Length; i++)
             {
@@ -98,6 +163,8 @@ namespace Baza_wiazek_przyciskow_20240205
 
             }
 
+            ApplyVisualTheme();
+
         }
         private void MainProgram()
         {
@@ -110,44 +177,44 @@ namespace Baza_wiazek_przyciskow_20240205
             var excelReader = new ExcelReader();
             var rowCount = excelReader.GetRowCount(filePath, 5, 6);
             rowCount = rowCount;
-            // Stwórz dwie tablice string o takiej wielkoœci
+            // StwÃ³rz dwie tablice string o takiej wielkoÅ›ci
             string[] BTE = new string[rowCount];
             string[] NAME = new string[rowCount];
             BTE = excelReader.FillArray(filePath, rowCount, 2);
             NAME = excelReader.FillArray(filePath, rowCount, 3);
 
             progressBar1.Value = 20;
-            Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
+            Application.DoEvents(); // Pozwala na odÅ›wieÅ¼anie UI w trakcie pÄ™tli
 
-            // Stwórz tablice string z ID wi¹zek na podstawie tablicy NAME.
+            // StwÃ³rz tablice string z ID wiÄ…zek na podstawie tablicy NAME.
             var convertData = new ConvertData();
             string[] ID = new string[rowCount];
             ID = convertData.GetLastTwoLetters(NAME);
 
-            // Stwórz tablice string z nazwami folderów wi¹zek na podstawie tablicy ID.
+            // StwÃ³rz tablice string z nazwami folderÃ³w wiÄ…zek na podstawie tablicy ID.
             string[] FOLDER = new string[rowCount];
             FOLDER = convertData.FolderSelection(ID);
 
             progressBar1.Value = 30;
-            Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
+            Application.DoEvents(); // Pozwala na odÅ›wieÅ¼anie UI w trakcie pÄ™tli
 
-            // Jeœli BTE ma dwa lub wiêcej numerów BTE.
+            // JeÅ›li BTE ma dwa lub wiÄ™cej numerÃ³w BTE.
             BTE = convertData.MoreThenOneBTENumber(BTE);
 
-            // Zmienia kodowanie p³yt na AAx.
+            // Zmienia kodowanie pÅ‚yt na AAx.
             string[] newBTE = new string[rowCount];
             newBTE = convertData.CodePlate(NAME, BTE);
 
-            // Stwórz tablice z fragmentem œcie¿ki dostêpu.
+            // StwÃ³rz tablice z fragmentem Å›cieÅ¼ki dostÄ™pu.
             string[] linkName = new string[rowCount];
             linkName = convertData.LinkNameWire(FOLDER, NAME, newBTE);
 
-            // Koñcowa œcie¿ka dostêpu.
+            // KoÅ„cowa Å›cieÅ¼ka dostÄ™pu.
             string[] finishPath = new string[rowCount];
             finishPath = convertData.ExcelOrZuken(linkName);
             LINK = finishPath;
             progressBar1.Value = 40;
-            Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
+            Application.DoEvents(); // Pozwala na odÅ›wieÅ¼anie UI w trakcie pÄ™tli
 
             // Pobiera kolumny z LW.
             string[] IndeksySBC = excelReader.FillArray(filePath, rowCount, 4);
@@ -163,37 +230,36 @@ namespace Baza_wiazek_przyciskow_20240205
             string[] Uwagi = excelReader.FillArray(filePath, rowCount, 10);
             progressBar1.Value = 90;
 
-            // Tworzy tabelkê przypominaj¹c¹ t¹ z Excela.
+            // Tworzy tabelkÄ™ przypominajÄ…cÄ… tÄ… z Excela.
             InitializeDataGridView(newBTE, NAME, IndeksySBC, Ilosc, Priorytet, Status, Rewizja, Opis, Uwagi);
 
-            Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
+            Application.DoEvents(); // Pozwala na odÅ›wieÅ¼anie UI w trakcie pÄ™tli
             progressBar1.Value = 100;
         }
         private async void button1_LW_Click(object sender, EventArgs e)
         {
-            // Dodawanie u¿ytkowników do bazy.
+            // Dodawanie uÅ¼ytkownikÃ³w do bazy.
             // new NewUsers();
-            // Koniec - Dodawanie u¿ytkowników do bazy.
+            // Koniec - Dodawanie uÅ¼ytkownikÃ³w do bazy.
 
             // Sprawdzanie ostatniej werji w GitHub
-            // Za³ó¿my, ¿e u¿ywasz repozytorium GitHub
+            // ZaÅ‚Ã³Å¼my, Å¼e uÅ¼ywasz repozytorium GitHub
             string repoUrl = "https://api.github.com/repos/Przy100/Baza_wiazek_kontraktu";
             //string token = "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";
 
             Configurator configurator = new Configurator();
             //UpdateChecker updater = new UpdateChecker(repoUrl, configurator.Version);
 
-            //await updater.CheckForUpdatesAsync(); // Asynchroniczne wywo³anie metody
+            //await updater.CheckForUpdatesAsync(); // Asynchroniczne wywoÅ‚anie metody
             // Koniec - Sprawdzanie ostatniej werji w GitHub
 
-            // Wyczyœæ DataGridView przed utworzeniem.
+            // WyczyÅ›Ä‡ DataGridView przed utworzeniem.
             dataGridView1.Columns.Clear();
             dataGridView1.Rows.Clear();
             // Progres bar.
             progressBar1.Maximum = 100;
-            progressBar1.Step = 1;
 
-            // Wybranie pliku Excel z list¹ wi¹zek
+            // Wybranie pliku Excel z listÄ… wiÄ…zek
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 Configurator cFile = new Configurator();
@@ -202,7 +268,7 @@ namespace Baza_wiazek_przyciskow_20240205
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
                 progressBar1.Value = 10;
-                Application.DoEvents(); // Pozwala na odœwie¿anie UI w trakcie pêtli
+                Application.DoEvents(); // Pozwala na odÅ›wieÅ¼anie UI w trakcie pÄ™tli
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -210,9 +276,9 @@ namespace Baza_wiazek_przyciskow_20240205
                     this.File_Name_LW.Text = Path.GetFileName(LW_Name);
                     File_Name_LW.Visible = true;
 
-                    // Pobierz œcie¿kê do wybranego pliku
+                    // Pobierz Å›cieÅ¼kÄ™ do wybranego pliku
                     string filePath = openFileDialog.FileName;
-                    // Œcie¿ka lokalna to tymczasowej kopii
+                    // ÅšcieÅ¼ka lokalna to tymczasowej kopii
                     string filePathTemporary = Path.Combine(Path.GetTempPath(), Path.GetFileName(filePath));
                     // Utworz kopie
                     File.Copy(filePath, filePathTemporary, true);
@@ -221,7 +287,7 @@ namespace Baza_wiazek_przyciskow_20240205
                     OpenFile(filePathTemporary);
                     // Dodaj link do zmiennej globalnej.
                     //LinkFromRecentFiles = filePath;
-                    // PrzejdŸ do funkcji g³ównej.
+                    // PrzejdÅº do funkcji gÅ‚Ã³wnej.
                     //MainProgram();
                 }
 
@@ -230,46 +296,112 @@ namespace Baza_wiazek_przyciskow_20240205
         }
         private void dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Sprawdzenie, czy klikniêto kolumnê hiper³¹cza
+            // Sprawdzenie, czy klikniÄ™to kolumnÄ™ hiperÅ‚Ä…cza
             if (e.ColumnIndex == dataGridView1.Columns["Nazwa"].Index && e.RowIndex >= 0)
             {
-                // Zwraca numer wiersza, który chcemy otworzyæ.
+                // Zwraca numer wiersza, ktÃ³ry chcemy otworzyÄ‡.
                 try
                 {
                     System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(LINK[e.RowIndex]) { UseShellExecute = true });
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Nie mo¿na otworzyæ linku: " + ex.Message);
+                    MessageBox.Show("Nie moÅ¼na otworzyÄ‡ linku: " + ex.Message);
                 }
             }
         }
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (dataGridView1 == null || dataGridView1.Columns["Nazwa"] == null)
-                return;  // Zabezpieczenie przed niew³aœciwie zainicjalizowanymi obiektami
-
-            if (e.ColumnIndex == dataGridView1.Columns["Nazwa"].Index && e.RowIndex >= 0)
+        }
+        private void dataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0 || dataGridView1.Columns["Nazwa"] == null)
             {
-                if (dataGridView1.Rows[e.RowIndex] == null)
-                    return;
-
-                DataGridViewLinkCell cell = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex] as DataGridViewLinkCell;
-                if (cell != null && cell.Tag != null)
-                {
-                    cell.Value = cell.Tag.ToString();  // U¿yj ToString() dla bezpieczeñstwa
-                }
+                return;
             }
+
+            if (e.ColumnIndex != dataGridView1.Columns["Nazwa"].Index)
+            {
+                return;
+            }
+
+            e.Paint(e.CellBounds, DataGridViewPaintParts.Background | DataGridViewPaintParts.Border);
+
+            string buttonText = Convert.ToString(e.FormattedValue) ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(buttonText))
+            {
+                e.Handled = true;
+                return;
+            }
+
+            (Color fill, Color border, Color textColor) = GetDocumentChipPalette(buttonText);
+            if ((e.State & DataGridViewElementStates.Selected) == DataGridViewElementStates.Selected)
+            {
+                fill = ControlPaint.Light(fill, 0.12F);
+            }
+
+            Rectangle buttonBounds = Rectangle.Inflate(e.CellBounds, -10, -8);
+            using GraphicsPath path = CreateRoundedPath(buttonBounds, 12);
+            using SolidBrush fillBrush = new SolidBrush(fill);
+            using Pen borderPen = new Pen(border, 1.2F);
+
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.FillPath(fillBrush, path);
+            e.Graphics.DrawPath(borderPen, path);
+
+            TextRenderer.DrawText(
+                e.Graphics,
+                buttonText,
+                new Font("Segoe UI Semibold", 9F, FontStyle.Bold),
+                buttonBounds,
+                textColor,
+                TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+
+            e.Handled = true;
+        }
+        private static GraphicsPath CreateRoundedPath(Rectangle bounds, int radius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            int diameter = radius * 2;
+
+            path.AddArc(bounds.X, bounds.Y, diameter, diameter, 180, 90);
+            path.AddArc(bounds.Right - diameter, bounds.Y, diameter, diameter, 270, 90);
+            path.AddArc(bounds.Right - diameter, bounds.Bottom - diameter, diameter, diameter, 0, 90);
+            path.AddArc(bounds.X, bounds.Bottom - diameter, diameter, diameter, 90, 90);
+            path.CloseFigure();
+
+            return path;
+        }
+        private static (Color fill, Color border, Color textColor) GetDocumentChipPalette(string buttonText)
+        {
+            if (buttonText.StartsWith("PÅ‚yta", StringComparison.OrdinalIgnoreCase))
+            {
+                return (Color.FromArgb(46, 87, 198), Color.FromArgb(92, 133, 255), Color.White);
+            }
+
+            if (buttonText.StartsWith("WiÄ…zka", StringComparison.OrdinalIgnoreCase))
+            {
+                return (Color.FromArgb(56, 124, 95), Color.FromArgb(102, 182, 144), Color.White);
+            }
+
+            return (Color.FromArgb(114, 92, 208), Color.FromArgb(156, 137, 255), Color.White);
         }
         private void InitializeRecentFilesMenu()
         {
-            // Dodanie przyk³adowych wpisów
+            // Dodanie przykÅ‚adowych wpisÃ³w
             for (int i = 0; i < 5; i++)
             {
                 ToolStripMenuItem item = new ToolStripMenuItem($"File {i + 1}");
+                StyleMenuItem(item);
                 item.Click += RecentFile_Click;
                 RecentFiles.DropDownItems.Add(item);
             }
+        }
+        private void StyleMenuItem(ToolStripMenuItem item)
+        {
+            item.BackColor = Color.FromArgb(25, 28, 40);
+            item.ForeColor = Color.FromArgb(230, 235, 245);
+            item.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 238);
         }
         private void RecentFile_Click(object sender, EventArgs e)
         {
@@ -278,15 +410,15 @@ namespace Baza_wiazek_przyciskow_20240205
         }
         public void OpenFile(string filePath)
         {
-            // Wyczyœæ DataGridView przed utworzeniem.
+            // WyczyÅ›Ä‡ DataGridView przed utworzeniem.
             dataGridView1.Columns.Clear();
             dataGridView1.Rows.Clear();
             progressBar1.Value = 10;
             // Tutaj kod do otwierania pliku...
             LinkFromRecentFiles = filePath;
-            // PrzejdŸ do funkcji g³ównej.
+            // PrzejdÅº do funkcji gÅ‚Ã³wnej.
             MainProgram();
-            // Aktualizacja listy ostatnio otwieranych plików
+            // Aktualizacja listy ostatnio otwieranych plikÃ³w
             UpdateRecentFiles(filePath);
         }
         private void UpdateRecentFiles(string filePath)
@@ -297,16 +429,16 @@ namespace Baza_wiazek_przyciskow_20240205
                 recentFiles = new StringCollection();
             }
 
-            // Usuñ œcie¿kê, jeœli ju¿ istnieje, aby unikn¹æ duplikatów
+            // UsuÅ„ Å›cieÅ¼kÄ™, jeÅ›li juÅ¼ istnieje, aby uniknÄ…Ä‡ duplikatÃ³w
             if (recentFiles.Contains(filePath))
             {
                 recentFiles.Remove(filePath);
             }
 
-            // Dodaj œcie¿kê na pocz¹tku listy
+            // Dodaj Å›cieÅ¼kÄ™ na poczÄ…tku listy
             recentFiles.Insert(0, filePath);
 
-            // Ogranicz listê do np. 5 wpisów
+            // Ogranicz listÄ™ do np. 5 wpisÃ³w
             while (recentFiles.Count > 5)
             {
                 recentFiles.RemoveAt(recentFiles.Count - 1);
@@ -315,12 +447,12 @@ namespace Baza_wiazek_przyciskow_20240205
             Properties.Settings.Default.RecentFiles = recentFiles;
             Properties.Settings.Default.Save();
 
-            // Opcjonalnie, aktualizuj interfejs u¿ytkownika
+            // Opcjonalnie, aktualizuj interfejs uÅ¼ytkownika
             UpdateRecentFilesMenu();
         }
         private void UpdateRecentFilesMenu()
         {
-            // Przyk³ad: aktualizacja menu w formularzu
+            // PrzykÅ‚ad: aktualizacja menu w formularzu
             RecentFiles.DropDownItems.Clear();
             try
             {
@@ -329,6 +461,7 @@ namespace Baza_wiazek_przyciskow_20240205
                     foreach (string file in Properties.Settings.Default.RecentFiles)
                     {
                         ToolStripMenuItem item = new ToolStripMenuItem(file);
+                        StyleMenuItem(item);
                         item.Click += (sender, e) => OpenFile(file);
                         RecentFiles.DropDownItems.Add(item);
                     }
@@ -344,7 +477,7 @@ namespace Baza_wiazek_przyciskow_20240205
 
         private void opcjeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Otwórz okno opcji
+            // OtwÃ³rz okno opcji
             //Form2 opctionForm2 = new Form2();
             //opctionForm2.Show();
         }
@@ -355,11 +488,11 @@ namespace Baza_wiazek_przyciskow_20240205
         }
 
         /// <summary>
-        /// Otwiera orginalny plik aktualnie przegl¹danego pliku Excel
+        /// Otwiera orginalny plik aktualnie przeglÄ…danego pliku Excel
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ¹cyPlikToolStripMenuItem_Click(object sender, EventArgs e)
+        private void Ä…cyPlikToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string filePath = LinkFromRecentFiles;
 
@@ -375,8 +508,9 @@ namespace Baza_wiazek_przyciskow_20240205
             }
             catch (Exception ex)
             {
-                MessageBox.Show("B³¹d podczas otwierania pliku: " + ex.Message);
+                MessageBox.Show("BÅ‚Ä…d podczas otwierania pliku: " + ex.Message);
             }
         }
     }
 }
+
