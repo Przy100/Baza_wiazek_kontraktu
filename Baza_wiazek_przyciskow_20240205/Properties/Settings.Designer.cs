@@ -33,5 +33,17 @@ namespace Baza_wiazek_przyciskow_20240205.Properties {
                 this["RecentFiles"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LightFresh")]
+        public string ColorTheme {
+            get {
+                return ((string)(this["ColorTheme"]));
+            }
+            set {
+                this["ColorTheme"] = value;
+            }
+        }
     }
 }

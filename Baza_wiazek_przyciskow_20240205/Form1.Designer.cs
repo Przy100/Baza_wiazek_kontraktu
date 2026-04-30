@@ -396,7 +396,7 @@ namespace Baza_wiazek_przyciskow_20240205
             label1_version.Name = "label1_version";
             label1_version.Size = new Size(97, 22);
             label1_version.TabIndex = 2;
-            label1_version.Text = "v2.2.1";
+            label1_version.Text = "v2.3.1";
             label1_version.TextAlign = ContentAlignment.MiddleRight;
             label1_version.Click += label1_version_Click;
             // 
