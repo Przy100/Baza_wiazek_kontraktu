@@ -4,13 +4,25 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationIcon>icons8-connector-25.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="icons8-connector-25.ico" />
+    <Compile Remove="Form1.cs" />
+    <Compile Remove="Form1.Designer.cs" />
+    <Compile Remove="Form2.cs" />
+    <Compile Remove="Form2.Designer.cs" />
+    <Compile Remove="Program.cs" />
+    <EmbeddedResource Remove="Form1.resx" />
+    <EmbeddedResource Remove="Form2.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="icons8-connector-25.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
