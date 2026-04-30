@@ -61,3 +61,14 @@ namespace Baza_wiazek_przyciskow_20240205.Source
 // InitialDirectory = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu";
 // filePath_DATA = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\!NIE_OTWIERAĆ_Baza_wiązek_kontraktu_DATA.xlsx";
 // startPath = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\";
+
+
+// Komendy na publisha:
+
+// dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -p:IncludeAllContentForSelfExtract=true
+
+// Druga, prostsza opcja: nie pakować do single-file i kopiować cały folder publish:
+// dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile = false
+
+// Jeszcze jedna ważna rzecz: --self - contained false oznacza, że na komputerze docelowym musi być zainstalowany .NET Desktop Runtime 8 x64. Jeśli chcesz uruchamiać na komputerach bez zainstalowanego .NET, użyj:
+// dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile = true - p:IncludeAllContentForSelfExtract = true
