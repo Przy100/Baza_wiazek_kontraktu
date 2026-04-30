@@ -1,6 +1,7 @@
 <Window x:Class="Baza_wiazek_przyciskow_20240205.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Baza_wiazek_przyciskow_20240205"
         Title="Baza wiązek kontraktu"
         Width="1440"
         Height="820"
@@ -187,27 +188,163 @@
                           ItemsSource="{Binding Documents}"
                           AlternationCount="2"
                           IsReadOnly="True"
-                          EnableRowVirtualization="True">
+                          EnableRowVirtualization="True"
+                          ClipboardCopyMode="IncludeHeader"
+                          SelectionMode="Extended"
+                          SelectionUnit="CellOrRowHeader">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Kopiuj"
+                                      Command="Copy"
+                                      CommandTarget="{Binding PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Lp." Binding="{Binding Number}" Width="64" />
-                        <DataGridTextColumn Header="Numer wiązki BTE" Binding="{Binding BteNumber}" Width="160" />
-                        <DataGridTemplateColumn Header="Typ dokumentu" Width="170">
+                        <DataGridTemplateColumn Header="" Width="44" CanUserResize="False" ClipboardContentBinding="{Binding DocumentAvailability}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Style="{StaticResource ChipButtonStyle}"
-                                            Content="{Binding DocumentKind}"
-                                            Click="OpenDocument_Click"
-                                            ToolTip="{Binding LinkPath}" />
+                                    <Grid ToolTip="{Binding Revision, StringFormat=Rewizja: {0}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="6" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Width="3"
+                                                Height="32"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                CornerRadius="2"
+                                                Background="{Binding Revision, Converter={StaticResource RevisionToBrushConverter}}" />
+
+                                        <Button Grid.Column="1"
+                                                Style="{StaticResource StatusIndicatorButtonStyle}"
+                                                ToolTip="{Binding DocumentAvailabilityDetails}"
+                                                Click="ShowDocumentDiagnostics_Click">
+                                            <Grid Width="16" Height="16">
+                                                <Ellipse Fill="{Binding DocumentAvailability, Converter={StaticResource DocumentAvailabilityToBrushConverter}}"
+                                                         Opacity="0.82" />
+                                                <TextBlock Text="!"
+                                                           Foreground="White"
+                                                           FontSize="10"
+                                                           FontWeight="Bold"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CanOpenDocument}" Value="False">
+                                                                    <Setter Property="Visibility" Value="Visible" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Grid>
+                                        </Button>
+                                    </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Indeks SBC" Binding="{Binding SbcIndex}" Width="150" />
-                        <DataGridTextColumn Header="Ilość" Binding="{Binding Quantity}" Width="78" />
-                        <DataGridTextColumn Header="Priorytet" Binding="{Binding Priority}" Width="115" />
-                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="135" />
-                        <DataGridTextColumn Header="Rewizja" Binding="{Binding Revision}" Width="105" />
-                        <DataGridTextColumn Header="Opis / zastosowanie" Binding="{Binding Description}" Width="2*" />
-                        <DataGridTextColumn Header="Uwagi" Binding="{Binding Notes}" Width="*" />
+                        <DataGridTextColumn Header="Lp." Binding="{Binding Number}" Width="64">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTemplateColumn Header="Numer wiązki BTE" Width="160" ClipboardContentBinding="{Binding BteNumber}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <local:RichTextBlock Value="{Binding BteNumberText}"
+                                                         TextWrapping="Wrap"
+                                                         VerticalAlignment="Center" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Typ dokumentu" Width="170" ClipboardContentBinding="{Binding DocumentKind}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource ChipButtonStyle}"
+                                            Margin="0,4"
+                                            Click="OpenDocument_Click"
+                                            ToolTip="{Binding LinkPath}">
+                                        <local:RichTextBlock Value="{Binding DocumentKindText}" />
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Indeks SBC" Width="150" ClipboardContentBinding="{Binding SbcIndex}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <local:RichTextBlock Value="{Binding SbcIndexText}"
+                                                         TextWrapping="Wrap"
+                                                         VerticalAlignment="Center" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Ilość" Width="78" ClipboardContentBinding="{Binding Quantity}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <local:RichTextBlock Value="{Binding QuantityText}"
+                                                         TextWrapping="Wrap"
+                                                         VerticalAlignment="Center" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Priorytet" Width="115" ClipboardContentBinding="{Binding Priority}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <local:RichTextBlock Value="{Binding PriorityText}"
+                                                         TextWrapping="Wrap"
+                                                         VerticalAlignment="Center" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Status" Width="135" ClipboardContentBinding="{Binding Status}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <local:RichTextBlock Value="{Binding StatusText}"
+                                                         TextWrapping="Wrap"
+                                                         VerticalAlignment="Center" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Rewizja" Width="105" ClipboardContentBinding="{Binding Revision}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <local:RichTextBlock Value="{Binding RevisionText}"
+                                                         TextWrapping="Wrap"
+                                                         VerticalAlignment="Center" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Opis / zastosowanie" Width="2*" ClipboardContentBinding="{Binding Description}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <local:RichTextBlock Value="{Binding DescriptionText}"
+                                                         TextWrapping="Wrap"
+                                                         VerticalAlignment="Center" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Uwagi" Width="*" ClipboardContentBinding="{Binding Notes}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <local:RichTextBlock Value="{Binding NotesText}"
+                                                         TextWrapping="Wrap"
+                                                         VerticalAlignment="Center" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
 

@@ -134,8 +134,10 @@ namespace Baza_wiazek_przyciskow_20240205
                 throw new InvalidOperationException("Nie można odczytać arkusza \"Lista wiązek\".");
             }
 
-            string[] bte = excelReader.FillArray(filePath, rowCount, 2);
-            string[] names = excelReader.FillArray(filePath, rowCount, 3);
+            FormattedTextValue[] bteText = excelReader.FillFormattedArray(filePath, rowCount, 2);
+            FormattedTextValue[] nameText = excelReader.FillFormattedArray(filePath, rowCount, 3);
+            string[] bte = bteText.Select(cell => cell.Text).ToArray();
+            string[] names = nameText.Select(cell => cell.Text).ToArray();
             reportProgress(20, "Analiza nazw dokumentów");
 
             ConvertData convertData = new();
@@ -146,38 +148,61 @@ namespace Baza_wiazek_przyciskow_20240205
             bte = convertData.MoreThenOneBTENumber(bte);
             string[] normalizedBte = convertData.CodePlate(names, bte);
             string[] linkNames = convertData.LinkNameWire(folders, names, normalizedBte);
-            string[] finishPaths = convertData.ExcelOrZuken(linkNames);
             reportProgress(45, "Budowanie ścieżek dokumentacji");
 
-            string[] sbcIndexes = excelReader.FillArray(filePath, rowCount, 4);
+            FormattedTextValue[] sbcIndexText = excelReader.FillFormattedArray(filePath, rowCount, 4);
+            string[] sbcIndexes = sbcIndexText.Select(cell => cell.Text).ToArray();
             reportProgress(55, "Odczyt indeksów SBC");
-            string[] quantities = excelReader.FillArray(filePath, rowCount, 5);
+            FormattedTextValue[] quantityText = excelReader.FillFormattedArray(filePath, rowCount, 5);
+            string[] quantities = quantityText.Select(cell => cell.Text).ToArray();
             reportProgress(65, "Odczyt ilości");
-            string[] priorities = excelReader.FillArray(filePath, rowCount, 6);
+            FormattedTextValue[] priorityText = excelReader.FillFormattedArray(filePath, rowCount, 6);
+            string[] priorities = priorityText.Select(cell => cell.Text).ToArray();
             reportProgress(75, "Odczyt priorytetów");
-            string[] statuses = excelReader.FillArray(filePath, rowCount, 7);
+            FormattedTextValue[] statusText = excelReader.FillFormattedArray(filePath, rowCount, 7);
+            string[] statuses = statusText.Select(cell => cell.Text).ToArray();
             reportProgress(82, "Odczyt statusów");
-            string[] revisions = excelReader.FillArray(filePath, rowCount, 8);
-            string[] descriptions = excelReader.FillArray(filePath, rowCount, 9);
-            string[] notes = excelReader.FillArray(filePath, rowCount, 10);
+            FormattedTextValue[] revisionText = excelReader.FillFormattedArray(filePath, rowCount, 8);
+            string[] revisions = revisionText.Select(cell => cell.Text).ToArray();
+            FormattedTextValue[] descriptionText = excelReader.FillFormattedArray(filePath, rowCount, 9);
+            string[] descriptions = descriptionText.Select(cell => cell.Text).ToArray();
+            FormattedTextValue[] notesText = excelReader.FillFormattedArray(filePath, rowCount, 10);
+            string[] notes = notesText.Select(cell => cell.Text).ToArray();
             reportProgress(92, "Przygotowanie tabeli");
+            reportProgress(94, "Sprawdzanie dostępności dokumentów");
 
             List<DocumentRow> rows = new(rowCount);
             for (int i = 0; i < rowCount; i++)
             {
+                DocumentPathResolution pathResolution = DocumentPathResolution.Resolve(linkNames[i]);
+
                 rows.Add(new DocumentRow
                 {
                     Number = i + 1,
                     BteNumber = normalizedBte[i] ?? string.Empty,
+                    BteNumberText = bteText[i],
                     DocumentKind = names[i] ?? string.Empty,
+                    DocumentKindText = nameText[i],
                     SbcIndex = sbcIndexes[i] ?? string.Empty,
+                    SbcIndexText = sbcIndexText[i],
                     Quantity = quantities[i] ?? string.Empty,
+                    QuantityText = quantityText[i],
                     Priority = priorities[i] ?? string.Empty,
+                    PriorityText = priorityText[i],
                     Status = statuses[i] ?? string.Empty,
+                    StatusText = statusText[i],
                     Revision = revisions[i] ?? string.Empty,
+                    RevisionText = revisionText[i],
                     Description = descriptions[i] ?? string.Empty,
+                    DescriptionText = descriptionText[i],
                     Notes = notes[i] ?? string.Empty,
-                    LinkPath = finishPaths[i] ?? string.Empty
+                    NotesText = notesText[i],
+                    LinkPath = pathResolution.ResolvedPath,
+                    BaseLinkPath = pathResolution.BasePath,
+                    DocumentAvailability = pathResolution.Availability,
+                    DocumentAvailabilityDetails = pathResolution.Details,
+                    CheckedPaths = pathResolution.CheckedPaths,
+                    CanOpenDocument = pathResolution.CanOpen
                 });
             }
 
@@ -191,7 +216,21 @@ namespace Baza_wiazek_przyciskow_20240205
                 return;
             }
 
-            OpenPath(row.LinkPath, "Nie można otworzyć dokumentacji.");
+            if (!row.CanOpenDocument)
+            {
+                ShowDocumentDiagnostics(row);
+                return;
+            }
+
+            OpenDocumentPath(row);
+        }
+
+        private void ShowDocumentDiagnostics_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button { DataContext: DocumentRow row })
+            {
+                ShowDocumentDiagnostics(row);
+            }
         }
 
         private void OpenCurrentFile_Click(object sender, RoutedEventArgs e)
@@ -327,6 +366,31 @@ namespace Baza_wiazek_przyciskow_20240205
             {
                 ShowError(errorMessage, ex);
             }
+        }
+
+        private void OpenDocumentPath(DocumentRow row)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = row.LinkPath,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                ShowDocumentDiagnostics(row, ex.Message);
+            }
+        }
+
+        private void ShowDocumentDiagnostics(DocumentRow row, string? extraMessage = null)
+        {
+            DocumentDiagnosticsWindow diagnosticsWindow = new(row, extraMessage)
+            {
+                Owner = this
+            };
+            diagnosticsWindow.ShowDialog();
         }
 
         private void UpdateProgress(int value, string status)
