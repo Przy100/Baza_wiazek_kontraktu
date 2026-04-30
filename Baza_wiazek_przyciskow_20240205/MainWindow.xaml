@@ -61,6 +61,8 @@
                         <Menu VerticalAlignment="Center">
                             <MenuItem x:Name="RecentFilesMenuItem" Header="Ostatnio otwierane" />
                             <MenuItem Header="Opcje">
+                                <MenuItem Header="Ścieżki programu" Click="ConfigureLinks_Click" />
+                                <Separator />
                                 <MenuItem Header="Motyw kolorów">
                                     <MenuItem x:Name="ThemeLightFreshMenuItem"
                                               Header="Jasny Fresh"

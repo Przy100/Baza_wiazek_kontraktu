@@ -1,48 +1,44 @@
-﻿using DocumentFormat.OpenXml.Office2010.Excel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Baza_wiazek_przyciskow_20240205.Properties;
 
 namespace Baza_wiazek_przyciskow_20240205.Source
 {
     public class Configurator
     {
+        public const string DefaultInitialDirectory = "\\\\solaris_pl\\bolechowo\\Biuro_techniczne\\007_dokumentacja_elektryczna\\Wiązki\\! Specyfikacje wiązek elektrycznych";
+        public const string DefaultFilePathData = "\\\\solaris_pl\\bolechowo\\Biuro_techniczne\\007_dokumentacja_elektryczna\\ELCAD\\CAE7.3.2\\schematy_343\\Wojciechowski_sz\\EXCEL_VBA\\AA_Baza_wiązek_kontraktu_Vol_2\\DATA\\!NIE_OTWIERAĆ_Baza_wiązek_kontraktu_DATA.xlsx";
+        public const string DefaultStartPath = "\\\\solaris_pl\\bolechowo\\Biuro_techniczne\\007_dokumentacja_elektryczna\\Wiązki\\Urbino G4\\";
+
         // Konfiguracja linków.
-        public string InitialDirectory {  get; set; }
-        public string filePath_DATA {  get; set; }
-        public string startPath {  get; set; }
+        public string InitialDirectory { get; set; }
+        public string filePath_DATA { get; set; }
+        public string startPath { get; set; }
 
         // Konfiguracja serwera.
-        public string client {  get; set; }
+        public string client { get; set; }
         public string database { get; set; }
-        public string collection {  get; set; }
+        public string collection { get; set; }
         public string Version { get; set; }
 
-        public Configurator() 
+        public Configurator()
         {
             // dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained false
 
-            InitialDirectory = "\\\\solaris_pl\\bolechowo\\Biuro_techniczne\\007_dokumentacja_elektryczna\\Wiązki\\! Specyfikacje wiązek elektrycznych";
-            filePath_DATA = "\\\\solaris_pl\\bolechowo\\Biuro_techniczne\\007_dokumentacja_elektryczna\\ELCAD\\CAE7.3.2\\schematy_343\\Wojciechowski_sz\\EXCEL_VBA\\AA_Baza_wiązek_kontraktu_Vol_2\\DATA\\!NIE_OTWIERAĆ_Baza_wiązek_kontraktu_DATA.xlsx";
-            startPath = "\\\\solaris_pl\\bolechowo\\Biuro_techniczne\\007_dokumentacja_elektryczna\\Wiązki\\Urbino G4\\";
+            InitialDirectory = GetConfiguredPath(Settings.Default.InitialDirectory, DefaultInitialDirectory);
+            filePath_DATA = GetConfiguredPath(Settings.Default.FilePathData, DefaultFilePathData);
+            startPath = GetConfiguredPath(Settings.Default.StartPath, DefaultStartPath);
 
-            // InitialDirectory = "E:\\A_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu";
-            // filePath_DATA = "E:\\A_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\!NIE_OTWIERAĆ_Baza_wiązek_kontraktu_DATA.xlsx";
-            // startPath = "E:\\A_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\";
-
-            //InitialDirectory = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu";
-            // filePath_DATA = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\!NIE_OTWIERAĆ_Baza_wiązek_kontraktu_DATA.xlsx";
-            // startPath = "C:\\AA_SZYMON_BACKUP\\a_Instalatory\\Visual_Studio_C#\\Baza_wiazek_kontraktu\\";
-            //Form2 form2 = new Form2();
             // Serwer
             client = "mongodb://localhost:27017";
             database = "baza_wiazek_kontraktu";
             collection = "users";
 
             // Wersja
-            Version = "v2.3.1";
+            Version = "v2.4.1";
+        }
+
+        private static string GetConfiguredPath(string? configuredPath, string defaultPath)
+        {
+            return string.IsNullOrWhiteSpace(configuredPath) ? defaultPath : configuredPath;
         }
     }
 }

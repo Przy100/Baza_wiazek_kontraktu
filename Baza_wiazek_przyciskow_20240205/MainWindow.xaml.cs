@@ -205,6 +205,19 @@ namespace Baza_wiazek_przyciskow_20240205
             OpenPath(currentFilePath, "Nie można otworzyć aktualnego pliku LW.");
         }
 
+        private void ConfigureLinks_Click(object sender, RoutedEventArgs e)
+        {
+            LinkSettingsWindow settingsWindow = new()
+            {
+                Owner = this
+            };
+
+            if (settingsWindow.ShowDialog() == true)
+            {
+                StatusTextBlock.Text = "Zapisano ścieżki";
+            }
+        }
+
         private void ThemeMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not MenuItem { Tag: string themeKey })
