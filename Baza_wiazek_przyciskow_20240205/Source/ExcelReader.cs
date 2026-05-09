@@ -1,13 +1,8 @@
-﻿using ClosedXML.Excel;
+using Baza_wiazek_przyciskow_20240205;
+using ClosedXML.Excel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OfficeOpenXml;
-using System.IO;
-using ExcelDataReader;
-using System.Data;
 
 namespace Baza_wiazek_przyciskow_20240205.Source
 {
@@ -30,8 +25,9 @@ namespace Baza_wiazek_przyciskow_20240205.Source
                     var worksheet = workbook.Worksheet("Lista wiązek");
                     for (int row = startRow; row <= worksheet.LastRowUsed().RowNumber(); row++)
                     {
-                        var cellValue = worksheet.Cell(row, columnIndex).GetValue<string>();
-                        if (cellValue.Contains("F0") || cellValue.Contains("F1") || cellValue.Contains("F2"))
+                        var cell = worksheet.Cell(row, columnIndex);
+                        var cellValue = cell.GetValue<string>();
+                        if ((cellValue.Contains("F0") || cellValue.Contains("F1") || cellValue.Contains("F2")) && IsCellCompletelyStrikethrough(cell) == false)
                         {
                             count++;
                         }
@@ -45,36 +41,35 @@ namespace Baza_wiazek_przyciskow_20240205.Source
             }
             return count;
         }
+
         /// <summary>
-        /// Wypełnia tablice numerami BTE oraz nazwami wiązek
+        /// Wypełnia tablice numerami BTE oraz nazwami wiązek.
         /// </summary>
         /// <param name="filePath">Ścieżka do pliku Excel.</param>
         /// <param name="rowCount">Liczba wierszy które trzeba przeiterować.</param>
-        /// <param name="column">Numer kolumny, która ma zostać zapisana do tablicy</param>
-        /// <returns>Tablica wypełniona dannymi.</returns>
+        /// <param name="column">Numer kolumny, która ma zostać zapisana do tablicy.</param>
+        /// <returns>Tablica wypełniona danymi.</returns>
         public string[] FillArray(string filePath, int rowCount, int column)
         {
-            string[] DATA = new string[rowCount];
-            // j - zmienna pomocnicza, czasem wiązki są pod wierszem SIMS i naklejki
-            int j = 0;
+            return FillFormattedArray(filePath, rowCount, column).Select(cell => cell.Text).ToArray();
+        }
+
+        public FormattedTextValue[] FillFormattedArray(string filePath, int rowCount, int column)
+        {
+            List<FormattedTextValue> data = new(rowCount);
             try
             {
                 using (var workbook = new XLWorkbook(filePath))
                 {
                     var worksheet = workbook.Worksheet("Lista wiązek");
-                    for (int i = 1; i <= worksheet.LastRowUsed().RowNumber(); i++)
+                    int lastRowNumber = worksheet.LastRowUsed().RowNumber();
+                    for (int row = 5; row <= lastRowNumber && data.Count < rowCount; row++)
                     {
-                        var value = worksheet.Cell(i + 4, 6).GetValue<string>();
-                        var cellStrike = worksheet.Cell(i + 4, 6);
-                        if ((value.Contains("F0") || value.Contains("F1") || value.Contains("F2")) && (cellStrike.Style.Font.Strikethrough == false))
+                        var value = worksheet.Cell(row, 6).GetValue<string>();
+                        var priorityCell = worksheet.Cell(row, 6);
+                        if ((value.Contains("F0") || value.Contains("F1") || value.Contains("F2")) && IsCellCompletelyStrikethrough(priorityCell) == false)
                         {
-                            // Pobierz wartość komórki i przypisz do tablicy
-                            var cellValue = worksheet.Cell(i + 4, column).Value.ToString();
-                            DATA[i - 1 - j] = cellValue;
-                        }
-                        else
-                        {
-                            j++;
+                            data.Add(ReadFormattedCell(worksheet.Cell(row, column)));
                         }
                     }
                 }
@@ -84,8 +79,44 @@ namespace Baza_wiazek_przyciskow_20240205.Source
                 Console.WriteLine("Wystąpił błąd: " + ex.Message);
             }
 
-            return DATA;
+            while (data.Count < rowCount)
+            {
+                data.Add(FormattedTextValue.FromPlainText(string.Empty));
+            }
+
+            return data.ToArray();
         }
-       
+
+        private static FormattedTextValue ReadFormattedCell(IXLCell cell)
+        {
+            string fallbackText = cell.GetFormattedString();
+            if (!cell.HasRichText)
+            {
+                return new FormattedTextValue(
+                    fallbackText,
+                    [new FormattedTextRun(fallbackText, cell.Style.Font.Strikethrough)]);
+            }
+
+            List<FormattedTextRun> runs = new();
+            foreach (IXLRichString richString in cell.GetRichText())
+            {
+                runs.Add(new FormattedTextRun(richString.Text, richString.Strikethrough));
+            }
+
+            return runs.Count == 0
+                ? FormattedTextValue.FromPlainText(fallbackText)
+                : new FormattedTextValue(string.Concat(runs.Select(run => run.Text)), runs);
+        }
+
+        private static bool IsCellCompletelyStrikethrough(IXLCell cell)
+        {
+            if (!cell.HasRichText)
+            {
+                return cell.Style.Font.Strikethrough;
+            }
+
+            List<IXLRichString> richStrings = cell.GetRichText().ToList();
+            return richStrings.Count > 0 && richStrings.All(richString => string.IsNullOrEmpty(richString.Text) || richString.Strikethrough);
+        }
     }
 }

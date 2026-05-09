@@ -45,5 +45,41 @@ namespace Baza_wiazek_przyciskow_20240205.Properties {
                 this["ColorTheme"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\\\\solaris_pl\\bolechowo\\Biuro_techniczne\\007_dokumentacja_elektryczna\\Wiązki\\! Specyfikacje wiązek elektrycznych")]
+        public string InitialDirectory {
+            get {
+                return ((string)(this["InitialDirectory"]));
+            }
+            set {
+                this["InitialDirectory"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\\\\solaris_pl\\bolechowo\\Biuro_techniczne\\007_dokumentacja_elektryczna\\ELCAD\\CAE7.3.2\\schematy_343\\Wojciechowski_sz\\EXCEL_VBA\\AA_Baza_wiązek_kontraktu_Vol_2\\DATA\\!NIE_OTWIERAĆ_Baza_wiązek_kontraktu_DATA.xlsx")]
+        public string FilePathData {
+            get {
+                return ((string)(this["FilePathData"]));
+            }
+            set {
+                this["FilePathData"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\\\\solaris_pl\\bolechowo\\Biuro_techniczne\\007_dokumentacja_elektryczna\\Wiązki\\Urbino G4\\")]
+        public string StartPath {
+            get {
+                return ((string)(this["StartPath"]));
+            }
+            set {
+                this["StartPath"] = value;
+            }
+        }
     }
 }

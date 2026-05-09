@@ -8,5 +8,14 @@
     <Setting Name="ColorTheme" Type="System.String" Scope="User">
       <Value Profile="(Default)">LightFresh</Value>
     </Setting>
+    <Setting Name="InitialDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\solaris_pl\bolechowo\Biuro_techniczne\007_dokumentacja_elektryczna\Wiązki\! Specyfikacje wiązek elektrycznych</Value>
+    </Setting>
+    <Setting Name="FilePathData" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\solaris_pl\bolechowo\Biuro_techniczne\007_dokumentacja_elektryczna\ELCAD\CAE7.3.2\schematy_343\Wojciechowski_sz\EXCEL_VBA\AA_Baza_wiązek_kontraktu_Vol_2\DATA\!NIE_OTWIERAĆ_Baza_wiązek_kontraktu_DATA.xlsx</Value>
+    </Setting>
+    <Setting Name="StartPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\solaris_pl\bolechowo\Biuro_techniczne\007_dokumentacja_elektryczna\Wiązki\Urbino G4\</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
