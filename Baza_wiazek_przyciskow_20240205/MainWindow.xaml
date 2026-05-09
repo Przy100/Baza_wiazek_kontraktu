@@ -50,7 +50,7 @@
                                        FontSize="26"
                                        FontWeight="SemiBold"
                                        Foreground="{DynamicResource InkBrush}" />
-                            <TextBlock Text="Wczytaj listę LW, sprawdź statusy i otwieraj dokumentację bez szukania po katalogach."
+                            <TextBlock Text="Wczytaj listę wiązek i otwieraj dokumentację bez szukania po katalogach."
                                        Margin="0,4,0,0"
                                        Foreground="{DynamicResource MutedInkBrush}" />
                         </StackPanel>
@@ -98,7 +98,7 @@
                                    VerticalAlignment="Center"
                                    Foreground="{DynamicResource MutedInkBrush}"
                                    FontWeight="SemiBold"
-                                   Text="v2.3.1" />
+                                   Text="v2.5.2" />
                     </StackPanel>
                 </Grid>
 
@@ -115,10 +115,10 @@
                             Style="{StaticResource PrimaryButtonStyle}"
                             Click="ChooseFile_Click">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="+"
+                            <TextBlock Text=" +"
                                        FontSize="16"
                                        Margin="0,0,8,1" />
-                            <TextBlock Text="Wskaż listę wiązek kontraktu" />
+                            <TextBlock Text="Wskaż listę wiązek kontraktu  " />
                         </StackPanel>
                     </Button>
 
@@ -362,7 +362,7 @@
                                    FontWeight="SemiBold"
                                    TextAlignment="Center"
                                    Foreground="{DynamicResource InkBrush}" />
-                        <TextBlock Text="Po wczytaniu arkusza tabela pokaże numery BTE, statusy, priorytety i przyciski do dokumentacji."
+                        <TextBlock Text="Po wczytaniu arkusza zostaną stworzone hiperłącza, które oszczędzą Twój czas i przyspieszą pracę."
                                    Margin="0,8,0,0"
                                    TextAlignment="Center"
                                    TextWrapping="Wrap"
