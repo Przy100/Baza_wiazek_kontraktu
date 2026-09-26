@@ -62,6 +62,13 @@
                         <Menu VerticalAlignment="Center">
                             <MenuItem x:Name="RecentFilesMenuItem" Header="Ostatnio otwierane" />
                             <MenuItem Header="Opcje">
+                                <MenuItem StaysOpenOnClick="True">
+                                    <MenuItem.Header>
+                                        <CheckBox x:Name="ExcelViewToggle" Content="Formatowanie z Excela"
+                                                  Style="{StaticResource SwitchStyle}"
+                                                  Checked="ExcelView_Changed" Unchecked="ExcelView_Changed" />
+                                    </MenuItem.Header>
+                                </MenuItem>
                                 <MenuItem Header="Ścieżki programu" Click="ConfigureLinks_Click" />
                                 <Separator />
                                 <MenuItem Header="Motyw kolorów">
@@ -98,7 +105,7 @@
                                    VerticalAlignment="Center"
                                    Foreground="{DynamicResource MutedInkBrush}"
                                    FontWeight="SemiBold"
-                                   Text="v2.5.2" />
+                                   Text="v.2.6.0" />
                     </StackPanel>
                 </Grid>
 
@@ -189,18 +196,20 @@
                           AlternationCount="2"
                           IsReadOnly="True"
                           EnableRowVirtualization="True"
-                          ClipboardCopyMode="IncludeHeader"
+                          EnableColumnVirtualization="True"
+                          ClipboardCopyMode="ExcludeHeader"
                           SelectionMode="Extended"
-                          SelectionUnit="CellOrRowHeader">
+                          SelectionUnit="CellOrRowHeader"
+                          PreviewKeyDown="DocumentsGrid_PreviewKeyDown"
+                          PreviewMouseRightButtonDown="DocumentsGrid_PreviewMouseRightButtonDown">
                     <DataGrid.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Kopiuj"
-                                      Command="Copy"
-                                      CommandTarget="{Binding PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+                            <MenuItem Header="Kopiuj zaznaczenie" Click="CopySelection_Click" />
+                            <MenuItem Header="Kopiuj z nagłówkami" Click="CopySelectionWithHeaders_Click" />
                         </ContextMenu>
                     </DataGrid.ContextMenu>
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="" Width="44" CanUserResize="False" ClipboardContentBinding="{Binding DocumentAvailability}">
+                        <DataGridTemplateColumn Header="" Width="44" CanUserResize="False" SortMemberPath="DocumentAvailability" ClipboardContentBinding="{Binding DocumentAvailability}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid ToolTip="{Binding Revision, StringFormat=Rewizja: {0}}">
@@ -246,101 +255,89 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Lp." Binding="{Binding Number}" Width="64">
-                            <DataGridTextColumn.CellStyle>
-                                <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}">
-                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                                </Style>
-                            </DataGridTextColumn.CellStyle>
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                    <Setter Property="TextAlignment" Value="Center" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTemplateColumn Header="Numer wiązki BTE" Width="160" ClipboardContentBinding="{Binding BteNumber}">
+                        <DataGridTemplateColumn Header="Lp." SortMemberPath="Number" Width="64" ClipboardContentBinding="{Binding Number}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <local:RichTextBlock Value="{Binding BteNumberText}"
-                                                         TextWrapping="Wrap"
+                                    <TextBox Text="{Binding Number, Mode=OneWay}" IsReadOnly="True" BorderThickness="0"
+                                             Background="Transparent" Foreground="{DynamicResource InkBrush}"
+                                             TextAlignment="Center" VerticalAlignment="Center" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Numer wiązki BTE" Width="160" SortMemberPath="BteNumber" ClipboardContentBinding="{Binding BteNumber}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <local:SelectableCellText Value="{Binding BteNumberText}"
                                                          VerticalAlignment="Center" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Typ dokumentu" Width="170" ClipboardContentBinding="{Binding DocumentKind}">
+                        <DataGridTemplateColumn Header="Typ dokumentu" Width="170" SortMemberPath="DocumentKind" ClipboardContentBinding="{Binding DocumentKind}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Style="{StaticResource ChipButtonStyle}"
-                                            Margin="0,4"
+                                    <local:DocumentButton Style="{StaticResource ChipButtonStyle}"
                                             Click="OpenDocument_Click"
                                             ToolTip="{Binding LinkPath}">
-                                        <local:RichTextBlock Value="{Binding DocumentKindText}" />
-                                    </Button>
+                                        <local:SelectableCellText Value="{Binding DocumentKindText}"
+                                            Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                            FontWeight="{Binding FontWeight, RelativeSource={RelativeSource AncestorType=Button}}"
+                                            TextAlignment="Center" VerticalAlignment="Center" />
+                                    </local:DocumentButton>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Indeks SBC" Width="150" ClipboardContentBinding="{Binding SbcIndex}">
+                        <DataGridTemplateColumn Header="Indeks SBC" Width="150" SortMemberPath="SbcIndex" ClipboardContentBinding="{Binding SbcIndex}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <local:RichTextBlock Value="{Binding SbcIndexText}"
-                                                         TextWrapping="Wrap"
+                                    <local:SelectableCellText Value="{Binding SbcIndexText}"
                                                          VerticalAlignment="Center" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Ilość" Width="78" ClipboardContentBinding="{Binding Quantity}">
+                        <DataGridTemplateColumn Header="Ilość" Width="78" SortMemberPath="Quantity" ClipboardContentBinding="{Binding Quantity}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <local:RichTextBlock Value="{Binding QuantityText}"
-                                                         TextWrapping="Wrap"
+                                    <local:SelectableCellText Value="{Binding QuantityText}"
                                                          VerticalAlignment="Center" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Priorytet" Width="115" ClipboardContentBinding="{Binding Priority}">
+                        <DataGridTemplateColumn Header="Priorytet" Width="115" SortMemberPath="Priority" ClipboardContentBinding="{Binding Priority}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <local:RichTextBlock Value="{Binding PriorityText}"
-                                                         TextWrapping="Wrap"
+                                    <local:SelectableCellText Value="{Binding PriorityText}"
                                                          VerticalAlignment="Center" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Status" Width="135" ClipboardContentBinding="{Binding Status}">
+                        <DataGridTemplateColumn Header="Status" Width="135" SortMemberPath="Status" ClipboardContentBinding="{Binding Status}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <local:RichTextBlock Value="{Binding StatusText}"
-                                                         TextWrapping="Wrap"
+                                    <local:SelectableCellText Value="{Binding StatusText}"
                                                          VerticalAlignment="Center" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Rewizja" Width="105" ClipboardContentBinding="{Binding Revision}">
+                        <DataGridTemplateColumn Header="Rewizja" Width="105" SortMemberPath="Revision" ClipboardContentBinding="{Binding Revision}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <local:RichTextBlock Value="{Binding RevisionText}"
-                                                         TextWrapping="Wrap"
+                                    <local:SelectableCellText Value="{Binding RevisionText}"
                                                          VerticalAlignment="Center" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Opis / zastosowanie" Width="2*" ClipboardContentBinding="{Binding Description}">
+                        <DataGridTemplateColumn Header="Opis / zastosowanie" Width="2*" SortMemberPath="Description" ClipboardContentBinding="{Binding Description}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <local:RichTextBlock Value="{Binding DescriptionText}"
-                                                         TextWrapping="Wrap"
+                                    <local:SelectableCellText Value="{Binding DescriptionText}"
                                                          VerticalAlignment="Center" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Uwagi" Width="*" ClipboardContentBinding="{Binding Notes}">
+                        <DataGridTemplateColumn Header="Uwagi" Width="*" SortMemberPath="Notes" ClipboardContentBinding="{Binding Notes}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <local:RichTextBlock Value="{Binding NotesText}"
-                                                         TextWrapping="Wrap"
+                                    <local:SelectableCellText Value="{Binding NotesText}"
                                                          VerticalAlignment="Center" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

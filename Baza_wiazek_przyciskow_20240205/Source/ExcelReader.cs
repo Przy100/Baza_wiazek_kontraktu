@@ -94,18 +94,68 @@ namespace Baza_wiazek_przyciskow_20240205.Source
             {
                 return new FormattedTextValue(
                     fallbackText,
-                    [new FormattedTextRun(fallbackText, cell.Style.Font.Strikethrough)]);
+                    [new FormattedTextRun(fallbackText, cell.Style.Font.Strikethrough)])
+                { Appearance = ReadAppearance(cell, cell.Style.Font) };
             }
 
             List<FormattedTextRun> runs = new();
             foreach (IXLRichString richString in cell.GetRichText())
             {
-                runs.Add(new FormattedTextRun(richString.Text, richString.Strikethrough));
+                runs.Add(new FormattedTextRun(richString.Text, richString.Strikethrough)
+                { Appearance = ReadAppearance(cell, richString) });
             }
 
-            return runs.Count == 0
+            var result = runs.Count == 0
                 ? FormattedTextValue.FromPlainText(fallbackText)
                 : new FormattedTextValue(string.Concat(runs.Select(run => run.Text)), runs);
+            result.Appearance = ReadAppearance(cell, cell.Style.Font);
+            return result;
+        }
+
+        private static ExcelCellAppearance ReadAppearance(IXLCell cell, IXLFontBase font)
+        {
+            var style = cell.Style;
+            double Edge(XLBorderStyleValues edge) => edge == XLBorderStyleValues.None ? 0 :
+                edge == XLBorderStyleValues.Thick || edge == XLBorderStyleValues.Double ? 2 : 1;
+            var border = style.Border;
+            return new ExcelCellAppearance
+            {
+                Background = style.Fill.PatternType == XLFillPatternValues.None ? "#FFFFFF" : Color(cell, style.Fill.BackgroundColor, "#FFFFFF"),
+                Foreground = Color(cell, font.FontColor, "#000000"),
+                FontFamily = font.FontName,
+                FontSize = font.FontSize * 96 / 72,
+                Bold = font.Bold,
+                Italic = font.Italic,
+                Underline = font.Underline != XLFontUnderlineValues.None,
+                Alignment = style.Alignment.Horizontal switch
+                {
+                    XLAlignmentHorizontalValues.Center => System.Windows.TextAlignment.Center,
+                    XLAlignmentHorizontalValues.Right => System.Windows.TextAlignment.Right,
+                    XLAlignmentHorizontalValues.Justify => System.Windows.TextAlignment.Justify,
+                    XLAlignmentHorizontalValues.General when cell.DataType == XLDataType.Number => System.Windows.TextAlignment.Right,
+                    _ => System.Windows.TextAlignment.Left
+                },
+                VerticalAlignment = style.Alignment.Vertical switch
+                {
+                    XLAlignmentVerticalValues.Top => System.Windows.VerticalAlignment.Top,
+                    XLAlignmentVerticalValues.Bottom => System.Windows.VerticalAlignment.Bottom,
+                    _ => System.Windows.VerticalAlignment.Center
+                },
+                Width = cell.WorksheetColumn().Width * 7 + 5,
+                Height = cell.WorksheetRow().Height * 96 / 72,
+                BorderThickness = new System.Windows.Thickness(Edge(border.LeftBorder), Edge(border.TopBorder), Edge(border.RightBorder), Edge(border.BottomBorder)),
+                BorderColor = Color(cell, border.BottomBorderColor, "#808080")
+            };
+        }
+
+        private static string Color(IXLCell cell, XLColor color, string fallback)
+        {
+            if (color.ColorType == XLColorType.Indexed && color.Indexed >= 64) return fallback;
+            var value = color.ColorType == XLColorType.Theme
+                ? cell.Worksheet.Workbook.Theme.ResolveThemeColor(color.ThemeColor).Color : color.Color;
+            double tint = color.ColorType == XLColorType.Theme ? color.ThemeTint : 0;
+            byte Tint(byte channel) => (byte)Math.Clamp(Math.Round(tint < 0 ? channel * (1 + tint) : channel * (1 - tint) + 255 * tint), 0, 255);
+            return $"#{Tint(value.R):X2}{Tint(value.G):X2}{Tint(value.B):X2}";
         }
 
         private static bool IsCellCompletelyStrikethrough(IXLCell cell)

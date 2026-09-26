@@ -13,6 +13,7 @@ namespace Baza_wiazek_przyciskow_20240205
 
         public string Text { get; }
         public IReadOnlyList<FormattedTextRun> Runs { get; }
+        public ExcelCellAppearance? Appearance { get; set; }
 
         public static FormattedTextValue FromPlainText(string text)
         {
