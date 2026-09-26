@@ -10,5 +10,6 @@ namespace Baza_wiazek_przyciskow_20240205
 
         public string Text { get; }
         public bool IsStrikethrough { get; }
+        public ExcelCellAppearance? Appearance { get; init; }
     }
 }

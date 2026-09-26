@@ -33,7 +33,7 @@ namespace Baza_wiazek_przyciskow_20240205.Source
             collection = "users";
 
             // Wersja
-            Version = "v2.5.2";
+            Version = "v.2.6.0";
         }
 
         private static string GetConfiguredPath(string? configuredPath, string defaultPath)

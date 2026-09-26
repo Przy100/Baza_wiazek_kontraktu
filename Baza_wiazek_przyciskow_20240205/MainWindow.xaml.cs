@@ -6,9 +6,16 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace Baza_wiazek_przyciskow_20240205
@@ -16,6 +23,7 @@ namespace Baza_wiazek_przyciskow_20240205
     public partial class MainWindow : Window
     {
         private string? currentFilePath;
+        private readonly Dictionary<DataGridColumn, DataGridLength> normalColumnWidths = new();
 
         public ObservableCollection<DocumentRow> Documents { get; } = new();
 
@@ -23,6 +31,8 @@ namespace Baza_wiazek_przyciskow_20240205
         {
             InitializeComponent();
             DataContext = this;
+            ConfigureExcelCellStyles();
+            ExcelViewToggle.IsChecked = Properties.Settings.Default.ExcelTableView;
 
             string selectedTheme = Properties.Settings.Default.ColorTheme;
             ThemeManager.ApplyTheme(selectedTheme);
@@ -111,6 +121,7 @@ namespace Baza_wiazek_przyciskow_20240205
                 }
 
                 RowCountTextBlock.Text = $"{Documents.Count} pozycji";
+                ApplyTableView();
                 UpdateProgress(100, "Gotowe");
             }
             catch (Exception ex)
@@ -233,6 +244,135 @@ namespace Baza_wiazek_przyciskow_20240205
             }
         }
 
+        private void DocumentsGrid_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.FocusedElement is TextBoxBase) return;
+            if (e.Key == Key.C && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+            {
+                CopySelectedCells(includeHeaders: false);
+                e.Handled = true;
+            }
+        }
+
+        private void DocumentsGrid_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (FindVisualParent<TextBoxBase>(e.OriginalSource as DependencyObject) != null) return;
+            DataGridCell? cell = FindVisualParent<DataGridCell>(e.OriginalSource as DependencyObject);
+            if (cell == null || cell.DataContext is not DocumentRow row)
+            {
+                return;
+            }
+
+            DataGridCellInfo clickedCell = new(row, cell.Column);
+            if (!DocumentsGrid.SelectedCells.Contains(clickedCell))
+            {
+                DocumentsGrid.SelectedCells.Clear();
+                DocumentsGrid.SelectedCells.Add(clickedCell);
+            }
+
+            DocumentsGrid.CurrentCell = clickedCell;
+            cell.Focus();
+        }
+
+        private void CopySelection_Click(object sender, RoutedEventArgs e)
+        {
+            CopySelectedCells(includeHeaders: false);
+        }
+
+        private void CopySelectionWithHeaders_Click(object sender, RoutedEventArgs e)
+        {
+            CopySelectedCells(includeHeaders: true);
+        }
+
+        private void CopySelectedCells(bool includeHeaders)
+        {
+            List<DataGridCellInfo> selectedCells = DocumentsGrid.SelectedCells
+                .Where(cell => cell.Item is DocumentRow && cell.Column != null)
+                .OrderBy(cell => Documents.IndexOf((DocumentRow)cell.Item))
+                .ThenBy(cell => cell.Column.DisplayIndex)
+                .ToList();
+
+            if (selectedCells.Count == 0 && DocumentsGrid.CurrentCell.Item is DocumentRow)
+            {
+                selectedCells.Add(DocumentsGrid.CurrentCell);
+            }
+
+            if (selectedCells.Count == 0)
+            {
+                return;
+            }
+
+            List<DocumentRow> selectedRows = selectedCells
+                .Select(cell => (DocumentRow)cell.Item)
+                .Distinct()
+                .OrderBy(Documents.IndexOf)
+                .ToList();
+            List<DataGridColumn> selectedColumns = selectedCells
+                .Select(cell => cell.Column)
+                .Distinct()
+                .OrderBy(column => column.DisplayIndex)
+                .ToList();
+
+            StringBuilder clipboardText = new();
+            if (includeHeaders)
+            {
+                clipboardText.AppendLine(string.Join('\t', selectedColumns.Select(column => EscapeClipboardField(column.Header?.ToString() ?? string.Empty))));
+            }
+
+            foreach (DocumentRow row in selectedRows)
+            {
+                IEnumerable<string> values = selectedColumns.Select(column =>
+                    selectedCells.Contains(new DataGridCellInfo(row, column))
+                        ? EscapeClipboardField(GetCellClipboardValue(row, column))
+                        : string.Empty);
+                clipboardText.AppendLine(string.Join('\t', values));
+            }
+
+            Clipboard.SetText(clipboardText.ToString().TrimEnd('\r', '\n'));
+            StatusTextBlock.Text = selectedCells.Count == 1 ? "Skopiowano komórkę" : $"Skopiowano {selectedCells.Count} komórek";
+        }
+
+        private static string GetCellClipboardValue(DocumentRow row, DataGridColumn column)
+        {
+            string propertyName = column.SortMemberPath;
+            if (string.IsNullOrWhiteSpace(propertyName))
+            {
+                return string.Empty;
+            }
+
+            PropertyInfo? property = typeof(DocumentRow).GetProperty(propertyName);
+            var formatted = typeof(DocumentRow).GetProperty(propertyName + "Text")?.GetValue(row) as FormattedTextValue;
+            string value = formatted?.Text ?? property?.GetValue(row)?.ToString() ?? string.Empty;
+            return value.Replace("\r\n", "\n").Replace('\r', '\n');
+        }
+
+        private static string EscapeClipboardField(string value)
+        {
+            if (!value.Contains('\t') && !value.Contains('\n') && !value.Contains('"'))
+            {
+                return value;
+            }
+
+            return $"\"{value.Replace("\"", "\"\"")}\"";
+        }
+
+        private static T? FindVisualParent<T>(DependencyObject? child) where T : DependencyObject
+        {
+            while (child != null)
+            {
+                if (child is T parent)
+                {
+                    return parent;
+                }
+
+                child = child is ContentElement content
+                    ? ContentOperations.GetParent(content) ?? (content as FrameworkContentElement)?.Parent
+                    : VisualTreeHelper.GetParent(child);
+            }
+
+            return null;
+        }
+
         private void OpenCurrentFile_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(currentFilePath))
@@ -242,6 +382,85 @@ namespace Baza_wiazek_przyciskow_20240205
             }
 
             OpenPath(currentFilePath, "Nie można otworzyć aktualnego pliku LW.");
+        }
+
+        private void ConfigureExcelCellStyles()
+        {
+            foreach (var column in DocumentsGrid.Columns)
+            {
+                normalColumnWidths[column] = column.Width;
+                if (column.SortMemberPath is "Number" or "DocumentAvailability") continue;
+                string path = column.SortMemberPath + "Text.Appearance.";
+                var style = new Style(typeof(DataGridCell), (Style)FindResource(typeof(DataGridCell)));
+                var trigger = new DataTrigger
+                {
+                    Binding = new Binding()
+                    {
+                        Path = new PropertyPath(SelectableCellText.ExcelViewProperty),
+                        RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+                    },
+                    Value = true
+                };
+                trigger.Setters.Add(new Setter(Control.BackgroundProperty, new Binding(path + "Background") { Converter = new ExcelBrushConverter() }));
+                trigger.Setters.Add(new Setter(Control.ForegroundProperty, new Binding(path + "Foreground") { Converter = new ExcelBrushConverter() }));
+                trigger.Setters.Add(new Setter(Control.BorderBrushProperty, ExcelCellAppearance.Brush("#24000000")));
+                trigger.Setters.Add(new Setter(Control.BorderThicknessProperty, new Thickness(0.5)));
+                trigger.Setters.Add(new Setter(Control.TemplateProperty, FindResource("ExcelCellTemplate")));
+                trigger.Setters.Add(new Setter(Control.VerticalContentAlignmentProperty, new Binding(path + "VerticalAlignment")));
+                trigger.Setters.Add(new Setter(Control.PaddingProperty, new Thickness(4, 3, 4, 3)));
+                if (column.SortMemberPath == "DocumentKind")
+                {
+                    trigger.Setters.Add(new Setter(Control.BackgroundProperty, Brushes.Transparent));
+                    trigger.Setters.Add(new Setter(Control.BorderThicknessProperty, new Thickness(0)));
+                    trigger.Setters.Add(new Setter(Control.PaddingProperty, new Thickness(0)));
+                    trigger.Setters.Add(new Setter(Control.VerticalContentAlignmentProperty, VerticalAlignment.Stretch));
+                }
+                style.Triggers.Add(trigger);
+                if (column.SortMemberPath != "DocumentKind")
+                {
+                    var neutralCell = new MultiDataTrigger();
+                    neutralCell.Conditions.Add(new Condition(new Binding
+                    {
+                        Path = new PropertyPath(SelectableCellText.ExcelViewProperty),
+                        RelativeSource = new RelativeSource(RelativeSourceMode.Self)
+                    }, true));
+                    neutralCell.Conditions.Add(new Condition(new Binding(path + "UseThemeBackground"), true));
+                    neutralCell.Setters.Add(new Setter(Control.BackgroundProperty, new DynamicResourceExtension("SurfaceMutedBrush")));
+                    neutralCell.Setters.Add(new Setter(Control.ForegroundProperty, new DynamicResourceExtension("InkBrush")));
+                    neutralCell.Setters.Add(new Setter(Control.BorderBrushProperty, new DynamicResourceExtension("BorderBrushSoft")));
+                    style.Triggers.Add(neutralCell);
+                }
+                column.CellStyle = style;
+            }
+        }
+
+        private void ExcelView_Changed(object sender, RoutedEventArgs e)
+        {
+            if (DocumentsGrid == null) return;
+            ApplyTableView();
+            Properties.Settings.Default.ExcelTableView = ExcelViewToggle.IsChecked == true;
+            try { Properties.Settings.Default.Save(); }
+            catch (System.Configuration.ConfigurationErrorsException)
+            {
+                StatusTextBlock.Text = "Zmieniono widok; nie udało się zapisać ustawienia.";
+            }
+        }
+
+        private void ApplyTableView()
+        {
+            bool excel = ExcelViewToggle.IsChecked == true;
+            bool wasExcel = SelectableCellText.GetExcelView(DocumentsGrid);
+            if (excel && !wasExcel)
+                foreach (var column in DocumentsGrid.Columns) normalColumnWidths[column] = column.Width;
+            SelectableCellText.SetExcelView(DocumentsGrid, excel);
+            DocumentsGrid.RowStyle = excel ? (Style)FindResource("ExcelRowStyle") : (Style)FindResource(typeof(DataGridRow));
+            foreach (var column in DocumentsGrid.Columns)
+            {
+                if (excel && Documents.FirstOrDefault() is DocumentRow row &&
+                    typeof(DocumentRow).GetProperty(column.SortMemberPath + "Text")?.GetValue(row) is FormattedTextValue { Appearance: { } appearance })
+                    column.Width = new DataGridLength(Math.Max(column.SortMemberPath is "Priority" or "Revision" ? 86 : 68, appearance.Width));
+                else if (!excel && normalColumnWidths.TryGetValue(column, out var width)) column.Width = width;
+            }
         }
 
         private void ConfigureLinks_Click(object sender, RoutedEventArgs e)

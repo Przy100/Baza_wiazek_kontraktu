@@ -7,9 +7,9 @@ namespace Baza_wiazek_przyciskow_20240205
 {
     public sealed class DocumentKindToBrushConverter : IValueConverter
     {
-        private static readonly LinearGradientBrush PlateBrush = CreateGradient(Color.FromRgb(64, 130, 246), Color.FromRgb(31, 92, 218));
-        private static readonly LinearGradientBrush WireBrush = CreateGradient(Color.FromRgb(18, 166, 119), Color.FromRgb(4, 132, 96));
-        private static readonly LinearGradientBrush DefaultBrush = CreateGradient(Color.FromRgb(130, 83, 228), Color.FromRgb(100, 54, 190));
+        private static readonly LinearGradientBrush PlateBrush = CreateGradient(Color.FromRgb(70, 124, 188), Color.FromRgb(56, 106, 168));
+        private static readonly LinearGradientBrush WireBrush = CreateGradient(Color.FromRgb(37, 139, 117), Color.FromRgb(32, 120, 100));
+        private static readonly LinearGradientBrush DefaultBrush = CreateGradient(Color.FromRgb(113, 119, 132), Color.FromRgb(94, 101, 114));
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

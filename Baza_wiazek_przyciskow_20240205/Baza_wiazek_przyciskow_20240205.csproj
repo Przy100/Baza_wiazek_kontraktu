@@ -20,9 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="icons8-connector-25.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="icons8-connector-25.ico" />
   </ItemGroup>
 
   <ItemGroup>
